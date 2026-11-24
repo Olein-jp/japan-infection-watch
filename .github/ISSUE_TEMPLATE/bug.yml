@@ -1,0 +1,22 @@
+name: 不具合
+description: 不具合の影響と再現手順を記録する
+title: "[B-xxx] "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: 環境・再現手順
+      description: 個人情報と認証情報を除いてください。
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: 期待する結果・実際の結果・影響範囲
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: 関連 Issue・根拠・修正の確認方法

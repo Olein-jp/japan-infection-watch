@@ -1,0 +1,26 @@
+name: 設計・開発
+description: 開発移行の承認後に使う設計・機能・テスト・基盤・運用の Issue
+title: "[F-xxx] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: "設計は D、機能は F、テストは T、基盤は I、運用は O の ID を使います。"
+  - type: textarea
+    id: scope
+    attributes:
+      label: 背景・要件・対象外
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: 根拠となる調査 ID・成果物と依存 Issue
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: 成果物・受入基準・検証方法
+    validations:
+      required: true

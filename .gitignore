@@ -1,0 +1,25 @@
+# 環境設定と認証情報
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+**/.auth/
+**/browser-profile/
+**/browser-profiles/
+**/playwright/.auth/
+
+# 依存関係、テスト結果、生成物
+node_modules/
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+playwright-report/
+test-results/
+dist/
+.DS_Store
+
+# ローカルの取得結果
+/artifacts/*
+!/artifacts/README.md
