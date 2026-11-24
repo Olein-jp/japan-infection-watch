@@ -21,7 +21,7 @@
 | S13 | Tableau | Tableau Public FAQ | <https://help.tableau.com/current/pro/desktop/ja-jp/public_faq.htm> | 不明 | 2026-11-24 | Web | 共有と出力は機能・公開者設定に依存 | R-02 で FAQ の共有・ダウンロード項目を確認 |
 | S14 | Tableau | Tableau Public Data Policy | <https://public.tableau.com/app/data-policy> | 不明 | 2026-11-24 | Web | 投稿者が掲載に責任を負う | R-02 でブラウザ表示から掲載責任・削除条件を確認 |
 | S15 | JIHS | JIHS IDWR | <https://id-info.jihs.go.jp/surveillance/idwr/> | 不明 | 2026-11-24 | Web | S53 を参照 | R-09 で速報年別一覧と週報一覧への導線を確認 |
-| S16 | 厚生労働省 | 厚労省 令和8年度急性呼吸器感染症対策 | <https://www.mhlw.go.jp/stf/index2026.html> | — | — | Web | 未確認 | 未検証 |
+| S16 | 厚生労働省 | 厚労省 令和8年度急性呼吸器感染症対策 | <https://www.mhlw.go.jp/stf/index2026.html> | 不明 | 2026-11-24 | Web | S60 を参照 | R-10 で週次報道発表の案内と学校欠席者数の集計対象を確認 |
 | S17 | 岐阜県 | 岐阜県感染症情報センター | <https://www.pref.gifu.lg.jp/page/9550.html> | — | — | Web | 未確認 | 未検証 |
 | S18 | 岐阜県 | 岐阜県週報 | <https://www.pref.gifu.lg.jp/page/107799.html> | — | — | Web | 未確認 | 未検証 |
 | S19 | 岐阜県 | 岐阜県発生動向データ | <https://www.pref.gifu.lg.jp/page/9553.html> | — | — | Web | 未確認 | 未検証 |
@@ -62,5 +62,10 @@
 | S54 | JIHS | 報告週対応表 2026年 | <https://id-info.jihs.go.jp/surveillance/idwr/calendar/2026/index.html> | 不明 | 2026-11-24 | Web | S53 を参照 | R-09 で公式週対応表の提供を確認 |
 | S55 | JIHS | IDWR週報に関する訂正のお詫びとお願い | <https://id-info.jihs.go.jp/niid/ja/allarticles/surveillance/4755-teisei-owabi.html> | 不明 | 2026-11-24 | Web | S53 を参照 | R-09 で発生動向総覧の本文訂正例を確認 |
 | S56 | JIHS | 感染症発生動向調査事業年報訂正箇所一覧 | <https://id-info.jihs.go.jp/surveillance/idwr/annual/correction/index.html> | 2012-10-09 公開、2026-11-02 訂正例 | 2026-11-24 | Web・Excel | S53 を参照 | R-09 で年報の集計表に対する訂正告知を確認 |
+| S57 | 厚生労働省 | インフルエンザに関する報道発表資料 2026/2027 シーズン | <https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/kenkou/kekkaku-kansenshou01/houdou_00025.html> | 2026-11-20 時点の最新発表 | 2026-11-24 | Web | S60 を参照 | R-10 で11月13日・20日の公式 PDF へのリンクを確認 |
+| S58 | 厚生労働省 | インフルエンザ様疾患発生報告 第10報 | <https://www.mhlw.go.jp/content/001768730.pdf> | 2026-11-13 発表 | 2026-11-24 | PDF | S60・S61。pp.4–5 の固有注記は確認されず | 地域表・脚注・施設種別内訳を実行確認 |
+| S59 | 厚生労働省 | インフルエンザ様疾患発生報告 第11報 | <https://www.mhlw.go.jp/content/001770872.pdf> | 2026-11-20 発表 | 2026-11-24 | PDF | S60・S61。pp.4–5 の固有注記は確認されず | 地域表・脚注・施設種別内訳を実行確認 |
+| S60 | 厚生労働省 | 利用規約・リンク・著作権等 | <https://www.mhlw.go.jp/chosakuken/index.html> | 不明 | 2026-11-24 | Web | PDL1.0 準拠。出典・加工の表記と適用外の別紙 | R-10 で冒頭と §1.1・§1.4・別紙を確認 |
+| S61 | デジタル庁 | 公共データ利用規約（第1.0版） | <https://www.digital.go.jp/resources/open_data/public_data_license_v1.0> | 第1.0版 | 2026-11-24 | Web | 条件付き二次利用・商用利用 | R-10 で §1、§1.1–1.4 の出典・加工・第三者権利・例外を確認 |
 
 学校情報等検索 API のベース URL 候補は <https://opendata.jssh.site/siss/resources/>。現行仕様で照合する。Tableau の S01 掲載 URL は [R-01 の一覧](findings/R-01-public-views.md#公開ビュー-url-一覧)を参照する。
