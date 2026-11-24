@@ -4,3 +4,4 @@ R-16〜R-19 で取得頻度、鮮度、エラー通知、復旧・ロールバ�
 
 - [データ取得・公開と障害復旧の運用案](collection-and-recovery.md)
 - [Pages の公開ジョブと配布版の保管先](../architecture/pages-layout.md)
+- [初期版の更新・復旧・公開判定案](mvp-release.md)

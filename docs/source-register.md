@@ -103,6 +103,8 @@
 | S95 | e-Stat | 2026年1月1日現在の市区町村数 | <https://www.e-stat.go.jp/municipalities/number-of-municipalities?day=1&file_format=csv&form_id=city_count_form&month=1&year=2026> | 2026-01-01基準 | 2026-11-24 | Web | 件数の参照 | R-17 で市町村計・特別区・行政区数を容量試算に使用 |
 | S96 | Astro・Vite・Microsoft（Playwright） | 静的配信・ブラウザの公式仕様 | [Astro](https://docs.astro.build/en/guides/deploy/github/)・[Vite](https://vite.dev/guide/static-deploy.html)・[Playwright](https://playwright.dev/docs/browsers) | 閲覧時の公式文書 | 2026-11-24 | Web | 文書参照 | Pages の base 設定を比較。Chrome でローカル Playwright を実行 |
 | S97 | Cloudflare | Pages の上限と Direct Upload | [上限](https://developers.cloudflare.com/pages/platform/limits/)・[Direct Upload](https://developers.cloudflare.com/pages/get-started/direct-upload/) | 2026-11-19／2026-04-21 更新表示 | 2026-11-24 | Web | Free のファイル数とファイルサイズに上限 | R-18 で静的配信の無料代替として文書確認 |
+| S98 | W3C | Web Content Accessibility Guidelines (WCAG) 2.2 | <https://www.w3.org/TR/WCAG22/> | 2024-12-12 勧告 | 2026-11-24 | Web | 画面と試験の基準を参照 | R-19 で色・キーボード・リフロー等を仕様案に反映 |
+| S99 | GitHub | 従量課金製品の予算設定 | <https://docs.github.com/en/billing/how-tos/set-up-budgets> | 閲覧時の公式文書 | 2026-11-24 | Web | 適用範囲と停止設定は予算の種別による | R-19 で月0円の公開前確認に反映 |
 
 学校情報等検索 API のベース URL 候補は <https://opendata.jssh.site/siss/resources/>。現行仕様で照合する。Tableau の S01 掲載 URL は [R-01 の一覧](findings/R-01-public-views.md#公開ビュー-url-一覧)を参照する。
 

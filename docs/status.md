@@ -30,7 +30,7 @@ R-04 の公式サンプルで確認できた動作は記録済み。日本学校
 | R-16 | [#16](https://github.com/Olein-jp/japan-infection-watch/issues/16) | JIHS・厚労省の少量再取得を検証済み。運用案を作成 | 学校保健会の条件、許容される定期取得、保管先・復旧の構成 | R-02 [#2](https://github.com/Olein-jp/japan-infection-watch/issues/2)、R-07 [#7](https://github.com/Olein-jp/japan-infection-watch/issues/7)、R-15 [#15](https://github.com/Olein-jp/japan-infection-watch/issues/15) の未確定範囲 |
 | R-17 | [#17](https://github.com/Olein-jp/japan-infection-watch/issues/17) | ローカル検証済み・完了承認待ち | 実データの公開条件、GitHub 上の時間・費用・復旧 | R-16 [#16](https://github.com/Olein-jp/japan-infection-watch/issues/16) の実運用条件 |
 | R-18 | [#18](https://github.com/Olein-jp/japan-infection-watch/issues/18) | 評価済み・完了承認待ち | 資料別の加工・再配布と取得条件、実運用の容量・課金、開発・公開承認 | R-12 [#12](https://github.com/Olein-jp/japan-infection-watch/issues/12)、R-13 [#13](https://github.com/Olein-jp/japan-infection-watch/issues/13)、R-15 [#15](https://github.com/Olein-jp/japan-infection-watch/issues/15)、R-16 [#16](https://github.com/Olein-jp/japan-infection-watch/issues/16)、R-17 [#17](https://github.com/Olein-jp/japan-infection-watch/issues/17) |
-| R-19 | [#19](https://github.com/Olein-jp/japan-infection-watch/issues/19) | 未着手 | 開発仕様案、保留事項、開発 Issue 案 | R-18 [#18](https://github.com/Olein-jp/japan-infection-watch/issues/18) |
+| R-19 | [#19](https://github.com/Olein-jp/japan-infection-watch/issues/19) | 仕様案作成済み・完了承認待ち | 開発の Go、資料別の公開・定期取得条件、復旧と月0円の実運用 | R-18 [#18](https://github.com/Olein-jp/japan-infection-watch/issues/18) |
 
 ## R-01 で判明した事項
 
@@ -104,6 +104,10 @@ R-04 の公式サンプルで確認できた動作は記録済み。日本学校
 
 - 月0円の初期版は JIHS の全国・都道府県の週次定点集計が第一候補。厚労省の学校休業は追加候補で、市区町村の全国一律表示と学校別表示は見送る。[地域粒度と提供可否](findings/R-18-feasibility.md#地域粒度と提供可否)
 - 仕様検討は条件付き Go、実データ公開・定期取得は現時点で No-Go の案。資料別の利用条件と運用費を確認し、R-19 の仕様案をもとに開発承認を受ける。[実現可能性評価](final-report/README.md)
+
+## R-19 で判明した事項
+
+- JIHS の週次定点集計を第一候補とする画面・静的配信、月0円の公開判定・更新・復旧、開発 Issue 案6件を作成。開発の Go 判断は依頼者が行い、公開は別途承認を得る。[仕様案と根拠](findings/R-19-mvp-specification.md)
 
 ## 初期構築で確認した事項
 

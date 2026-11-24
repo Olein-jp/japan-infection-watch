@@ -1,3 +1,8 @@
 # 開発仕様案
 
-R-19 で採用候補の情報源と調査結果に基づき、MVP の機能・画面・データ処理・公開・運用・テストと開発 Issue 案をまとめる。
+[R-19 の調査結果](../findings/R-19-mvp-specification.md)をもとに、開発の Go 判断で使う。
+
+- [初期版の開発仕様案](mvp.md)
+- [公開アーキテクチャ案](../architecture/mvp-publication.md)
+- [更新・復旧・公開判定案](../operations/mvp-release.md)
+- [開発 Issue 案](development-issues.md)
