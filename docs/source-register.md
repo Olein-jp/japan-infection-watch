@@ -31,12 +31,12 @@
 | S23 | 神戸市保健所 | 神戸市感染症統合情報システムの学級閉鎖情報 | <https://kobecity-kmss.jp/classclosure> | 市の運用案内は2026-09-01更新 | 2026-11-24 | Web・PDF／CSV表示 | 外部ドメインの個別利用条件は未確認 | 市公式案内で運営を確認。地図・表・CSV 表示を文書確認 |
 | S24 | 北九州市保健所 | インフルエンザ様疾患による学級閉鎖等の報告状況 | <https://www.city.kitakyushu.lg.jp/contents/334_00031.html> | 2026-11-20更新 | 2026-11-24 | HTML・PDF | 市サイトのリンク・著作権案内。カタログとは適用経路が異なる | 報告日別の表頭、延長の扱い、週次集計のリンクを確認 |
 | S25 | 東京都 | 東京都オープンデータ API カタログ | [登録時の URL](https://spec.api.metro.tokyo.lg.jp/)・[都の API 一覧](https://portal.data.metro.tokyo.lg.jp/opendata-api/) | 仕様表示1.0.0 | 2026-11-24 | Web | 個別 API・データの規約を参照 | 登録時の URL は本文を読み取れず、都の公開一覧で閉鎖該当項目を確認できなかった |
-| S26 | GitHub | GitHub Pages 制限 | <https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits> | — | — | Web | 未確認 | 未検証 |
-| S27 | GitHub | GitHub Pages カスタムワークフロー | <https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages> | — | — | Web | 未確認 | 未検証 |
-| S28 | GitHub | GitHub Pages 公開元の設定 | <https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site> | — | — | Web | 未確認 | 未検証 |
+| S26 | GitHub | GitHub Pages 制限 | <https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits> | 閲覧時の仕様 | 2026-11-24 | Web | 対象プラン・用途・容量・帯域など | R-17 で Usage limits と対象プランを照合 |
+| S27 | GitHub | GitHub Pages カスタムワークフロー | <https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages> | 閲覧時の仕様 | 2026-11-24 | Web | artifact と公開権限の要件 | R-17 で build と deploy、公開用 artifact の条件を確認 |
+| S28 | GitHub | GitHub Pages 公開元の設定 | <https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site> | 閲覧時の仕様 | 2026-11-24 | Web | 対象プランと設定権限 | R-17 でブランチと Actions の公開元を比較 |
 | S29 | GitHub | GitHub Actions イベント・schedule | <https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule> | 閲覧時の公式文書 | 2026-11-24 | Web | 文書参照 | schedule の遅延・未実行、既定ブランチ、公開リポジトリの無活動による無効化を確認 |
-| S30 | GitHub | GitHub Actions 課金 | <https://docs.github.com/en/billing/managing-billing-for-your-products/managing-billing-for-github-actions/about-billing-for-github-actions> | — | — | Web | 未確認 | 未検証 |
-| S31 | GitHub | GitHub 追加製品利用条件 | <https://docs.github.com/en/site-policy/github-terms/github-terms-for-additional-products-and-features> | — | — | Web | 未確認 | 未検証 |
+| S30 | GitHub | GitHub Actions 課金 | <https://docs.github.com/en/billing/concepts/product-billing/github-actions> | 閲覧時の料金 | 2026-11-24 | Web | 計算枠と超過料金はプラン別 | 旧 URL の転送先。R-17 で runner と保管費用を確認 |
+| S31 | GitHub | GitHub 追加製品利用条件 | <https://docs.github.com/en/site-policy/github-terms/github-terms-for-additional-products-and-features#pages> | 2026-08-27発効表示 | 2026-11-24 | Web | Pages 節の用途制限 | R-17 で営利用途と静的配信の扱いを文書確認 |
 | S32 | 日本学校保健会 | 2024年のマップビュー表示変更 | <https://www.gakkohoken.jp/files/ccenter/mapview/20240325view_change.pdf> | 2024-03-25（S01 告知） | 2026-11-24 | PDF | 未判定 | R-01 で初期表示・閉鎖クラス合算を確認 |
 | S33 | 日本学校保健会 | 登録状況・利用状況の推移（2020・2025年度比較） | <https://www.gakkohoken.jp/files/ccenter/system/registration_status_and_usage_status_2025.pdf> | 公開日は不明。2025年度分は 2026-03-31 時点 | 2026-11-24 | PDF | 未判定 | R-01 で施設種別、登録率と利用率の分母を確認 |
 | S34 | 株式会社エスイーシー（日本学校保健会掲載） | 2026年マップビュー研修資料 | <https://www.gakkohoken.jp/files/ivent/20260722online/20260722siryo-01.pdf> | 2026-07-22（研修開催日） | 2026-11-24 | PDF | 未判定 | R-01 で指標・表示対象日・更新時点を確認 |
@@ -99,6 +99,9 @@
 | S91 | 岐阜市 | 市の位置・面積・人口 | <https://www.city.gifu.lg.jp/info/syoukai/1006141/1006142.html> | 面積は2025-04-01時点 | 2026-11-24 | Web | 面積公表値の参照 | N03 2026年版から計算した面積の規模を照合 |
 | S92 | IETF | RFC 9110 HTTP Semantics | <https://www.rfc-editor.org/rfc/rfc9110.html#section-13> | 2022年6月 | 2026-11-24 | Web | 仕様参照 | §13.1.2・§13.1.3・§15.4.5 を条件付き取得と304の解釈に使用 |
 | S93 | GitHub | Actions の同時実行、artifact の保持、履歴からの削除 | [同時実行](https://docs.github.com/en/actions/concepts/workflows-and-actions/concurrency)・[artifact](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/download-workflow-artifacts)・[Git 履歴](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository) | 閲覧時の公式文書 | 2026-11-24 | Web | 文書参照 | 公開処理の直列化、artifact の期限、履歴残存を運用案に反映 |
+| S94 | GitHub | プラン価格、Actions 上限・トークン仕様 | [プラン価格](https://github.com/pricing)・[Actions limits](https://docs.github.com/en/actions/reference/limits)・[GITHUB_TOKEN](https://docs.github.com/en/actions/concepts/security/github_token) | 閲覧時の公式文書 | 2026-11-24 | Web | 文書参照 | R-17 で月次費用・ジョブ時間・後続トリガーの条件を確認 |
+| S95 | e-Stat | 2026年1月1日現在の市区町村数 | <https://www.e-stat.go.jp/municipalities/number-of-municipalities?day=1&file_format=csv&form_id=city_count_form&month=1&year=2026> | 2026-01-01基準 | 2026-11-24 | Web | 件数の参照 | R-17 で市町村計・特別区・行政区数を容量試算に使用 |
+| S96 | Astro・Vite・Microsoft（Playwright） | 静的配信・ブラウザの公式仕様 | [Astro](https://docs.astro.build/en/guides/deploy/github/)・[Vite](https://vite.dev/guide/static-deploy.html)・[Playwright](https://playwright.dev/docs/browsers) | 閲覧時の公式文書 | 2026-11-24 | Web | 文書参照 | Pages の base 設定を比較。Chrome でローカル Playwright を実行 |
 
 学校情報等検索 API のベース URL 候補は <https://opendata.jssh.site/siss/resources/>。現行仕様で照合する。Tableau の S01 掲載 URL は [R-01 の一覧](findings/R-01-public-views.md#公開ビュー-url-一覧)を参照する。
 

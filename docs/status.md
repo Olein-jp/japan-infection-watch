@@ -28,7 +28,7 @@ R-04 の公式サンプルで確認できた動作は記録済み。日本学校
 | R-14 | [#14](https://github.com/Olein-jp/japan-infection-watch/issues/14) | 自治体・地理の検証済み。学校側の照合待ち | 学校コード、学校別データ、市区町村キー・API 応答との照合 | R-05 [#5](https://github.com/Olein-jp/japan-infection-watch/issues/5)、R-06 [#6](https://github.com/Olein-jp/japan-infection-watch/issues/6)、R-08 [#8](https://github.com/Olein-jp/japan-infection-watch/issues/8) |
 | R-15 | [#15](https://github.com/Olein-jp/japan-infection-watch/issues/15) | JIHS・厚労省の資料に基づくモデル案を検証済み | 学校保健会データの指標・対象・期間・分母、公開条件 | R-05 [#5](https://github.com/Olein-jp/japan-infection-watch/issues/5)、R-06 [#6](https://github.com/Olein-jp/japan-infection-watch/issues/6)、R-07 [#7](https://github.com/Olein-jp/japan-infection-watch/issues/7)、R-14 [#14](https://github.com/Olein-jp/japan-infection-watch/issues/14) の学校側 |
 | R-16 | [#16](https://github.com/Olein-jp/japan-infection-watch/issues/16) | JIHS・厚労省の少量再取得を検証済み。運用案を作成 | 学校保健会の条件、許容される定期取得、保管先・復旧の構成 | R-02 [#2](https://github.com/Olein-jp/japan-infection-watch/issues/2)、R-07 [#7](https://github.com/Olein-jp/japan-infection-watch/issues/7)、R-15 [#15](https://github.com/Olein-jp/japan-infection-watch/issues/15) の未確定範囲 |
-| R-17 | [#17](https://github.com/Olein-jp/japan-infection-watch/issues/17) | 未着手 | Pages/Actions の制約・費用と静的構成 | R-16 [#16](https://github.com/Olein-jp/japan-infection-watch/issues/16) |
+| R-17 | [#17](https://github.com/Olein-jp/japan-infection-watch/issues/17) | ローカル検証済み・完了承認待ち | 実データの公開条件、GitHub 上の時間・費用・復旧 | R-16 [#16](https://github.com/Olein-jp/japan-infection-watch/issues/16) の実運用条件 |
 | R-18 | [#18](https://github.com/Olein-jp/japan-infection-watch/issues/18) | 未着手 | MVP の提供可能な地域・データ範囲 | R-12 [#12](https://github.com/Olein-jp/japan-infection-watch/issues/12)、R-13 [#13](https://github.com/Olein-jp/japan-infection-watch/issues/13)、R-15 [#15](https://github.com/Olein-jp/japan-infection-watch/issues/15)、R-16 [#16](https://github.com/Olein-jp/japan-infection-watch/issues/16)、R-17 [#17](https://github.com/Olein-jp/japan-infection-watch/issues/17) |
 | R-19 | [#19](https://github.com/Olein-jp/japan-infection-watch/issues/19) | 未着手 | 開発仕様案、保留事項、開発 Issue 案 | R-18 [#18](https://github.com/Olein-jp/japan-infection-watch/issues/18) |
 
@@ -94,6 +94,11 @@ R-04 の公式サンプルで確認できた動作は記録済み。日本学校
 
 - JIHS の第46週定点 CSV と厚労省の第11報 PDF を少量再取得し、以前と同じハッシュを確認した。条件付き取得は JIHS が304、厚労省は同一内容で200。定期取得の許容条件は未確認。[資料別の運用検証](findings/R-16-collection-operations.md)
 - 訂正と同一版の判定、失敗時の公開成功版の保持、部分更新、復旧、保持・削除案を整理。Pages 上での一式の公開・復旧とストレージ構成は R-17 で検証する。[取得・公開と復旧の手順案](operations/collection-and-recovery.md)
+
+## R-17 で判明した事項
+
+- 架空データでプロジェクトパスとルート配置、地域ページ直リンク・再読込、404、分割 JSON、更新予定超過と欠損の表示、失敗時の公開成功版の維持をローカル確認。[構成比較と計測](findings/R-17-pages-architecture.md)
+- 都道府県週次の1年分を初期候補とする。全市区町村の日次1年分は現行行形式で約3.65 GBの試算で、配布期間・形式・保管構成を R-18 で評価する。[容量・時間・費用の試算](findings/R-17-pages-architecture.md#容量時間費用の試算)
 
 ## 初期構築で確認した事項
 
