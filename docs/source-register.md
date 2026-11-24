@@ -28,9 +28,9 @@
 | S20 | 総務省 | 総務省 全国地方公共団体コード | <https://www.soumu.go.jp/denshijiti/code.html> | — | — | Web | 未確認 | 未検証 |
 | S21 | 文部科学省 | 文科省 学校コード | <https://www.mext.go.jp/b_menu/toukei/mext_01087.html> | — | — | Web | 未確認 | 未検証 |
 | S22 | 国土交通省 | 国交省 行政区域 | <https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03-v3_0.html> | — | — | Web | 未確認 | 未検証 |
-| S23 | 神戸市（要確認） | 神戸市 学級閉鎖情報候補 | <https://kobecity-kmss.jp/classclosure> | — | — | Web | 未確認 | 未検証 |
-| S24 | 北九州市 | 北九州市 学級閉鎖情報候補 | <https://www.city.kitakyushu.lg.jp/contents/334_00031.html> | — | — | Web | 未確認 | 未検証 |
-| S25 | 東京都 | 東京都オープンデータAPIカタログ | <https://spec.api.metro.tokyo.lg.jp/> | — | — | Web | 未確認 | 未検証 |
+| S23 | 神戸市保健所 | 神戸市感染症統合情報システムの学級閉鎖情報 | <https://kobecity-kmss.jp/classclosure> | 市の運用案内は2026-09-01更新 | 2026-11-24 | Web・PDF／CSV表示 | 外部ドメインの個別利用条件は未確認 | 市公式案内で運営を確認。地図・表・CSV 表示を文書確認 |
+| S24 | 北九州市保健所 | インフルエンザ様疾患による学級閉鎖等の報告状況 | <https://www.city.kitakyushu.lg.jp/contents/334_00031.html> | 2026-11-20更新 | 2026-11-24 | HTML・PDF | 市サイトのリンク・著作権案内。カタログとは適用経路が異なる | 報告日別の表頭、延長の扱い、週次集計のリンクを確認 |
+| S25 | 東京都 | 東京都オープンデータ API カタログ | [登録時の URL](https://spec.api.metro.tokyo.lg.jp/)・[都の API 一覧](https://portal.data.metro.tokyo.lg.jp/opendata-api/) | 仕様表示1.0.0 | 2026-11-24 | Web | 個別 API・データの規約を参照 | 登録時の URL は本文を読み取れず、都の公開一覧で閉鎖該当項目を確認できなかった |
 | S26 | GitHub | GitHub Pages 制限 | <https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits> | — | — | Web | 未確認 | 未検証 |
 | S27 | GitHub | GitHub Pages カスタムワークフロー | <https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages> | — | — | Web | 未確認 | 未検証 |
 | S28 | GitHub | GitHub Pages 公開元の設定 | <https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site> | — | — | Web | 未確認 | 未検証 |
@@ -85,5 +85,12 @@
 | S77 | 神奈川県衛生研究所 | 2026年第46週 インフルエンザ CSV・週報 | [CSV](https://www.pref.kanagawa.jp/sys/eiken/003_center/0001_weekly/csv/20261119-influenza_2026.csv)・[週報 p.8](https://www.pref.kanagawa.jp/sys/eiken/003_center/0001_weekly/pdf/wrR08_46.pdf#page=8) | 2026-11-19 | 2026-11-24 | CSV・PDF | 県サイトの利用案内あり。資料固有条件は未確認 | 市・保健所等の列を確認。第46週の全県と3市の定点率を照合 |
 | S78 | 島根県・山口県の感染症発生動向データ提供サイト | 感染症発生動向調査のデータ抽出画面 | [島根県](https://pref.shimane.didss.dsvc.jp/nesid/opendata)・[山口県](https://pref.yamaguchi.didss.dsvc.jp/nesid/opendata) | 表示上の改訂日は未確認 | 2026-11-24 | Web・CSV選択画面 | 個別のライセンス本文は未確認 | 週定点・保健所別を選択可能。出力ファイルは未照合 |
 | S79 | 福岡県 | 感染症発生動向調査週報 2026年 | <https://www.pref.fukuoka.lg.jp/contents/idwr2026.html> | 第46週 2026-11-19 | 2026-11-24 | Web・PDF | 県庁サイトに権利帰属の案内。研究所別サイトは適用範囲未確認 | 研究所の入口が HTTP 503 のため代替。県集計を確認 |
+| S80 | 岐阜県感染症情報センター | 学校サーベイランスの案内、2024/25シーズン報告 | [案内](https://www.pref.gifu.lg.jp/page/107795.html)・[報告 pp.7–8](https://www.pref.gifu.lg.jp/uploaded/attachment/478328.pdf#page=7) | 入口は2026-11-19更新。報告は2025-12-10付 | 2026-11-24 | Web・PDF | S70。転送先の個別条件は未確認 | 学校情報リンクは停止案内に転送。シーズン中の閉鎖実施校数は県報告の表5で確認 |
+| S81 | 神戸市教育委員会 | 感染症による学級閉鎖情報 | [発表一覧](https://www.city.kobe.lg.jp/a61516/kosodate/education/information/gakkyuheisa.html)・[11月20日発表](https://www.city.kobe.lg.jp/documents/80496/20261120841501.pdf) | 2026-11-20発表分 | 2026-11-24 | PDF | [一般規約](https://www.city.kobe.lg.jp/documents/19135/20170630041802-1.pdf)は出典・加工表示、第三者権利等を条件とする | 市立学校園、閉鎖学級数・始終期の見出しを確認 |
+| S82 | 北九州市保健所 | インフルエンザ様疾患による学級閉鎖等の第46週集計 | <https://www.city.kitakyushu.lg.jp/files/001239461.pdf> | 2026-11-19発表 | 2026-11-24 | PDF | [市サイト利用案内](https://www.city.kitakyushu.lg.jp/category/file_0003.html)。資料固有条件は未確認 | p.1 の当週施設数と内訳を照合。週・施設単位の優先順位を確認 |
+| S83 | 北九州市 | インフルエンザ施設別発生状況 | [データセット](https://data.bodik.jp/dataset/401005_influenzashisetsubetsuhasseijyokyo)・[利用規約](https://odcs.bodik.jp/401005/tos/) | 2025-03-28カタログ更新 | 2026-11-24 | CSV・XLSX | リソースに CC 表示。カタログ規約は原則 CC BY 4.0、個別条件・第三者権利あり | 2017/18〜2019/20年の配布を確認し、2019/20年 CSV の表頭12列を確認 |
+| S84 | 東京都感染症情報センター | インフルエンザ様疾患による臨時休業の状況 | <https://idsc.tmiph.metro.tokyo.lg.jp/diseases/flu/flu/> | 2026-11-19更新 | 2026-11-24 | HTML・グラフ | [センター利用案内](https://www.tmiph.metro.tokyo.lg.jp/riyou/) | 第5節で都の施設種別累計と速報注記を確認 |
+| S85 | 八王子市教育委員会 | 市立小中学校学級閉鎖状況・年度版教育統計 | [現行案内](https://www.city.hachioji.tokyo.jp/kurashi/kyoiku/003/009/001/p004843.html)・[2026年度版](https://www.city.hachioji.tokyo.jp/kurashi/kyoiku/002/011/p037863.html) | 現行案内2026-11-24更新 | 2026-11-24 | PDF | [市サイト著作権](https://www.city.hachioji.tokyo.jp/987/p012154.html)。現行 PDF の個別条件は未確認 | 現行の配布案内と年度表の指標、重複調整を確認 |
+| S86 | 福岡県 | 学級閉鎖等の状況報告 2026/27シーズン | <https://www.pref.fukuoka.lg.jp/contents/seasonal-flu-alert-2026-2027.html> | 2026-11-20更新 | 2026-11-24 | Web・PDF | 県公式サイトの利用案内 | 県の公表対象から北九州市・福岡市・久留米市を除外する旨を確認 |
 
 学校情報等検索 API のベース URL 候補は <https://opendata.jssh.site/siss/resources/>。現行仕様で照合する。Tableau の S01 掲載 URL は [R-01 の一覧](findings/R-01-public-views.md#公開ビュー-url-一覧)を参照する。
