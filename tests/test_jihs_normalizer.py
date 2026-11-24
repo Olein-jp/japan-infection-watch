@@ -1,9 +1,7 @@
 """F-001 の入力検査と共通観測への変換を架空の CSV で確認する。"""
 
-import csv
 from datetime import datetime
 from hashlib import sha256
-import io
 import json
 from pathlib import Path
 import subprocess
@@ -11,36 +9,14 @@ import sys
 from tempfile import TemporaryDirectory
 import unittest
 
+from fixtures.jihs_weekly import csv_bytes, fixture_table
 from packages.data_model.observations import validate_batch
-from packages.data_normalizer.jihs_csv import AREAS, TITLE
 from packages.data_normalizer.jihs_weekly import DISEASE_IDS, normalize_fixture
 
 
 REPO = Path(__file__).resolve().parents[1]
 RETRIEVED_AT = datetime.fromisoformat("2030-01-16T09:00:00+09:00")
 POC_URL = "https://id-info.jihs.go.jp/surveillance/idwr/provisional/2030/02/2030-02-teiten.csv"
-
-
-def fixture_table():
-    headers = [""] + [label for name in DISEASE_IDS for label in (name, "")]
-    units = [""] + ["報告", "定当"] * 19
-    table = [
-        [TITLE] + [""] * 38,
-        ["2030年2週(1月7日〜1月13日)", "2030年1月15日作成"] + [""] * 37,
-        headers,
-        units,
-    ]
-    table.extend([area] + ["000", "0.00"] * 19 for area in AREAS)
-    table[5][1:3] = ["-", ""]
-    table[6][1:3] = ["", "-"]
-    table[7][1:3] = ["12", "1.70"]
-    return table
-
-
-def csv_bytes(table):
-    stream = io.StringIO(newline="")
-    csv.writer(stream).writerows(table)
-    return stream.getvalue().encode("shift_jis")
 
 
 class JihsNormalizerTest(unittest.TestCase):
