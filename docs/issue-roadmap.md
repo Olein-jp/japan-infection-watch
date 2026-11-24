@@ -27,6 +27,19 @@ GitHub のマイルストーン [調査・実現可能性評価（R-01〜R-19）
 | R-18 | [#18](https://github.com/Olein-jp/japan-infection-watch/issues/18) | サービスの実現可能性・対象範囲を評価する | P2 | R-12 [#12](https://github.com/Olein-jp/japan-infection-watch/issues/12)、R-13 [#13](https://github.com/Olein-jp/japan-infection-watch/issues/13)、R-15 [#15](https://github.com/Olein-jp/japan-infection-watch/issues/15)、R-16 [#16](https://github.com/Olein-jp/japan-infection-watch/issues/16)、R-17 [#17](https://github.com/Olein-jp/japan-infection-watch/issues/17) | [対象範囲・費用・Go／No-Go](findings/R-18-feasibility.md)、[実現可能性評価](final-report/README.md) |
 | R-19 | [#19](https://github.com/Olein-jp/japan-infection-watch/issues/19) | 検証結果から本開発用仕様書を作成する | P2 | R-18 [#18](https://github.com/Olein-jp/japan-infection-watch/issues/18) | [開発判断と根拠](findings/R-19-mvp-specification.md)、[仕様・公開・運用・開発 Issue 案](specifications/README.md) |
 
+## 設計・開発のイシュー
+
+[初期版の設計・開発（#2）](https://github.com/Olein-jp/japan-infection-watch/milestone/2)。2026-11-24（JST）に開発を承認。調査の R-19 を根拠とする。
+
+| Issue | 作業 | 依存 | 根拠・成果物 |
+|---|---|---|---|
+| [D-001 #20](https://github.com/Olein-jp/japan-infection-watch/issues/20)（完了） | 開発範囲と入力条件 | [R-19 #19](https://github.com/Olein-jp/japan-infection-watch/issues/19)（完了） | [条件の記録](specifications/mvp-inputs.md) |
+| [F-001 #21](https://github.com/Olein-jp/japan-infection-watch/issues/21) | 週次集計の正規化 | [D-001 #20](https://github.com/Olein-jp/japan-infection-watch/issues/20) | [共通モデル](schemas/observations.md) |
+| [F-002 #22](https://github.com/Olein-jp/japan-infection-watch/issues/22) | 地域・疾患ページと分割 JSON | [F-001 #21](https://github.com/Olein-jp/japan-infection-watch/issues/21) | [画面仕様](specifications/mvp.md#画面と静的-url) |
+| [I-001 #23](https://github.com/Olein-jp/japan-infection-watch/issues/23) | Actions 検証と配布準備 | [F-001 #21](https://github.com/Olein-jp/japan-infection-watch/issues/21)・[F-002 #22](https://github.com/Olein-jp/japan-infection-watch/issues/22) | [公開アーキテクチャ](architecture/mvp-publication.md) |
+| [T-001 #24](https://github.com/Olein-jp/japan-infection-watch/issues/24) | 静的配信・アクセシビリティ・復旧の検証 | [F-002 #22](https://github.com/Olein-jp/japan-infection-watch/issues/22)・[I-001 #23](https://github.com/Olein-jp/japan-infection-watch/issues/23) | [公開前テスト](operations/mvp-release.md#公開前テストと監査) |
+| [O-001 #25](https://github.com/Olein-jp/japan-infection-watch/issues/25) | 初回公開・手動更新の判定 | [D-001 #20](https://github.com/Olein-jp/japan-infection-watch/issues/20)・[I-001 #23](https://github.com/Olein-jp/japan-infection-watch/issues/23)・[T-001 #24](https://github.com/Olein-jp/japan-infection-watch/issues/24) | [運用と公開判定](operations/mvp-release.md) |
+
 ## GitHub Pages に関する調査の分担
 
 - R-15 は来歴と欠損を保つモデル、品質検査、公開データの分割と manifest を設計する。

@@ -1,52 +1,54 @@
-# 開発 Issue 案
+# 開発 Issue
 
-[初期版仕様](mvp.md)を小さな作業単位に分けた案。調査成果と同じリポジトリで、開発 Go の承認後に Issue と開発用マイルストーンを作成する。下記の ID は案。作成時に依存先を実 Issue に置き換える。公開と定期取得はそれぞれの承認を待つ。
+[初期版仕様](mvp.md)を小さな作業単位に分け、開発承認後に[開発マイルストーン](https://github.com/Olein-jp/japan-infection-watch/milestone/2)へ登録した。公開と定期取得はそれぞれの承認を待つ。
 
 最初に読む箇所は各案の根拠欄に示す。受入条件に必要な直接の依存先だけを追加で確認し、関連テストを優先する。完了報告には変更、関係ファイル、検証結果、残課題を記す。
 
-## D-001　開発範囲と公開可能な入力を確定する
+## [D-001 #20](https://github.com/Olein-jp/japan-infection-watch/issues/20)　開発範囲と公開可能な入力を確定する
 
 前提は開発 Go の記録。最初に [R-18](../findings/R-18-feasibility.md)・[R-16](../findings/R-16-collection-operations.md)と[初期版仕様](mvp.md#提供範囲と情報源)を読む。開発範囲とデータセットの承認条件を整理する。
 
-- [ ] 承認日・フェーズ・採用技術・対象データを記録する。
-- [ ] 資料ごとに取得、加工、保存、再配布、公式案内への切り替え条件を記録する。
-- [ ] 未許諾資料を使わず架空データで作業できる範囲を示す。
+- [x] 承認日・フェーズ・採用技術・対象データを記録する。
+- [x] 資料ごとに取得、加工、保存、再配布、公式案内への切り替え条件を記録する。
+- [x] 未許諾資料を使わず架空データで作業できる範囲を示す。
 
-## F-001　承認済みの週次集計を正規化する
+## [F-001 #21](https://github.com/Olein-jp/japan-infection-watch/issues/21)　承認済みの週次集計を正規化する
 
-D-001 に依存。[R-09](../findings/R-09-jihs-csv.md)・[R-15 共通モデル](../schemas/observations.md)を確認する。架空の JIHS 形式の入力から週次観測を作る。厚労省の追加は別系列の条件が揃った場合に起票する。
+[D-001 #20](https://github.com/Olein-jp/japan-infection-watch/issues/20) に依存。[R-09](../findings/R-09-jihs-csv.md)・[R-15 共通モデル](../schemas/observations.md)を確認する。架空の JIHS 形式の入力から週次観測を作る。厚労省の追加は別系列の条件が揃った場合に起票する。
 
 - [ ] 指標、単位、対象週、地域、原表記号と原本版を保持する。
 - [ ] 数値ゼロ、ハイフン、空欄、重複、異常な列を関係テストで確認する。
 - [ ] 許可されない入力や版を公開候補へ渡さない。
 
-## F-002　地域・疾患ページと分割 JSON を生成する
+[実装と検証結果](../findings/F-001-jihs-normalization.md)
 
-F-001 に依存。[画面仕様](mvp.md#画面と静的-url)・[R-17 の PoC](../../poc/pages/README.md)を確認する。公式案内への切り替えを含む静的ページ一式を生成する。
+## [F-002 #22](https://github.com/Olein-jp/japan-infection-watch/issues/22)　地域・疾患ページと分割 JSON を生成する
+
+[F-001 #21](https://github.com/Olein-jp/japan-infection-watch/issues/21) に依存。[画面仕様](mvp.md#画面と静的-url)・[R-17 の PoC](../../poc/pages/README.md)を確認する。公式案内への切り替えを含む静的ページ一式を生成する。
 
 - [ ] 全国・都道府県・疾患・公式案内を確認した市区町村の静的 URL を生成する。
 - [ ] 最初に読むファイルを絞り、対象の履歴だけ遅延取得する。
 - [ ] 出典・鮮度・欠損が表示され、リンク、キーボード、表で主要情報に到達できる。
 
-## I-001　公開前の Actions 検証と配布準備を組む
+## [I-001 #23](https://github.com/Olein-jp/japan-infection-watch/issues/23)　公開前の Actions 検証と配布準備を組む
 
-F-001・F-002 に依存。[ワークフロー仕様](../architecture/mvp-publication.md#github-actions-と-pages)を確認する。架空データで検証・ビルドし、公開承認の条件を運用に渡す。
+[F-001 #21](https://github.com/Olein-jp/japan-infection-watch/issues/21)・[F-002 #22](https://github.com/Olein-jp/japan-infection-watch/issues/22) に依存。[ワークフロー仕様](../architecture/mvp-publication.md#github-actions-と-pages)を確認する。架空データで検証・ビルドし、公開承認の条件を運用に渡す。
 
 - [ ] 成果物のハッシュ、配布範囲、容量、公開対象の差分が判定できる。
 - [ ] 未変更、検証失敗、容量超過、古い候補では公開ジョブが進まない。
 - [ ] 公開ジョブ用の権限が最小化され、検証時に実デプロイが作動しない。
 
-## T-001　静的配信、アクセシビリティ、障害復旧を通しで検証する
+## [T-001 #24](https://github.com/Olein-jp/japan-infection-watch/issues/24)　静的配信、アクセシビリティ、障害復旧を通しで検証する
 
-F-002・I-001 に依存。[公開前テスト](../operations/mvp-release.md#公開前テストと監査)と [R-17 の検証手順](../../poc/pages/README.md)を読む。
+[F-002 #22](https://github.com/Olein-jp/japan-infection-watch/issues/22)・[I-001 #23](https://github.com/Olein-jp/japan-infection-watch/issues/23) に依存。[公開前テスト](../operations/mvp-release.md#公開前テストと監査)と [R-17 の検証手順](../../poc/pages/README.md)を読む。
 
 - [ ] プロジェクトパスとルートで直リンク、再読込、404、遅延取得が成功する。
 - [ ] 狭幅とキーボードで操作でき、色を使わず欠損や状態を判別できる。
 - [ ] 破損候補や更新失敗が旧版を上書きせず、保管した版で復旧を再現できる。
 
-## O-001　初回公開と手動更新の運用を判定する
+## [O-001 #25](https://github.com/Olein-jp/japan-infection-watch/issues/25)　初回公開と手動更新の運用を判定する
 
-D-001・I-001・T-001 に依存。[公開判定案](../operations/mvp-release.md)を確認する。承認前は監査・復旧確認・費用見積もりまで行い、依頼者の公開承認後に対象と設定を確認して初回公開を実施する。
+[D-001 #20](https://github.com/Olein-jp/japan-infection-watch/issues/20)・[I-001 #23](https://github.com/Olein-jp/japan-infection-watch/issues/23)・[T-001 #24](https://github.com/Olein-jp/japan-infection-watch/issues/24) に依存。[公開判定案](../operations/mvp-release.md)を確認する。承認前は監査・復旧確認・費用見積もりまで行い、依頼者の公開承認後に対象と設定を確認して初回公開を実施する。
 
 - [ ] データ利用条件と公開対象、月0円のアカウント条件・共有枠、公開前監査を記録する。
 - [ ] 担当者が手動更新・停止・復旧の判断と手順を再現できる。
