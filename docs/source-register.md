@@ -34,7 +34,7 @@
 | S26 | GitHub | GitHub Pages 制限 | <https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits> | — | — | Web | 未確認 | 未検証 |
 | S27 | GitHub | GitHub Pages カスタムワークフロー | <https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages> | — | — | Web | 未確認 | 未検証 |
 | S28 | GitHub | GitHub Pages 公開元の設定 | <https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site> | — | — | Web | 未確認 | 未検証 |
-| S29 | GitHub | GitHub Actions イベント・schedule | <https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows> | — | — | Web | 未確認 | 未検証 |
+| S29 | GitHub | GitHub Actions イベント・schedule | <https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule> | 閲覧時の公式文書 | 2026-11-24 | Web | 文書参照 | schedule の遅延・未実行、既定ブランチ、公開リポジトリの無活動による無効化を確認 |
 | S30 | GitHub | GitHub Actions 課金 | <https://docs.github.com/en/billing/managing-billing-for-your-products/managing-billing-for-github-actions/about-billing-for-github-actions> | — | — | Web | 未確認 | 未検証 |
 | S31 | GitHub | GitHub 追加製品利用条件 | <https://docs.github.com/en/site-policy/github-terms/github-terms-for-additional-products-and-features> | — | — | Web | 未確認 | 未検証 |
 | S32 | 日本学校保健会 | 2024年のマップビュー表示変更 | <https://www.gakkohoken.jp/files/ccenter/mapview/20240325view_change.pdf> | 2024-03-25（S01 告知） | 2026-11-24 | PDF | 未判定 | R-01 で初期表示・閉鎖クラス合算を確認 |
@@ -97,7 +97,11 @@
 | S89 | 国土交通省 | 国土数値情報ダウンロードサイト利用規約 | <https://nlftp.mlit.go.jp/ksj/other/agreement.html> | 2026-03-23施行 | 2026-11-24 | Web | PDL1.0 と出典・加工表示、個別許諾条件を参照 | N03 の個別ページの版別条件と照合 |
 | S90 | 浜松市 | 行政区の再編について | <https://www.city.hamamatsu.shizuoka.jp/kikaku/kuseido/> | 2024-01-01再編 | 2026-11-24 | Web | 変更履歴の参照 | 旧北区が中央区・浜名区に分かれたことを確認 |
 | S91 | 岐阜市 | 市の位置・面積・人口 | <https://www.city.gifu.lg.jp/info/syoukai/1006141/1006142.html> | 面積は2025-04-01時点 | 2026-11-24 | Web | 面積公表値の参照 | N03 2026年版から計算した面積の規模を照合 |
+| S92 | IETF | RFC 9110 HTTP Semantics | <https://www.rfc-editor.org/rfc/rfc9110.html#section-13> | 2022年6月 | 2026-11-24 | Web | 仕様参照 | §13.1.2・§13.1.3・§15.4.5 を条件付き取得と304の解釈に使用 |
+| S93 | GitHub | Actions の同時実行、artifact の保持、履歴からの削除 | [同時実行](https://docs.github.com/en/actions/concepts/workflows-and-actions/concurrency)・[artifact](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/download-workflow-artifacts)・[Git 履歴](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository) | 閲覧時の公式文書 | 2026-11-24 | Web | 文書参照 | 公開処理の直列化、artifact の期限、履歴残存を運用案に反映 |
 
 学校情報等検索 API のベース URL 候補は <https://opendata.jssh.site/siss/resources/>。現行仕様で照合する。Tableau の S01 掲載 URL は [R-01 の一覧](findings/R-01-public-views.md#公開ビュー-url-一覧)を参照する。
 
 [R-15 の共通モデル案の根拠](findings/R-15-data-model.md#一次情報から確認した定義)は、定点と訂正の S50・S52・S56、週次・累計と休業指標の S58・S59、地域範囲の S22・S62。資料の適用範囲は各台帳行に従う。
+
+[R-16 の少量再取得](findings/R-16-collection-operations.md#少量の再取得と変更判定)では S51 の CSV と S59 を照合した。利用条件は S52・S53・S60・S61、公表・訂正の根拠は S50・S51・S55〜S59 を参照。
