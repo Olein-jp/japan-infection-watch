@@ -1,0 +1,55 @@
+name: 架空データの静的プレビュー検証
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: preview-check-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: ビルドと配布前検証
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: 候補のチェックアウト
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: 比較元のチェックアウト
+        if: github.event_name == 'pull_request'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          path: baseline-source
+          persist-credentials: false
+      - name: Python テスト
+        run: |
+          python3 -B -m unittest discover -s tests
+          python3 -B -m unittest discover -s poc/data-model
+      - name: 架空データを生成して検証
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
+        run: |
+          work=$(mktemp -d)
+          export PYTHONPATH=tests
+          python3 -B -m fixtures.build_web_preview "$work/candidate"
+          baseline=()
+          if [[ "$GITHUB_EVENT_NAME" == pull_request && -f baseline-source/tests/fixtures/build_web_preview.py ]]; then
+            (cd baseline-source && python3 -B -m fixtures.build_web_preview "$work/baseline")
+            baseline=(--baseline "$work/baseline")
+          fi
+          python3 -B scripts/check_preview.py "$work/candidate" "${baseline[@]}" \
+            --candidate-revision "$(git rev-parse HEAD)" --expected-revision "$EXPECTED_SHA" \
+            > "$work/report.json"
+          {
+            echo '### 静的プレビューの検証結果'
+            echo '```json'
+            python3 -m json.tool "$work/report.json"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

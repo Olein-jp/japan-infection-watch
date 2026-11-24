@@ -105,6 +105,7 @@
 | S97 | Cloudflare | Pages の上限と Direct Upload | [上限](https://developers.cloudflare.com/pages/platform/limits/)・[Direct Upload](https://developers.cloudflare.com/pages/get-started/direct-upload/) | 2026-11-19／2026-04-21 更新表示 | 2026-11-24 | Web | Free のファイル数とファイルサイズに上限 | R-18 で静的配信の無料代替として文書確認 |
 | S98 | W3C | Web Content Accessibility Guidelines (WCAG) 2.2 | <https://www.w3.org/TR/WCAG22/> | 2024-12-12 勧告 | 2026-11-24 | Web | 画面と試験の基準を参照 | R-19 で色・キーボード・リフロー等を仕様案に反映 |
 | S99 | GitHub | 従量課金製品の予算設定 | <https://docs.github.com/en/billing/how-tos/set-up-budgets> | 閲覧時の公式文書 | 2026-11-24 | Web | 適用範囲と停止設定は予算の種別による | R-19 で月0円の公開前確認に反映 |
+| S100 | GitHub | Actions のワークフロー構文・安全な利用 | [構文](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax)・[安全な利用](https://docs.github.com/en/actions/reference/security/secure-use)・[checkout v7.0.1](https://github.com/actions/checkout/releases/tag/v7.0.1) | 閲覧時の公式文書 | 2026-11-25 | Web | PR・手動実行、権限、Action の固定 | I-001 の読み取り専用 CI とフルコミット SHA の固定に反映 |
 
 学校情報等検索 API のベース URL 候補は <https://opendata.jssh.site/siss/resources/>。現行仕様で照合する。Tableau の S01 掲載 URL は [R-01 の一覧](findings/R-01-public-views.md#公開ビュー-url-一覧)を参照する。
 

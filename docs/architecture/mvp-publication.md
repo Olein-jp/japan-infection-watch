@@ -22,6 +22,8 @@
 
 ## GitHub Actions と Pages
 
+[I-001](../findings/I-001-preview-check.md) で、架空データだけを使う読み取り専用の検証ワークフローを追加した。以下では公開を承認した後に使う構成も示す。
+
 - 標準 Linux runner を使用する。開発時の CI は架空データのみで検証・ビルドでき、サイトを公開しない。公開を承認した後は、既定ブランチの `workflow_dispatch` を更新・復旧の入口とし、通常更新と復旧を同じ同時実行制御の対象にする。ジョブの直列化に加え、公開直前の版確認で旧候補による上書きを防ぐ。明示した復旧だけは対象版と理由を指定する。
 - 公開ワークフローの取得・正規化・検証・ビルドは原則 `contents: read`。署名や書き込みが必要な別用途に権限を流用しない。同じワークフローの依存ジョブからデプロイし、`GITHUB_TOKEN` での push による別ワークフローの起動を前提にしない。
 - 公開を承認したリポジトリに GitHub Actions の公開元と `github-pages` 環境を設定する。 `configure-pages` で公開先の基準パスを取得し、予算と成果物検証を通過した後に `upload-pages-artifact` を実行する。公開ジョブはビルドを `needs` で指定し、 `pages: write`・`id-token: write` をここだけに与え、`deploy-pages` で配布する。対象ブランチを環境の保護条件に設定し、使用する Action はフルコミット SHA に固定する。[Actions 公開元](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)・[Pages のカスタムワークフロー](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages)

@@ -36,9 +36,11 @@
 
 [F-001 #21](https://github.com/Olein-jp/japan-infection-watch/issues/21)・[F-002 #22](https://github.com/Olein-jp/japan-infection-watch/issues/22) に依存。[ワークフロー仕様](../architecture/mvp-publication.md#github-actions-と-pages)を確認する。架空データで検証・ビルドし、公開承認の条件を運用に渡す。
 
-- [ ] 成果物のハッシュ、配布範囲、容量、公開対象の差分が判定できる。
-- [ ] 未変更、検証失敗、容量超過、古い候補では公開ジョブが進まない。
-- [ ] 公開ジョブ用の権限が最小化され、検証時に実デプロイが作動しない。
+- [x] 成果物のハッシュ、配布範囲、容量、公開対象の差分が判定できる。
+- [x] 未変更、検証失敗、容量超過、古い候補を判定し、架空プレビューは公開対象外とする。
+- [x] 検証ジョブを読み取り専用とし、公開に必要な権限と適用先を記録する。実デプロイのジョブは公開承認後に追加する。
+
+[実装と検証結果](../findings/I-001-preview-check.md)
 
 ## [T-001 #24](https://github.com/Olein-jp/japan-infection-watch/issues/24)　静的配信、アクセシビリティ、障害復旧を通しで検証する
 
