@@ -13,7 +13,7 @@ R-04 の公式サンプルで確認できた動作は記録済み。日本学校
 | 調査 ID | GitHub Issue | 状態 | 未確認の主な事項 | 着手前に確認する依存 Issue |
 |---|---|---|---|---|
 | R-01 | [#1](https://github.com/Olein-jp/japan-infection-watch/issues/1) | 検証済み・完了承認待ち | 一部のリンク名と疾患指定の食い違い、個別ビューの初期表示、日・地域別の報告範囲 | なし |
-| R-02 | [#2](https://github.com/Olein-jp/japan-infection-watch/issues/2) | 検証済み・完了承認待ち | 適用規約の関係、集計の取得・保存・再配布・商用利用の条件 | R-01 [#1](https://github.com/Olein-jp/japan-infection-watch/issues/1) |
+| R-02 | [#2](https://github.com/Olein-jp/japan-infection-watch/issues/2) | 回答待ち | 日本学校保健会側の回答待ち。適用規約、集計の取得・保存・再配布・商用利用の条件 | R-01 [#1](https://github.com/Olein-jp/japan-infection-watch/issues/1) |
 | R-03 | [#3](https://github.com/Olein-jp/japan-infection-watch/issues/3) | 検証済み・完了承認待ち | 別ビューの埋め込み可否、日付コントロールの操作範囲 | R-01 [#1](https://github.com/Olein-jp/japan-infection-watch/issues/1)、R-02 [#2](https://github.com/Olein-jp/japan-infection-watch/issues/2) |
 | R-04 | [#4](https://github.com/Olein-jp/japan-infection-watch/issues/4) | 検証済み・完了承認待ち | 日本学校保健会の集計取得可否 | R-03 [#3](https://github.com/Olein-jp/japan-infection-watch/issues/3) |
 | R-05 | [#5](https://github.com/Olein-jp/japan-infection-watch/issues/5) | 未着手 | 市区町村別のキー・分母・粒度 | R-04 [#4](https://github.com/Olein-jp/japan-infection-watch/issues/4) |
@@ -41,7 +41,8 @@ R-04 の公式サンプルで確認できた動作は記録済み。日本学校
 ## R-02 で判明した事項
 
 - 対象ビューは通常閲覧と公式共有が可能。代表ビューのデータ出力メニューに CSV・クロス集計・データ・ワークブックは表示されず、集計の読取 API は実行していない。
-- R-03 の手動ローカル表示は1ビューに限定する。取得、定期実行、保存、加工、再配布の扱いは適用規約と公開者の条件を確認するまで保留。問い合わせ案は未送信。
+- R-03 の手動ローカル表示は1ビューに限定する。取得、定期実行、保存、加工、再配布の扱いは適用規約と公開者の条件を確認するまで保留。
+- 2026-11-24（JST）に依頼者が日本学校保健会側の窓口へ問い合わせを送信。現在は回答待ち。回答が届いたら取得経路と利用条件を [R-02 の調査記録](findings/R-02-reuse-terms.md#問い合わせ案)に反映する。
 - 学校検索 API は別規約。R-08 で少数 GET の利用条件、更新義務、掲載停止、キャッシュと保存の扱いを確認する。
 
 ## R-03 で判明した事項
