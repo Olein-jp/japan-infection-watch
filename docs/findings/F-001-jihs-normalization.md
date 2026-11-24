@@ -24,4 +24,4 @@ python3 -B -m packages.data_normalizer.jihs_weekly /path/to/fictional-weekly.csv
   --fixture --retrieved-at 2030-01-16T09:00:00+09:00
 ```
 
-#21 の受入条件は架空入力で検証済み。次の F-002 はこの観測を使って画面と分割 JSON を作る。
+#21 の受入条件は架空入力で検証し、2026-11-25（JST）に完了した。次の F-002 はこの観測を使って画面と分割 JSON を作る。

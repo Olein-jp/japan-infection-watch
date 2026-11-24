@@ -9,7 +9,8 @@
 ## 開発の進捗
 
 - [D-001 #20](https://github.com/Olein-jp/japan-infection-watch/issues/20) の開発範囲・採用技術・入力条件を記録し、2026-11-25（JST）に完了。
-- [F-001 #21](https://github.com/Olein-jp/japan-infection-watch/issues/21) は架空の週次定点 CSV の正規化を実装・検証済み。完了承認待ち。[検証結果と使い方](findings/F-001-jihs-normalization.md)・[開発ロードマップ](issue-roadmap.md#設計開発のイシュー)
+- [F-001 #21](https://github.com/Olein-jp/japan-infection-watch/issues/21) は架空の週次定点 CSV の正規化を実装・検証し、2026-11-25（JST）に完了。[検証結果と使い方](findings/F-001-jihs-normalization.md)・[開発ロードマップ](issue-roadmap.md#設計開発のイシュー)
+- [F-002 #22](https://github.com/Olein-jp/japan-infection-watch/issues/22) は架空観測の静的ページと分割 JSON を実装・検証し、2026-11-25（JST）に完了。[検証結果と表示手順](findings/F-002-static-preview.md)
 
 ## 調査の着手候補
 
