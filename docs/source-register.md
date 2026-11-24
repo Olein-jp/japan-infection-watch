@@ -20,7 +20,7 @@
 | S12 | Tableau | Tableau 利用規約 | <https://www.tableau.com/tos> | 2022-07-19 最終更新 | 2026-11-24 | Web | 公開コンテンツの許諾あり。対象集計と S35 との関係は未確定 | R-02 で適用対象、投稿許諾、権限の保証と制限を確認 |
 | S13 | Tableau | Tableau Public FAQ | <https://help.tableau.com/current/pro/desktop/ja-jp/public_faq.htm> | 不明 | 2026-11-24 | Web | 共有と出力は機能・公開者設定に依存 | R-02 で FAQ の共有・ダウンロード項目を確認 |
 | S14 | Tableau | Tableau Public Data Policy | <https://public.tableau.com/app/data-policy> | 不明 | 2026-11-24 | Web | 投稿者が掲載に責任を負う | R-02 でブラウザ表示から掲載責任・削除条件を確認 |
-| S15 | JIHS | JIHS IDWR | <https://id-info.jihs.go.jp/surveillance/idwr/> | — | — | Web | 未確認 | 未検証 |
+| S15 | JIHS | JIHS IDWR | <https://id-info.jihs.go.jp/surveillance/idwr/> | 不明 | 2026-11-24 | Web | S53 を参照 | R-09 で速報年別一覧と週報一覧への導線を確認 |
 | S16 | 厚生労働省 | 厚労省 令和8年度急性呼吸器感染症対策 | <https://www.mhlw.go.jp/stf/index2026.html> | — | — | Web | 未確認 | 未検証 |
 | S17 | 岐阜県 | 岐阜県感染症情報センター | <https://www.pref.gifu.lg.jp/page/9550.html> | — | — | Web | 未確認 | 未検証 |
 | S18 | 岐阜県 | 岐阜県週報 | <https://www.pref.gifu.lg.jp/page/107799.html> | — | — | Web | 未確認 | 未検証 |
@@ -55,5 +55,12 @@
 | S47 | Tableau | DataTableReader | <https://help.tableau.com/current/api/embedding_api/en-us/reference/interfaces/DataTableReader.html> | 不明 | 2026-11-24 | Web | 公式 API 仕様 | R-04 でページ数・総行数・先頭ページ・解放を確認 |
 | S48 | Tableau | Worksheet | <https://help.tableau.com/current/api/embedding_api/en-us/reference/interfaces/Worksheet.html> | 不明 | 2026-11-24 | Web | 公式 API 仕様 | R-04 で getSummaryDataReaderAsync のページサイズ指定を確認 |
 | S49 | Tableau | DataTable | <https://help.tableau.com/current/api/embedding_api/en-us/reference/interfaces/DataTable.html> | 不明 | 2026-11-24 | Web | 公式 API 仕様 | R-04 で列・型・行の取得結果を確認 |
+| S50 | JIHS | IDWR速報データ 2026年第45週 | <https://id-info.jihs.go.jp/surveillance/idwr/provisional/2026/45/index.html> | 2026-11-17 掲載 | 2026-11-24 | Web・CSV | S53 を参照。R-09 で少数取得・ローカル検証 | 更新欄と週次定点 CSV を確認。S52 と全指標を照合 |
+| S51 | JIHS | IDWR速報データ 2026年第46週 | <https://id-info.jihs.go.jp/surveillance/idwr/provisional/2026/46/index.html> | 2026-11-24 掲載 | 2026-11-24 | Web・CSV | S53 を参照。R-09 で少数取得・ローカル検証 | 更新欄と週次定点 CSV を確認。第46号 PDF は未刊行 |
+| S52 | JIHS | IDWR 2026年第45号 | <https://id-info.jihs.go.jp/surveillance/idwr/idwr/2026/idwr2026-45.pdf> | 2026-11-20 発行 | 2026-11-24 | PDF | p.37 に個別の転載注記 | pp.32–34 の週次定点表を S50 と照合。p.37 に訂正方針 |
+| S53 | JIHS | 感染症情報提供サイト利用規約 | <https://id-info.jihs.go.jp/usage-contract.html> | 2014-08-25 制定（8項） | 2026-11-24 | Web | 出典、加工明示、第三者権利、個別注記等の条件あり | R-09 で冒頭と1・2・5・7・8項を確認。継続運用と公開は R-16 |
+| S54 | JIHS | 報告週対応表 2026年 | <https://id-info.jihs.go.jp/surveillance/idwr/calendar/2026/index.html> | 不明 | 2026-11-24 | Web | S53 を参照 | R-09 で公式週対応表の提供を確認 |
+| S55 | JIHS | IDWR週報に関する訂正のお詫びとお願い | <https://id-info.jihs.go.jp/niid/ja/allarticles/surveillance/4755-teisei-owabi.html> | 不明 | 2026-11-24 | Web | S53 を参照 | R-09 で発生動向総覧の本文訂正例を確認 |
+| S56 | JIHS | 感染症発生動向調査事業年報訂正箇所一覧 | <https://id-info.jihs.go.jp/surveillance/idwr/annual/correction/index.html> | 2012-10-09 公開、2026-11-02 訂正例 | 2026-11-24 | Web・Excel | S53 を参照 | R-09 で年報の集計表に対する訂正告知を確認 |
 
 学校情報等検索 API のベース URL 候補は <https://opendata.jssh.site/siss/resources/>。現行仕様で照合する。Tableau の S01 掲載 URL は [R-01 の一覧](findings/R-01-public-views.md#公開ビュー-url-一覧)を参照する。

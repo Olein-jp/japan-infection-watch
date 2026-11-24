@@ -20,7 +20,7 @@ R-04 の公式サンプルで確認できた動作は記録済み。日本学校
 | R-06 | [#6](https://github.com/Olein-jp/japan-infection-watch/issues/6) | 未着手 | 学校コード・学校種別・閉鎖種別 | R-04 [#4](https://github.com/Olein-jp/japan-infection-watch/issues/4) |
 | R-07 | [#7](https://github.com/Olein-jp/japan-infection-watch/issues/7) | 未着手 | 取得可能な最古・最新と期間 | R-04 [#4](https://github.com/Olein-jp/japan-infection-watch/issues/4) |
 | R-08 | [#8](https://github.com/Olein-jp/japan-infection-watch/issues/8) | 未着手 | 学校検索 API の認証・応答・キャッシュ | R-02 [#2](https://github.com/Olein-jp/japan-infection-watch/issues/2) |
-| R-09 | [#9](https://github.com/Olein-jp/japan-infection-watch/issues/9) | 未着手 | JIHS CSV の公式配布経路、対象範囲、速報訂正 | なし |
+| R-09 | [#9](https://github.com/Olein-jp/japan-infection-watch/issues/9) | 完了 | 第46週の週報との照合、訂正時の版管理と継続利用条件 | なし |
 | R-10 | [#10](https://github.com/Olein-jp/japan-infection-watch/issues/10) | 未着手 | 厚労省 PDF の抽出精度と集計単位 | なし |
 | R-11 | [#11](https://github.com/Olein-jp/japan-infection-watch/issues/11) | 未着手 | 岐阜県・岐阜市の公表粒度、保健所管轄 | なし |
 | R-12 | [#12](https://github.com/Olein-jp/japan-infection-watch/issues/12) | 未着手 | 47都道府県の公式配布形式・粒度 | R-11 [#11](https://github.com/Olein-jp/japan-infection-watch/issues/11) |
@@ -54,6 +54,11 @@ R-04 の公式サンプルで確認できた動作は記録済み。日本学校
 
 - 公式サンプルで集計総行数7・4ページ、先頭2行と2列の型を確認。画面上の2指標と一致した。
 - 公式サンプルの CSV 実ファイルを照合し、数量と平均割引率が集計 API・画面と一致した。日本学校保健会の集計取得は R-02 の条件確認待ち。
+
+## R-09 で判明した事項
+
+- JIHS 公式速報 CSV 2週分で、全国と47都道府県の19疾患を正規化した。第45週は週報 PDF の全1,824セルと一致した。[調査結果と再現手順](findings/R-09-jihs-csv.md)
+- 速報の区分・出典・版と、定点当たり報告数の表示精度・ハイフンを保持する。定期取得、訂正版の扱いと公開条件は R-15/R-16 へ引き継ぐ。
 
 ## 初期構築で確認した事項
 
