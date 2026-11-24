@@ -2,18 +2,18 @@
 
 更新日 2026-11-24（JST）
 
-現在は調査段階。[調査・実現可能性評価（R-01〜R-19）（#1）](https://github.com/Olein-jp/japan-infection-watch/milestone/1) に調査 Issue 19件を登録済み。R-01 で日本学校保健会の公式案内を棚卸しし、[調査結果](findings/R-01-public-views.md)を記録した。開発移行の承認日、採用技術、対象データは承認時に AGENTS.md と本書へ追記する。
+現在は調査段階。[調査・実現可能性評価（R-01〜R-19）（#1）](https://github.com/Olein-jp/japan-infection-watch/milestone/1) に調査 Issue 19件を登録済み。R-01 で日本学校保健会の公式案内を棚卸しし、[調査結果](findings/R-01-public-views.md)を記録した。R-02 で公開ビューの[利用条件](findings/R-02-reuse-terms.md)を調査した。開発移行の承認日、採用技術、対象データは承認時に AGENTS.md と本書へ追記する。
 
 ## 着手候補
 
-R-01 の完了承認後は R-02 [#2](https://github.com/Olein-jp/japan-infection-watch/issues/2) が次の候補。独立して開始できるのは R-09 [#9](https://github.com/Olein-jp/japan-infection-watch/issues/9)、R-10 [#10](https://github.com/Olein-jp/japan-infection-watch/issues/10)、R-11 [#11](https://github.com/Olein-jp/japan-infection-watch/issues/11)。いずれも依頼者の指定を待つ。
+R-01・R-02 の完了承認後は、公式埋め込みによる表示確認の R-03 [#3](https://github.com/Olein-jp/japan-infection-watch/issues/3) と、学校検索 API の R-08 [#8](https://github.com/Olein-jp/japan-infection-watch/issues/8) が候補。独立して開始できるのは R-09 [#9](https://github.com/Olein-jp/japan-infection-watch/issues/9)、R-10 [#10](https://github.com/Olein-jp/japan-infection-watch/issues/10)、R-11 [#11](https://github.com/Olein-jp/japan-infection-watch/issues/11)。いずれも依頼者の指定を待つ。
 
 ## イシュー別の状態
 
 | 調査 ID | GitHub Issue | 状態 | 未確認の主な事項 | 着手前に確認する依存 Issue |
 |---|---|---|---|---|
 | R-01 | [#1](https://github.com/Olein-jp/japan-infection-watch/issues/1) | 検証済み・完了承認待ち | 一部のリンク名と疾患指定の食い違い、個別ビューの初期表示、日・地域別の報告範囲 | なし |
-| R-02 | [#2](https://github.com/Olein-jp/japan-infection-watch/issues/2) | 未着手 | 閲覧・取得・保存・再公開等の許容範囲 | R-01 [#1](https://github.com/Olein-jp/japan-infection-watch/issues/1) |
+| R-02 | [#2](https://github.com/Olein-jp/japan-infection-watch/issues/2) | 検証済み・完了承認待ち | 適用規約の関係、集計の取得・保存・再配布・商用利用の条件 | R-01 [#1](https://github.com/Olein-jp/japan-infection-watch/issues/1) |
 | R-03 | [#3](https://github.com/Olein-jp/japan-infection-watch/issues/3) | 未着手 | 公開ビューの公式埋め込み | R-01 [#1](https://github.com/Olein-jp/japan-infection-watch/issues/1)、R-02 [#2](https://github.com/Olein-jp/japan-infection-watch/issues/2) |
 | R-04 | [#4](https://github.com/Olein-jp/japan-infection-watch/issues/4) | 未着手 | 集計 API と公式 CSV の取得可否 | R-03 [#3](https://github.com/Olein-jp/japan-infection-watch/issues/3) |
 | R-05 | [#5](https://github.com/Olein-jp/japan-infection-watch/issues/5) | 未着手 | 市区町村別のキー・分母・粒度 | R-04 [#4](https://github.com/Olein-jp/japan-infection-watch/issues/4) |
@@ -37,6 +37,12 @@ R-01 の完了承認後は R-02 [#2](https://github.com/Olein-jp/japan-infection
 - 公式案内に Tableau Public へのリンク98件。市区町村別のインフルエンザ閉鎖地図1件を閲覧し、対象日・元データ時点・フィルターを確認。
 - 2024-03-25 の変更で、学年閉鎖と休校のクラスも閉鎖クラス数に合算する仕様を確認。
 - 参加範囲の公式資料は年度単位。全国総施設を分母とする2025年度利用率は小学校55.7%、中学校52.4%、高校55.8%。日・地域・疾患単位の報告率は未確認。
+
+## R-02 で判明した事項
+
+- 対象ビューは通常閲覧と公式共有が可能。代表ビューのデータ出力メニューに CSV・クロス集計・データ・ワークブックは表示されず、集計の読取 API は実行していない。
+- R-03 の手動ローカル表示は1ビューに限定する。取得、定期実行、保存、加工、再配布の扱いは適用規約と公開者の条件を確認するまで保留。問い合わせ案は未送信。
+- 学校検索 API は別規約。R-08 で少数 GET の利用条件、更新義務、掲載停止、キャッシュと保存の扱いを確認する。
 
 ## 初期構築で確認した事項
 
