@@ -6,14 +6,14 @@
 
 | ID | 提供主体・運営（候補） | 資料 | URL | 公開・改訂日 | 確認日（JST） | 形式（候補） | 利用条件 | 検証状態 |
 |---|---|---|---|---|---|---|---|---|
-| S01 | 日本学校保健会 | 日本学校保健会 マップビュー・API案内 | <https://www.gakkohoken.jp/system_information/jssh_absence_information_mapping> | — | — | Web | 未確認 | 未検証 |
+| S01 | 日本学校保健会 | 日本学校保健会 マップビュー・API案内 | <https://www.gakkohoken.jp/system_information/jssh_absence_information_mapping> | 2024-03-25（最新の変更告知） | 2026-11-24 | Web | 未判定（R-02） | R-01 で掲載表・変更告知を確認 |
 | S02 | 日本学校保健会 | 学校情報等検索API仕様 | <https://www.gakkohoken.jp/files/ccenter/mapview/20220825api_specification.pdf> | — | — | PDF | 未確認 | 未検証 |
 | S03 | 日本学校保健会 | 学校情報等検索API利用規約 | <https://www.gakkohoken.jp/files/ccenter/mapview/terms_of_use.pdf> | — | — | PDF | 未確認 | 未検証 |
-| S04 | 日本学校保健会 | システム使用規程 | <https://www.gakkohoken.jp/files/ccenter/system/20230803/202308mapview.pdf> | — | — | PDF | 未確認 | 未検証 |
-| S05 | 日本学校保健会 | マップビューマニュアル | <https://www.gakkohoken.jp/files/ccenter/20220412/mapview-manual.pdf> | — | — | PDF | 未確認 | 未検証 |
-| S06 | 日本学校保健会 | マップビュー研修資料 | <https://www.gakkohoken.jp/files/ivent/20240722/program-02.pdf> | — | — | PDF | 未確認 | 未検証 |
-| S07 | 日本学校保健会 | 表示変更資料 | <https://www.gakkohoken.jp/files/ccenter/mapview/202303view_change.pdf> | — | — | PDF | 未確認 | 未検証 |
-| S08 | 日本学校保健会（掲載主体候補）、Tableau Public | Tableau Publicプロフィール | <https://public.tableau.com/app/profile/jssh.absence.information.mapping.service> | — | — | Web | 未確認 | 未検証 |
+| S04 | 日本学校保健会 | システム使用規程 | <https://www.gakkohoken.jp/files/ccenter/system/20230803/202308mapview.pdf> | 2023年8月改訂（附則） | 2026-11-24 | PDF | 規程確認。適用判定は R-02 | R-01 で附則・第2項・第8〜11項を確認 |
+| S05 | 日本学校保健会 | マップビューマニュアル | <https://www.gakkohoken.jp/files/ccenter/20220412/mapview-manual.pdf> | 2022-04-12（S01 掲載） | 2026-11-24 | PDF | 未判定 | R-01 で当時の表示仕様を確認 |
+| S06 | 日本学校保健会 | マップビュー研修資料 | <https://www.gakkohoken.jp/files/ivent/20240722/program-02.pdf> | 2024-07-22（研修開催日） | 2026-11-24 | PDF | 未判定 | R-01 で定義・日付操作を確認 |
+| S07 | 日本学校保健会 | 表示変更資料 | <https://www.gakkohoken.jp/files/ccenter/mapview/202303view_change.pdf> | 2023-03-15（S01 告知） | 2026-11-24 | PDF | 未判定 | R-01 で疾患区分・市区町村実績表の追加を確認 |
+| S08 | 日本学校保健会のマップビュー掲載プロフィール（Tableau Public） | Tableau Publicプロフィール | <https://public.tableau.com/app/profile/jssh.absence.information.mapping.service> | 不明 | 2026-11-24 | Web | 未判定（R-02） | R-01 でプロフィールと市区町村別の閉鎖地図1件を通常閲覧 |
 | S09 | Tableau | Tableau Embedding API データ取得 | <https://help.tableau.com/current/api/embedding_api/en-us/docs/embedding_api_data.html> | — | — | Web | 未確認 | 未検証 |
 | S10 | Tableau | Tableau エクスポート | <https://help.tableau.com/current/api/embedding_api/en-us/docs/embedding_api_export.html> | — | — | Web | 未確認 | 未検証 |
 | S11 | Tableau | Tableau 認証 | <https://help.tableau.com/current/api/embedding_api/en-us/docs/embedding_api_auth.html> | — | — | Web | 未確認 | 未検証 |
@@ -37,5 +37,8 @@
 | S29 | GitHub | GitHub Actions イベント・schedule | <https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows> | — | — | Web | 未確認 | 未検証 |
 | S30 | GitHub | GitHub Actions 課金 | <https://docs.github.com/en/billing/managing-billing-for-your-products/managing-billing-for-github-actions/about-billing-for-github-actions> | — | — | Web | 未確認 | 未検証 |
 | S31 | GitHub | GitHub 追加製品利用条件 | <https://docs.github.com/en/site-policy/github-terms/github-terms-for-additional-products-and-features> | — | — | Web | 未確認 | 未検証 |
+| S32 | 日本学校保健会 | 2024年のマップビュー表示変更 | <https://www.gakkohoken.jp/files/ccenter/mapview/20240325view_change.pdf> | 2024-03-25（S01 告知） | 2026-11-24 | PDF | 未判定 | R-01 で初期表示・閉鎖クラス合算を確認 |
+| S33 | 日本学校保健会 | 登録状況・利用状況の推移（2020・2025年度比較） | <https://www.gakkohoken.jp/files/ccenter/system/registration_status_and_usage_status_2025.pdf> | 公開日は不明。2025年度分は 2026-03-31 時点 | 2026-11-24 | PDF | 未判定 | R-01 で施設種別、登録率と利用率の分母を確認 |
+| S34 | 株式会社エスイーシー（日本学校保健会掲載） | 2026年マップビュー研修資料 | <https://www.gakkohoken.jp/files/ivent/20260722online/20260722siryo-01.pdf> | 2026-07-22（研修開催日） | 2026-11-24 | PDF | 未判定 | R-01 で指標・表示対象日・更新時点を確認 |
 
-学校情報等検索 API のベース URL 候補は <https://opendata.jssh.site/siss/resources/>。現行仕様で照合する。Tableau ビュー URL は S01 または S08 から特定する。
+学校情報等検索 API のベース URL 候補は <https://opendata.jssh.site/siss/resources/>。現行仕様で照合する。Tableau の S01 掲載 URL は [R-01 の一覧](findings/R-01-public-views.md#公開ビュー-url-一覧)を参照する。

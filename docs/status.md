@@ -2,17 +2,17 @@
 
 更新日 2026-11-24（JST）
 
-現在は調査段階。[調査・実現可能性評価（R-01〜R-19）（#1）](https://github.com/Olein-jp/japan-infection-watch/milestone/1) に調査 Issue 19件を登録済み。個別調査の結論と実測結果は未取得。開発移行の承認日、採用技術、対象データは承認時に AGENTS.md と本書へ追記する。
+現在は調査段階。[調査・実現可能性評価（R-01〜R-19）（#1）](https://github.com/Olein-jp/japan-infection-watch/milestone/1) に調査 Issue 19件を登録済み。R-01 で日本学校保健会の公式案内を棚卸しし、[調査結果](findings/R-01-public-views.md)を記録した。開発移行の承認日、採用技術、対象データは承認時に AGENTS.md と本書へ追記する。
 
 ## 着手候補
 
-最初は R-01 [#1](https://github.com/Olein-jp/japan-infection-watch/issues/1)。独立して開始できるのは R-09 [#9](https://github.com/Olein-jp/japan-infection-watch/issues/9)、R-10 [#10](https://github.com/Olein-jp/japan-infection-watch/issues/10)、R-11 [#11](https://github.com/Olein-jp/japan-infection-watch/issues/11)。いずれも依頼者の指定を待つ。
+R-01 の完了承認後は R-02 [#2](https://github.com/Olein-jp/japan-infection-watch/issues/2) が次の候補。独立して開始できるのは R-09 [#9](https://github.com/Olein-jp/japan-infection-watch/issues/9)、R-10 [#10](https://github.com/Olein-jp/japan-infection-watch/issues/10)、R-11 [#11](https://github.com/Olein-jp/japan-infection-watch/issues/11)。いずれも依頼者の指定を待つ。
 
 ## イシュー別の状態
 
 | 調査 ID | GitHub Issue | 状態 | 未確認の主な事項 | 着手前に確認する依存 Issue |
 |---|---|---|---|---|
-| R-01 | [#1](https://github.com/Olein-jp/japan-infection-watch/issues/1) | 未着手 | 公開ビュー、定義、参加範囲 | なし |
+| R-01 | [#1](https://github.com/Olein-jp/japan-infection-watch/issues/1) | 検証済み・完了承認待ち | 一部のリンク名と疾患指定の食い違い、個別ビューの初期表示、日・地域別の報告範囲 | なし |
 | R-02 | [#2](https://github.com/Olein-jp/japan-infection-watch/issues/2) | 未着手 | 閲覧・取得・保存・再公開等の許容範囲 | R-01 [#1](https://github.com/Olein-jp/japan-infection-watch/issues/1) |
 | R-03 | [#3](https://github.com/Olein-jp/japan-infection-watch/issues/3) | 未着手 | 公開ビューの公式埋め込み | R-01 [#1](https://github.com/Olein-jp/japan-infection-watch/issues/1)、R-02 [#2](https://github.com/Olein-jp/japan-infection-watch/issues/2) |
 | R-04 | [#4](https://github.com/Olein-jp/japan-infection-watch/issues/4) | 未着手 | 集計 API と公式 CSV の取得可否 | R-03 [#3](https://github.com/Olein-jp/japan-infection-watch/issues/3) |
@@ -32,8 +32,14 @@
 | R-18 | [#18](https://github.com/Olein-jp/japan-infection-watch/issues/18) | 未着手 | MVP の提供可能な地域・データ範囲 | R-12 [#12](https://github.com/Olein-jp/japan-infection-watch/issues/12)、R-13 [#13](https://github.com/Olein-jp/japan-infection-watch/issues/13)、R-15 [#15](https://github.com/Olein-jp/japan-infection-watch/issues/15)、R-16 [#16](https://github.com/Olein-jp/japan-infection-watch/issues/16)、R-17 [#17](https://github.com/Olein-jp/japan-infection-watch/issues/17) |
 | R-19 | [#19](https://github.com/Olein-jp/japan-infection-watch/issues/19) | 未着手 | 開発仕様案、保留事項、開発 Issue 案 | R-18 [#18](https://github.com/Olein-jp/japan-infection-watch/issues/18) |
 
+## R-01 で判明した事項
+
+- 公式案内に Tableau Public へのリンク98件。市区町村別のインフルエンザ閉鎖地図1件を閲覧し、対象日・元データ時点・フィルターを確認。
+- 2024-03-25 の変更で、学年閉鎖と休校のクラスも閉鎖クラス数に合算する仕様を確認。
+- 参加範囲の公式資料は年度単位。全国総施設を分母とする2025年度利用率は小学校55.7%、中学校52.4%、高校55.8%。日・地域・疾患単位の報告率は未確認。
+
 ## 初期構築で確認した事項
 
 - ローカルは初回コミット前の `main`。GitHub 側の既定ブランチ名は `main` で、ブランチの実体は初回 push 後に作られる。
 - GitHub は Public、Issues 有効、Pages 無効。Issue フォームはローカルに配置済みで、GitHub のフォーム選択画面への反映には既定ブランチへの反映が必要。
-- 一次情報台帳の31件は候補。情報源、利用条件、対象範囲、設計・費用の調査は各 Issue で行う。
+- 初期構築時に一次情報台帳へ31件の候補を登録。情報源、利用条件、対象範囲、設計・費用の調査は各 Issue で行う。

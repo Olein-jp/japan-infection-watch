@@ -7,7 +7,7 @@ GitHub のマイルストーン [調査・実現可能性評価（R-01〜R-19）
 
 | 調査 ID | GitHub Issue | タイトル | 優先度 | 依存 Issue | 成果物 |
 |---|---|---|---|---|---|
-| R-01 | [#1](https://github.com/Olein-jp/japan-infection-watch/issues/1) | 日本学校保健会の公開ビュー・公式資料を棚卸しする | P0 | なし | `docs/findings/R-01-public-views.md` |
+| R-01 | [#1](https://github.com/Olein-jp/japan-infection-watch/issues/1) | 日本学校保健会の公開ビュー・公式資料を棚卸しする | P0 | なし | [公開ビューと公式資料の棚卸し](findings/R-01-public-views.md) |
 | R-02 | [#2](https://github.com/Olein-jp/japan-infection-watch/issues/2) | Tableau・日本学校保健会の利用条件と自動取得条件を調査する | P0 | R-01 [#1](https://github.com/Olein-jp/japan-infection-watch/issues/1) | `docs/findings/R-02-reuse-terms.md` |
 | R-03 | [#3](https://github.com/Olein-jp/japan-infection-watch/issues/3) | Tableau Embedding API v3で公開ビューを表示するPoC | P0 | R-01 [#1](https://github.com/Olein-jp/japan-infection-watch/issues/1)、R-02 [#2](https://github.com/Olein-jp/japan-infection-watch/issues/2) | `docs/findings/R-03-tableau-embedding.md`、`poc/tableau/` |
 | R-04 | [#4](https://github.com/Olein-jp/japan-infection-watch/issues/4) | Tableauの集計データ取得・CSV出力を検証する | P0 | R-03 [#3](https://github.com/Olein-jp/japan-infection-watch/issues/3) | `docs/findings/R-04-tableau-summary.md`、`poc/tableau/` |
