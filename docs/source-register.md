@@ -99,3 +99,5 @@
 | S91 | 岐阜市 | 市の位置・面積・人口 | <https://www.city.gifu.lg.jp/info/syoukai/1006141/1006142.html> | 面積は2025-04-01時点 | 2026-11-24 | Web | 面積公表値の参照 | N03 2026年版から計算した面積の規模を照合 |
 
 学校情報等検索 API のベース URL 候補は <https://opendata.jssh.site/siss/resources/>。現行仕様で照合する。Tableau の S01 掲載 URL は [R-01 の一覧](findings/R-01-public-views.md#公開ビュー-url-一覧)を参照する。
+
+[R-15 の共通モデル案の根拠](findings/R-15-data-model.md#一次情報から確認した定義)は、定点と訂正の S50・S52・S56、週次・累計と休業指標の S58・S59、地域範囲の S22・S62。資料の適用範囲は各台帳行に従う。
