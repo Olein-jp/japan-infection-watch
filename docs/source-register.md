@@ -15,7 +15,7 @@
 | S07 | 日本学校保健会 | 表示変更資料 | <https://www.gakkohoken.jp/files/ccenter/mapview/202303view_change.pdf> | 2023-03-15（S01 告知） | 2026-11-24 | PDF | 未判定 | R-01 で疾患区分・市区町村実績表の追加を確認 |
 | S08 | 日本学校保健会のマップビュー掲載プロフィール（Tableau Public） | Tableau Publicプロフィール | <https://public.tableau.com/app/profile/jssh.absence.information.mapping.service> | 不明 | 2026-11-24 | Web | 通常閲覧可。公開集計の取得・再配布は確認待ち | R-01 で公開入口、R-02 で代表ビューの共有と出力メニューを確認 |
 | S09 | Tableau | Tableau Embedding API データ取得 | <https://help.tableau.com/current/api/embedding_api/en-us/docs/embedding_api_data.html> | 不明 | 2026-11-24 | Web | 一般仕様。対象ビューからの取得許可は未確認 | R-04 で公式サンプルの先頭ページを取得 |
-| S10 | Tableau | Tableau エクスポート | <https://help.tableau.com/current/api/embedding_api/en-us/docs/embedding_api_export.html> | 不明 | 2026-11-24 | Web | 一般仕様。代表ビューのメニューに CSV なし | R-04 で公式サンプルの出力 API の完了を確認、CSV ファイル未照合 |
+| S10 | Tableau | Tableau エクスポート | <https://help.tableau.com/current/api/embedding_api/en-us/docs/embedding_api_export.html> | 不明 | 2026-11-24 | Web | 一般仕様。代表ビューのメニューに CSV なし | R-04 で公式サンプルの出力と CSV ファイルの2指標を照合 |
 | S11 | Tableau | Tableau 認証 | <https://help.tableau.com/current/api/embedding_api/en-us/docs/embedding_api_auth.html> | 不明 | 2026-11-24 | Web | Public の埋め込みは通常認証不要 | R-02 で認証要件の一般仕様を確認 |
 | S12 | Tableau | Tableau 利用規約 | <https://www.tableau.com/tos> | 2022-07-19 最終更新 | 2026-11-24 | Web | 公開コンテンツの許諾あり。対象集計と S35 との関係は未確定 | R-02 で適用対象、投稿許諾、権限の保証と制限を確認 |
 | S13 | Tableau | Tableau Public FAQ | <https://help.tableau.com/current/pro/desktop/ja-jp/public_faq.htm> | 不明 | 2026-11-24 | Web | 共有と出力は機能・公開者設定に依存 | R-02 で FAQ の共有・ダウンロード項目を確認 |
