@@ -2,6 +2,13 @@
 
 [R-17 の調査結果](../findings/R-17-pages-architecture.md)と[取得・復旧の運用案](../operations/collection-and-recovery.md)を参照。ここで示す構成は調査段階の候補。
 
+## 無料枠での運用設計
+
+- 公開は GitHub Free の Pages と標準の `github.io` アドレスを使い、取得・正規化・生成・配布は公開リポジトリの標準 GitHub-hosted runner で行う。MVP の維持に有料プラン、独自ドメイン、外部ストレージを必要とする構成は対象外とする。[Pages の利用条件と上限](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits)・[Pages の標準 URL](https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages)・[Actions の課金](https://docs.github.com/en/billing/concepts/product-billing/github-actions)
+- 公開可能な都道府県の週次集計を初期候補とする。R-17 の架空データで1年分の JSON は約45 MB。HTML・地図・索引を含めた公開一式の目安を500 MBとし、月間帯域は取得できる実績または配信量の試算で50 GBを目安に評価する。Pages の公式上限は公開サイト1 GB、帯域は月100 GBのソフト上限。容量が増えたら履歴期間、地域、データ形式を見直す。[R-17 の容量試算](../findings/R-17-pages-architecture.md#容量時間費用の試算)・[Pages の上限](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits#usage-limits)
+- 公開可否と品質の検証後、配布内容に変更がある場合だけ新しい版を公開する。公開用 artifact は受け渡しに使い、保持は原則1日とする。GitHub Free の artifact 保管枠は500 MBで GitHub Packages と共有されるため、公開サイトのサイズとは別に、アーカイブの容量・保持時間と共有枠の利用を見積もる。課金設定の確認は公開準備時に行い、従量課金の停止設定が使える範囲を確認する。[Actions の保管枠](https://docs.github.com/en/billing/concepts/product-billing/github-actions#included-compute-usage-and-storage)・[Pages artifact の保持](https://github.com/actions/upload-pages-artifact#inputs-)・[GitHub の予算設定](https://docs.github.com/en/billing/how-tos/set-up-budgets)
+- 容量や保管枠の超過が見込まれるときは、新しい版の公開を保留して最後の成功版を維持する。鮮度は画面に表示する。復旧用の版は、利用条件で許される範囲で、既存のローカル保管先など追加費用のない方法を R-19 で具体化する。
+
 ## ビルドから公開まで
 
 1. 取得・正規化・品質検証・公開可否判定を行い、許可済みの集計のみから静的 HTML と JSON を生成する。ブラウザは公開成果物の JSON を読み込む。収集処理と提供元へのアクセスはビルド側で実行する。地図は簡略化した配布用データを使い、欠損を凡例と表でも示す。
