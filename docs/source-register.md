@@ -43,9 +43,14 @@
 | S35 | Salesforce | Salesforce サイト利用規約 | <https://www.salesforce.com/company/legal/sfdc-website-terms-of-service/> | 2025-04-08 最終更新 | 2026-11-24 | Web | 第三者コンテンツ利用には権限等が必要 | R-02 で代表ビューのフッターからの導線と E〜G 節を確認 |
 | S36 | Salesforce | Acceptable Use and External-Facing Services Policy | <https://c1.sfdcstatic.com/content/dam/web/en_us/www/documents/legal/Agreements/policies/ExternalFacing_Services_Policy.pdf> | 2025-03-10 改訂 | 2026-11-24 | PDF | サービスの利用制限。第三者サイトへのクロール条項あり | R-02 で第1・3・5・6節を確認 |
 | S37 | 日本学校保健会 | ポータルの著作権とリンク条件 | <https://www.gakkohoken.jp/about> | 不明 | 2026-11-24 | Web | ポータル掲載物の営利再利用制限、条件付きリンク | R-02 で第3〜5節を確認 |
-| S38 | Tableau | Embedding API 基本表示 | <https://help.tableau.com/current/api/embedding_api/en-us/docs/embedding_api_basic.html> | 不明 | 2026-11-24 | Web | 公開ビューの埋め込み機能。対象ビューでの v3 動作は未確認 | R-02 で公式の表示方法を確認 |
+| S38 | Tableau | Embedding API 基本表示 | <https://help.tableau.com/current/api/embedding_api/en-us/docs/embedding_api_basic.html> | 不明 | 2026-11-24 | Web | 公開ビューの埋め込み機能。集計取得の条件は確認待ち | R-03 で代表ビューの v3 表示を確認 |
 | S39 | 日本学校保健会 | 2026年度自治体向けオンライン説明会資料 | <https://www.gakkohoken.jp/files/ivent/20260624/siryo1.pdf> | 2026-06-24（開催日） | 2026-11-24 | PDF | 自治体向け個別ビュー案内。外部データ提供の要件は確認待ち | R-02 で pp.83–86、p.88 を確認 |
 | S40 | Tableau | Tableau Public robots.txt | <https://public.tableau.com/robots.txt> | 不明 | 2026-11-24 | テキスト | クロールの設定 | R-02 で HTTP 200 と Crawl-delay を確認 |
 | S41 | Tableau | Tableau Public Desktop EULA | <https://mkt.tableau.com/legal/tableau_eula_public.pdf> | 2024年11月版 | 2026-11-24 | PDF | 対象デスクトップ製品の利用・商用制限 | R-02 で第1・3・6節と Public サイトとの適用対象の違いを確認 |
+| S42 | Tableau | Embedding API イベント購読 | <https://help.tableau.com/current/api/embedding_api/en-us/docs/embedding_api_event.html> | 不明 | 2026-11-24 | Web | 公式仕様 | R-03 で FirstInteractive の受信を確認 |
+| S43 | Tableau | Embedding API フィルター | <https://help.tableau.com/current/api/embedding_api/en-us/docs/embedding_api_filter.html> | 不明 | 2026-11-24 | Web | 公式仕様 | R-03 でダッシュボードのフィルター名4件を確認 |
+| S44 | Tableau | Embedding API Workbook | <https://help.tableau.com/current/api/embedding_api/en-us/reference/interfaces/Workbook.html> | 不明 | 2026-11-24 | Web | 公式仕様 | R-03 で公開シート2件を確認 |
+| S45 | Tableau | Tableau Public 配信の Embedding API モジュール | <https://public.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js> | 観測時 3.17.0-pre.14（ファイル先頭の注記） | 2026-11-24 | JavaScript | 表示検証に使用。対象ビューのデータ再利用は確認待ち | R-03 で HTTP 200 と動作を確認 |
+| S46 | Tableau | Embedding API の入手と互換性 | <https://help.tableau.com/current/api/embedding_api/en-us/docs/embedding_api_get.html> | 文書生成 2026-11-23 UTC | 2026-11-24 | Web | 公式仕様 | R-03 で同一配信元のライブラリを使用 |
 
 学校情報等検索 API のベース URL 候補は <https://opendata.jssh.site/siss/resources/>。現行仕様で照合する。Tableau の S01 掲載 URL は [R-01 の一覧](findings/R-01-public-views.md#公開ビュー-url-一覧)を参照する。

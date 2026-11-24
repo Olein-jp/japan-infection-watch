@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>R-03 Tableau 公開ビューの表示確認</title>
+  <style>
+    body { margin: 1rem; font-family: system-ui, sans-serif; }
+    pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+    tableau-viz { display: block; }
+  </style>
+  <script src="./embed.js" type="module"></script>
+</head>
+<body>
+  <h1>Tableau 公開ビューの表示確認</h1>
+  <button id="start" type="button">市区町村別の学級閉鎖地図を表示</button>
+  <p id="status" role="status">開始待ち</p>
+  <details>
+    <summary>シート名とフィルター名</summary>
+    <pre id="result"></pre>
+  </details>
+  <div id="view"></div>
+</body>
+</html>
