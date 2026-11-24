@@ -25,7 +25,7 @@ R-04 の公式サンプルで確認できた動作は記録済み。日本学校
 | R-11 | [#11](https://github.com/Olein-jp/japan-infection-watch/issues/11) | 完了 | 他市町村の値、過去の管轄変更、個別の再利用条件 | なし |
 | R-12 | [#12](https://github.com/Olein-jp/japan-infection-watch/issues/12) | 完了 | 未確認の地域粒度・資料別の利用条件は R-14・R-16 に引き継ぎ | なし |
 | R-13 | [#13](https://github.com/Olein-jp/japan-infection-watch/issues/13) | 完了 | 岐阜市別の現行資料、神戸市システムの出力条件、現行資料の継続利用は保留 | なし |
-| R-14 | [#14](https://github.com/Olein-jp/japan-infection-watch/issues/14) | 未着手 | 自治体・学校・地理マスターの照合可否 | R-05 [#5](https://github.com/Olein-jp/japan-infection-watch/issues/5)、R-06 [#6](https://github.com/Olein-jp/japan-infection-watch/issues/6)、R-08 [#8](https://github.com/Olein-jp/japan-infection-watch/issues/8)、R-11 [#11](https://github.com/Olein-jp/japan-infection-watch/issues/11) |
+| R-14 | [#14](https://github.com/Olein-jp/japan-infection-watch/issues/14) | 自治体・地理の検証済み。学校側の照合待ち | 学校コード、学校別データ、市区町村キー・API 応答との照合 | R-05 [#5](https://github.com/Olein-jp/japan-infection-watch/issues/5)、R-06 [#6](https://github.com/Olein-jp/japan-infection-watch/issues/6)、R-08 [#8](https://github.com/Olein-jp/japan-infection-watch/issues/8) |
 | R-15 | [#15](https://github.com/Olein-jp/japan-infection-watch/issues/15) | 未着手 | 共通スキーマと品質検証・公開用分割 | R-05 [#5](https://github.com/Olein-jp/japan-infection-watch/issues/5)、R-06 [#6](https://github.com/Olein-jp/japan-infection-watch/issues/6)、R-07 [#7](https://github.com/Olein-jp/japan-infection-watch/issues/7)、R-09 [#9](https://github.com/Olein-jp/japan-infection-watch/issues/9)、R-10 [#10](https://github.com/Olein-jp/japan-infection-watch/issues/10)、R-14 [#14](https://github.com/Olein-jp/japan-infection-watch/issues/14) |
 | R-16 | [#16](https://github.com/Olein-jp/japan-infection-watch/issues/16) | 未着手 | 継続取得・保存・再公開・障害復旧の条件 | R-02 [#2](https://github.com/Olein-jp/japan-infection-watch/issues/2)、R-04 [#4](https://github.com/Olein-jp/japan-infection-watch/issues/4)、R-07 [#7](https://github.com/Olein-jp/japan-infection-watch/issues/7)、R-09 [#9](https://github.com/Olein-jp/japan-infection-watch/issues/9)、R-10 [#10](https://github.com/Olein-jp/japan-infection-watch/issues/10)、R-15 [#15](https://github.com/Olein-jp/japan-infection-watch/issues/15) |
 | R-17 | [#17](https://github.com/Olein-jp/japan-infection-watch/issues/17) | 未着手 | Pages/Actions の制約・費用と静的構成 | R-16 [#16](https://github.com/Olein-jp/japan-infection-watch/issues/16) |
@@ -79,6 +79,11 @@ R-04 の公式サンプルで確認できた動作は記録済み。日本学校
 
 - 岐阜市、神戸市、北九州市、東京都、八王子市の公表資料を比較。北九州市の現行週報は週・施設単位で重複調整し、2017/18〜2019/20年の閉鎖データは別途 CSV・XLSX で公開されている。岐阜県が案内する学校情報は停止中。[調査結果と全国展開の条件](findings/R-13-local-closures.md)
 - 全国の共通集計を基準に、定義と利用条件が確認できた自治体を追加する方針を整理した。指標・欠測は R-15、継続利用の判断は R-16 に引き継ぐ。
+
+## R-14 で判明した事項
+
+- 岐阜市保健所と県の岐阜保健所が所管する9市町を、団体コードと2026年1月1日版の行政区域に照合。岐阜市の境界は GeoJSON に変換し、同梱の図形と一致を確認した。[照合結果と変換手順](findings/R-14-master-joins.md)
+- 旧柳津町の編入と浜松市の区再編から、コードと地域種別に適用時点を添えて管理する方針を整理。学校側の検証は R-05・R-06・R-08 の結果待ち。[地域照合の項目案](schemas/region-crosswalk.md)
 
 ## 初期構築で確認した事項
 

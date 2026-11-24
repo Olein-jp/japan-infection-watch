@@ -25,9 +25,9 @@
 | S17 | 岐阜県 | 岐阜県感染症情報センター | <https://www.pref.gifu.lg.jp/page/9550.html> | 不明 | 2026-11-24 | Web | S70 | R-11 で週報・患者報告数データ・制度説明の入口を確認 |
 | S18 | 岐阜県 | 岐阜県週報 | <https://www.pref.gifu.lg.jp/page/107799.html> | 2026-11-19（第46週） | 2026-11-24 | Web・PDF | S70 | R-11 で2026年第46週の情報編とデータ・グラフ編、発行頻度を確認 |
 | S19 | 岐阜県 | 岐阜県発生動向データ | <https://www.pref.gifu.lg.jp/page/9553.html> | 2026年第46週まで掲載 | 2026-11-24 | Web・Excel | S70 | R-11 で全数・定点の形式を確認し、S66 を実行検証 |
-| S20 | 総務省 | 総務省 全国地方公共団体コード | <https://www.soumu.go.jp/denshijiti/code.html> | — | — | Web | 未確認 | 未検証 |
+| S20 | 総務省 | 全国地方公共団体コード | [登録時の URL](https://www.soumu.go.jp/denshijiti/code.html)・[e-Gov データポータル](https://data.e-gov.go.jp/data/dataset/soumu_20140909_0395) | 配布元の版を参照 | 2026-11-24 | Web | 今回はコード体系の参照 | 登録時の URL は調査環境で本文を取得できず。S76・S87 を参照 |
 | S21 | 文部科学省 | 文科省 学校コード | <https://www.mext.go.jp/b_menu/toukei/mext_01087.html> | — | — | Web | 未確認 | 未検証 |
-| S22 | 国土交通省 | 国交省 行政区域 | <https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03-v3_0.html> | — | — | Web | 未確認 | 未検証 |
+| S22 | 国土交通省 | 国土数値情報 N03 行政区域 | [総合案内](https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03-v3_0.html)・[2026年版](https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03-2026.html) | 2026-01-01基準、2026年4月更新 | 2026-11-24 | GML・シェープファイル・GeoJSON | 2026年版は CC BY 4.0 表示。測量法の公表・再配布手続は R-16 | 岐阜県 ZIP を取得し、岐阜市の図形を変換・照合 |
 | S23 | 神戸市保健所 | 神戸市感染症統合情報システムの学級閉鎖情報 | <https://kobecity-kmss.jp/classclosure> | 市の運用案内は2026-09-01更新 | 2026-11-24 | Web・PDF／CSV表示 | 外部ドメインの個別利用条件は未確認 | 市公式案内で運営を確認。地図・表・CSV 表示を文書確認 |
 | S24 | 北九州市保健所 | インフルエンザ様疾患による学級閉鎖等の報告状況 | <https://www.city.kitakyushu.lg.jp/contents/334_00031.html> | 2026-11-20更新 | 2026-11-24 | HTML・PDF | 市サイトのリンク・著作権案内。カタログとは適用経路が異なる | 報告日別の表頭、延長の扱い、週次集計のリンクを確認 |
 | S25 | 東京都 | 東京都オープンデータ API カタログ | [登録時の URL](https://spec.api.metro.tokyo.lg.jp/)・[都の API 一覧](https://portal.data.metro.tokyo.lg.jp/opendata-api/) | 仕様表示1.0.0 | 2026-11-24 | Web | 個別 API・データの規約を参照 | 登録時の URL は本文を読み取れず、都の公開一覧で閉鎖該当項目を確認できなかった |
@@ -92,5 +92,10 @@
 | S84 | 東京都感染症情報センター | インフルエンザ様疾患による臨時休業の状況 | <https://idsc.tmiph.metro.tokyo.lg.jp/diseases/flu/flu/> | 2026-11-19更新 | 2026-11-24 | HTML・グラフ | [センター利用案内](https://www.tmiph.metro.tokyo.lg.jp/riyou/) | 第5節で都の施設種別累計と速報注記を確認 |
 | S85 | 八王子市教育委員会 | 市立小中学校学級閉鎖状況・年度版教育統計 | [現行案内](https://www.city.hachioji.tokyo.jp/kurashi/kyoiku/003/009/001/p004843.html)・[2026年度版](https://www.city.hachioji.tokyo.jp/kurashi/kyoiku/002/011/p037863.html) | 現行案内2026-11-24更新 | 2026-11-24 | PDF | [市サイト著作権](https://www.city.hachioji.tokyo.jp/987/p012154.html)。現行 PDF の個別条件は未確認 | 現行の配布案内と年度表の指標、重複調整を確認 |
 | S86 | 福岡県 | 学級閉鎖等の状況報告 2026/27シーズン | <https://www.pref.fukuoka.lg.jp/contents/seasonal-flu-alert-2026-2027.html> | 2026-11-20更新 | 2026-11-24 | Web・PDF | 県公式サイトの利用案内 | 県の公表対象から北九州市・福岡市・久留米市を除外する旨を確認 |
+| S87 | 地方公共団体情報システム機構（J-LIS） | 全国地方公共団体コードの仕様・岐阜県内市町村 | [仕様・検査数字](https://www.j-lis.go.jp/spd/code-address/cms_1750514.html)・[岐阜県一覧](https://www.j-lis.go.jp/spd/code-address/tyuubu/cms_14214182.html) | 閲覧時の一覧 | 2026-11-24 | Web | コード・仕様の参照 | 6桁形式と検査数字を確認。9市町を N03 に照合 |
+| S88 | 総務省統計局・統計センター | e-Stat 標準地域コード・岐阜市廃置分合 | [標準地域コード](https://data.e-stat.go.jp/lodw/provdata/lodRegion)・[岐阜市履歴](https://www.e-stat.go.jp/municipalities/cities/absorption-separation-of-municipalities/21201) | 柳津町編入は2006-01-01 | 2026-11-24 | Web | コード・履歴の参照 | 5桁、行政区分、旧柳津町の編入を確認 |
+| S89 | 国土交通省 | 国土数値情報ダウンロードサイト利用規約 | <https://nlftp.mlit.go.jp/ksj/other/agreement.html> | 2026-03-23施行 | 2026-11-24 | Web | PDL1.0 と出典・加工表示、個別許諾条件を参照 | N03 の個別ページの版別条件と照合 |
+| S90 | 浜松市 | 行政区の再編について | <https://www.city.hamamatsu.shizuoka.jp/kikaku/kuseido/> | 2024-01-01再編 | 2026-11-24 | Web | 変更履歴の参照 | 旧北区が中央区・浜名区に分かれたことを確認 |
+| S91 | 岐阜市 | 市の位置・面積・人口 | <https://www.city.gifu.lg.jp/info/syoukai/1006141/1006142.html> | 面積は2025-04-01時点 | 2026-11-24 | Web | 面積公表値の参照 | N03 2026年版から計算した面積の規模を照合 |
 
 学校情報等検索 API のベース URL 候補は <https://opendata.jssh.site/siss/resources/>。現行仕様で照合する。Tableau の S01 掲載 URL は [R-01 の一覧](findings/R-01-public-views.md#公開ビュー-url-一覧)を参照する。
