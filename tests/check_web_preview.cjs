@@ -1,4 +1,5 @@
 const assert = require("node:assert/strict");
+const { createHash } = require("node:crypto");
 const { execFileSync, spawn } = require("node:child_process");
 const fs = require("node:fs");
 const os = require("node:os");
@@ -11,21 +12,113 @@ const python = process.env.PYTHON || "python3";
 const projectBase = "/japan-infection-watch/";
 const servers = [];
 
+function build(target, base, ...flags) {
+  execFileSync(python, ["-B", "-m", "fixtures.build_web_preview", target, "--base", base, ...flags], {
+    cwd: repo, env: { ...process.env, PYTHONPATH: path.join(repo, "tests") }, stdio: ["ignore", "pipe", "pipe"],
+  });
+}
+
+function verify(target, ...options) {
+  const report = execFileSync(python, ["-B", "scripts/check_preview.py", target, ...options], {
+    cwd: repo, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"],
+  });
+  return JSON.parse(report);
+}
+
+function switchLocalSite(workspace, target) {
+  const next = path.join(workspace, "next");
+  fs.symlinkSync(target, next);
+  fs.renameSync(next, path.join(workspace, "active"));
+}
+
 async function preview(name, base) {
   const workspace = path.join(scratch, name);
   fs.mkdirSync(workspace);
   const target = path.join(workspace, "site");
-  execFileSync(python, ["-B", "-m", "fixtures.build_web_preview", target, "--base", base], {
-    cwd: repo, env: { ...process.env, PYTHONPATH: path.join(repo, "tests") },
-  });
-  fs.symlinkSync(target, path.join(workspace, "active"));
+  build(target, base);
+  verify(target);
+  switchLocalSite(workspace, target);
   const server = spawn(python, ["-B", "poc/pages/serve.py", workspace, "--base", base], { cwd: repo });
   servers.push(server);
   return await new Promise((resolve, reject) => {
-    server.stdout.once("data", data => resolve(data.toString().trim()));
+    server.stdout.once("data", data => resolve({ url: data.toString().trim(), workspace, target }));
     server.once("error", reject);
     server.once("exit", code => reject(new Error(`HTTP サーバー終了 ${code}`)));
   });
+}
+
+async function servedVersion(page, home) {
+  async function get(pathname, reference) {
+    const response = await page.request.get(home + pathname, { maxRedirects: 0 });
+    assert.equal(response.status(), 200);
+    const bytes = await response.body();
+    if (reference) {
+      assert.equal(bytes.length, reference.bytes);
+      assert.equal(createHash("sha256").update(bytes).digest("hex"), reference.sha256);
+    }
+    return JSON.parse(bytes);
+  }
+
+  const manifest = await get("data/manifest.json");
+  const indexEntry = manifest.sources["sample-jihs-weekly"].region_indexes.jp;
+  const index = await get("data/" + indexEntry.path, indexEntry);
+  const latestEntry = index.diseases.influenza.latest;
+  const latest = await get("data/" + latestEntry.path, latestEntry);
+  assert.equal(index.release_id, manifest.release_id);
+  assert.equal(latest.release_id, manifest.release_id);
+  return { manifest, latest };
+}
+
+async function checkRecovery(page, project) {
+  const { workspace, target } = project;
+  const home = project.url + projectBase;
+  const archived = path.join(workspace, "archive", "last-good");
+  fs.mkdirSync(path.dirname(archived));
+  fs.cpSync(target, archived, { recursive: true });
+  const saved = verify(archived);
+  assert.equal(saved.sha256, verify(target).sha256);
+  const before = await servedVersion(page, home);
+  const active = path.join(workspace, "active");
+
+  function publishCandidate(candidate, ...options) {
+    const report = verify(candidate, "--baseline", fs.realpathSync(active), ...options);
+    if (report.change === "changed") switchLocalSite(workspace, candidate);
+    return report;
+  }
+
+  const damaged = path.join(workspace, "damaged");
+  fs.cpSync(archived, damaged, { recursive: true });
+  const release = before.manifest.release_id;
+  const shard = path.join(damaged, "data", "releases", release,
+    "latest/sample-jihs-weekly/national/jp/influenza.json");
+  const bytes = fs.readFileSync(shard);
+  bytes[bytes.length - 1] = 0x20;
+  fs.writeFileSync(shard, bytes);
+  assert.throws(() => publishCandidate(damaged), error => error.status === 2 && error.stderr.includes("SHA-256"));
+  assert.throws(() => publishCandidate(archived, "--max-bytes", "3"),
+    error => error.status === 2 && error.stderr.includes("容量超過"));
+  assert.throws(() => publishCandidate(archived, "--candidate-revision", "a".repeat(40),
+    "--expected-revision", "b".repeat(40)), error => error.status === 2 && error.stderr.includes("古い候補"));
+  assert.equal(publishCandidate(archived).change, "unchanged");
+  assert.equal(fs.readlinkSync(active), target);
+  assert.deepEqual(await servedVersion(page, home), before);
+
+  const corrected = path.join(workspace, "corrected");
+  build(corrected, projectBase, "--latest-count", "26");
+  assert.equal(publishCandidate(corrected).change, "changed");
+  const current = await servedVersion(page, home);
+  assert.notEqual(current.manifest.release_id, release);
+  assert.equal(current.latest.observations[0].value, 26);
+
+  const restored = path.join(workspace, "restored");
+  fs.cpSync(archived, restored, { recursive: true });
+  assert.equal(verify(restored).sha256, saved.sha256);
+  switchLocalSite(workspace, restored);
+  assert.deepEqual(await servedVersion(page, home), before);
+  assert.equal((await page.goto(home + "diseases/influenza/")).status(), 200);
+  const nationwide = page.getByRole("row").filter({ has: page.getByRole("rowheader", { name: "全国", exact: true }) });
+  assert.deepEqual(await nationwide.getByRole("cell").allTextContents(), ["24", "2.40"]);
+  console.log(`旧版維持と復旧を確認 · ${saved.file_count}ファイル · SHA-256 ${saved.sha256}`);
 }
 
 async function check() {
@@ -34,16 +127,17 @@ async function check() {
   const browser = await chromium.launch({ channel: "chrome", headless: true });
   try {
     const page = await browser.newPage({ viewport: { width: 320, height: 850 } });
+    const origins = [project.url, root.url];
     const requests = [];
     const errors = [];
     page.on("request", request => requests.push(request.url()));
     page.on("pageerror", error => errors.push(error.message));
     await page.route("**/*", route => {
       const target = new URL(route.request().url()).origin;
-      return [project, root].includes(target) ? route.continue() : route.abort();
+      return origins.includes(target) ? route.continue() : route.abort();
     });
 
-    const home = project + projectBase;
+    const home = project.url + projectBase;
     assert.equal((await page.goto(home)).status(), 200);
     await page.keyboard.press("Tab");
     assert.equal(await page.locator(":focus").textContent(), "本文へ移動");
@@ -62,17 +156,23 @@ async function check() {
     assert.equal(page.url(), pref);
     assert.equal((await page.reload()).status(), 200);
     await page.getByRole("heading", { name: "北海道", exact: true }).waitFor();
+    await page.emulateMedia({ forcedColors: "active" });
+    assert.equal(await page.evaluate(() => window.matchMedia("(forced-colors: active)").matches), true);
     const influenza = page.getByRole("row").filter({ has: page.getByRole("link", { name: "インフルエンザ", exact: true }) });
     assert.match(await influenza.textContent(), /原表ハイフン.*空欄.*24.*2.40/);
     assert.ok(!requests.some(url => url.includes("/history/") || url.includes("/index/sample-jihs")));
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth), 320);
 
-    const whenHistory = page.waitForResponse(response => response.url().includes("/history/"));
-    await page.getByLabel("対象月").selectOption("2030-01");
+    const monthSelect = page.getByLabel("対象月");
+    await monthSelect.selectOption("2030-01");
+    await monthSelect.focus();
     const button = page.getByRole("button", { name: "週次履歴を表示" });
-    await button.focus();
-    await page.keyboard.press("Enter");
-    const history = await whenHistory;
+    await page.keyboard.press("Tab");
+    assert.equal(await page.locator(":focus").textContent(), "週次履歴を表示");
+    const [history] = await Promise.all([
+      page.waitForResponse(response => response.url().includes("/history/")),
+      page.keyboard.press("Enter"),
+    ]);
     assert.match(history.url(), /\/prefecture\/01\/2030-01\/influenza\.json$/);
     assert.equal(history.status(), 200);
     await page.getByText("履歴を表示しました。", { exact: true }).waitFor();
@@ -86,15 +186,20 @@ async function check() {
     assert.match(await page.locator(".history-output").textContent(), /2030-01-07/);
     assert.match(await influenza.textContent(), /原表ハイフン.*空欄.*24.*2.40/);
     await page.unroute("**/history/**");
+    await page.emulateMedia({ forcedColors: null });
 
-    const disease = root + "/diseases/influenza/";
-    assert.equal((await page.goto(disease)).status(), 200);
+    const disease = root.url + "/diseases/influenza/";
+    assert.equal((await page.goto(disease.slice(0, -1))).status(), 200);
+    assert.equal(page.url(), disease);
+    assert.equal((await page.reload()).status(), 200);
     await page.getByRole("heading", { name: "インフルエンザ", exact: true }).waitFor();
     assert.equal(await page.locator("tbody tr").count(), 48);
     assert.ok(await page.locator(".table-scroll").evaluate(region => region.scrollWidth <= region.clientWidth));
-    const nationalHistory = page.waitForResponse(response => response.url().includes("/history/"));
-    await page.getByRole("button", { name: "週次履歴を表示" }).click();
-    assert.match((await nationalHistory).url(), /\/national\/jp\/2030-02\/influenza\.json$/);
+    const [nationalHistory] = await Promise.all([
+      page.waitForResponse(response => response.url().includes("/history/")),
+      page.getByRole("button", { name: "週次履歴を表示" }).click(),
+    ]);
+    assert.match(nationalHistory.url(), /\/national\/jp\/2030-02\/influenza\.json$/);
     await page.getByText("履歴を表示しました。", { exact: true }).waitFor();
     if (process.env.WEB_PREVIEW_SCREENSHOT) await page.screenshot({ path: process.env.WEB_PREVIEW_SCREENSHOT });
     assert.equal((await page.goto(home + "municipalities/21201/")).status(), 200);
@@ -104,8 +209,12 @@ async function check() {
     assert.equal((await page.goto(home + "municipalities/99999/")).status(), 404);
     await page.getByRole("link", { name: "全国のページへ戻る" }).click();
     assert.equal(page.url(), home);
+    assert.equal((await page.goto(root.url + "/municipalities/99999/")).status(), 404);
+    await page.getByRole("link", { name: "全国のページへ戻る" }).click();
+    assert.equal(page.url(), root.url + "/");
+    await checkRecovery(page, project);
     assert.deepEqual(errors, []);
-    assert.ok(requests.every(url => [project, root].includes(new URL(url).origin)));
+    assert.ok(requests.every(url => origins.includes(new URL(url).origin)));
     console.log(`Chrome ${browser.version()} · 320px・キーボード・直リンク・再読込・404・履歴の遅延読込と失敗時の表示を確認`);
   } finally {
     await browser.close();

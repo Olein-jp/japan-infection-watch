@@ -46,9 +46,11 @@
 
 [F-002 #22](https://github.com/Olein-jp/japan-infection-watch/issues/22)・[I-001 #23](https://github.com/Olein-jp/japan-infection-watch/issues/23) に依存。[公開前テスト](../operations/mvp-release.md#公開前テストと監査)と [R-17 の検証手順](../../poc/pages/README.md)を読む。
 
-- [ ] プロジェクトパスとルートで直リンク、再読込、404、遅延取得が成功する。
-- [ ] 狭幅とキーボードで操作でき、色を使わず欠損や状態を判別できる。
-- [ ] 破損候補や更新失敗が旧版を上書きせず、保管した版で復旧を再現できる。
+- [x] プロジェクトパスとルートで直リンク、再読込、404、遅延取得が成功する。
+- [x] 狭幅とキーボードで操作でき、色を使わず欠損や状態を判別できる。
+- [x] 破損候補や更新失敗が旧版を上書きせず、保管した版で復旧を再現できる。
+
+[統合検証の結果](../findings/T-001-integrated-preview.md)
 
 ## [O-001 #25](https://github.com/Olein-jp/japan-infection-watch/issues/25)　初回公開と手動更新の運用を判定する
 
