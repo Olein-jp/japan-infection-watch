@@ -6,7 +6,7 @@
 
 ## 着手候補
 
-R-04 の公式サンプルで確認できた動作は記録済み。日本学校保健会のデータが必要な R-05〜R-07 は、R-02 の条件確認まで公式資料と画面で確認できる範囲に限る。R-02 の完了承認後は学校検索 API の R-08 [#8](https://github.com/Olein-jp/japan-infection-watch/issues/8) も候補。2026-11-24（JST）に R-01・R-03・R-04・R-09・R-10 を完了として閉じた。独立して開始できる R-11 [#11](https://github.com/Olein-jp/japan-infection-watch/issues/11) は依頼者の指定を待つ。
+R-04 の公式サンプルで確認できた動作は記録済み。日本学校保健会のデータが必要な R-05〜R-07 は、R-02 の条件確認まで公式資料と画面で確認できる範囲に限る。R-02 の完了承認後は学校検索 API の R-08 [#8](https://github.com/Olein-jp/japan-infection-watch/issues/8) も候補。2026-11-24（JST）に R-01・R-03・R-04・R-09・R-10・R-11 を完了として閉じた。R-12・R-13 は R-11 で確認した地域区分と配布経路を参照できる。
 
 ## イシュー別の状態
 
@@ -22,7 +22,7 @@ R-04 の公式サンプルで確認できた動作は記録済み。日本学校
 | R-08 | [#8](https://github.com/Olein-jp/japan-infection-watch/issues/8) | 未着手 | 学校検索 API の認証・応答・キャッシュ | R-02 [#2](https://github.com/Olein-jp/japan-infection-watch/issues/2) |
 | R-09 | [#9](https://github.com/Olein-jp/japan-infection-watch/issues/9) | 完了 | 第46週の週報との照合、訂正時の版管理と継続利用条件 | なし |
 | R-10 | [#10](https://github.com/Olein-jp/japan-infection-watch/issues/10) | 完了 | 異なる年度・画像表の書式、継続利用条件 | なし |
-| R-11 | [#11](https://github.com/Olein-jp/japan-infection-watch/issues/11) | 未着手 | 岐阜県・岐阜市の公表粒度、保健所管轄 | なし |
+| R-11 | [#11](https://github.com/Olein-jp/japan-infection-watch/issues/11) | 完了 | 他市町村の値、過去の管轄変更、個別の再利用条件 | なし |
 | R-12 | [#12](https://github.com/Olein-jp/japan-infection-watch/issues/12) | 未着手 | 47都道府県の公式配布形式・粒度 | R-11 [#11](https://github.com/Olein-jp/japan-infection-watch/issues/11) |
 | R-13 | [#13](https://github.com/Olein-jp/japan-infection-watch/issues/13) | 未着手 | 自治体・教育委員会の閉鎖データ | R-11 [#11](https://github.com/Olein-jp/japan-infection-watch/issues/11) |
 | R-14 | [#14](https://github.com/Olein-jp/japan-infection-watch/issues/14) | 未着手 | 自治体・学校・地理マスターの照合可否 | R-05 [#5](https://github.com/Olein-jp/japan-infection-watch/issues/5)、R-06 [#6](https://github.com/Olein-jp/japan-infection-watch/issues/6)、R-08 [#8](https://github.com/Olein-jp/japan-infection-watch/issues/8)、R-11 [#11](https://github.com/Olein-jp/japan-infection-watch/issues/11) |
@@ -64,6 +64,11 @@ R-04 の公式サンプルで確認できた動作は記録済み。日本学校
 
 - 厚労省の第10・11報から都道府県47行・別掲政令市20行・全国計と、全国の当週施設種別を構造化した。地域の合算と施設種別の和は掲載計と一致した。[調査結果と再現手順](findings/R-10-mhlw-absence-pdf.md)
 - 学級閉鎖は学校数。累計には過去分の修正が入る。これらの指標・版と地域区分を R-15 に、書式変更や継続利用の条件を R-16 に引き継ぐ。
+
+## R-11 で判明した事項
+
+- 県の週報・Excel から県計と8保健所の定点報告を確認。インフルエンザの第44〜46週で定点当たり報告数27セルが一致した。[調査結果と再現手順](findings/R-11-gifu-region.md)
+- 岐阜市保健所は岐阜市のみ、県の岐阜保健所は周辺8市町。医療圏は別区分。市統計書の感染症届出数は年度単位。地域・指標・形式の確認方法を R-12〜R-14、継続利用条件を R-16 に引き継ぐ。
 
 ## 初期構築で確認した事項
 

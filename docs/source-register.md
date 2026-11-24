@@ -22,9 +22,9 @@
 | S14 | Tableau | Tableau Public Data Policy | <https://public.tableau.com/app/data-policy> | 不明 | 2026-11-24 | Web | 投稿者が掲載に責任を負う | R-02 でブラウザ表示から掲載責任・削除条件を確認 |
 | S15 | JIHS | JIHS IDWR | <https://id-info.jihs.go.jp/surveillance/idwr/> | 不明 | 2026-11-24 | Web | S53 を参照 | R-09 で速報年別一覧と週報一覧への導線を確認 |
 | S16 | 厚生労働省 | 厚労省 令和8年度急性呼吸器感染症対策 | <https://www.mhlw.go.jp/stf/index2026.html> | 不明 | 2026-11-24 | Web | S60 を参照 | R-10 で週次報道発表の案内と学校欠席者数の集計対象を確認 |
-| S17 | 岐阜県 | 岐阜県感染症情報センター | <https://www.pref.gifu.lg.jp/page/9550.html> | — | — | Web | 未確認 | 未検証 |
-| S18 | 岐阜県 | 岐阜県週報 | <https://www.pref.gifu.lg.jp/page/107799.html> | — | — | Web | 未確認 | 未検証 |
-| S19 | 岐阜県 | 岐阜県発生動向データ | <https://www.pref.gifu.lg.jp/page/9553.html> | — | — | Web | 未確認 | 未検証 |
+| S17 | 岐阜県 | 岐阜県感染症情報センター | <https://www.pref.gifu.lg.jp/page/9550.html> | 不明 | 2026-11-24 | Web | S70 | R-11 で週報・患者報告数データ・制度説明の入口を確認 |
+| S18 | 岐阜県 | 岐阜県週報 | <https://www.pref.gifu.lg.jp/page/107799.html> | 2026-11-19（第46週） | 2026-11-24 | Web・PDF | S70 | R-11 で2026年第46週の情報編とデータ・グラフ編、発行頻度を確認 |
+| S19 | 岐阜県 | 岐阜県発生動向データ | <https://www.pref.gifu.lg.jp/page/9553.html> | 2026年第46週まで掲載 | 2026-11-24 | Web・Excel | S70 | R-11 で全数・定点の形式を確認し、S66 を実行検証 |
 | S20 | 総務省 | 総務省 全国地方公共団体コード | <https://www.soumu.go.jp/denshijiti/code.html> | — | — | Web | 未確認 | 未検証 |
 | S21 | 文部科学省 | 文科省 学校コード | <https://www.mext.go.jp/b_menu/toukei/mext_01087.html> | — | — | Web | 未確認 | 未検証 |
 | S22 | 国土交通省 | 国交省 行政区域 | <https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03-v3_0.html> | — | — | Web | 未確認 | 未検証 |
@@ -67,5 +67,18 @@
 | S59 | 厚生労働省 | インフルエンザ様疾患発生報告 第11報 | <https://www.mhlw.go.jp/content/001770872.pdf> | 2026-11-20 発表 | 2026-11-24 | PDF | S60・S61。pp.4–5 の固有注記は確認されず | 地域表・脚注・施設種別内訳を実行確認 |
 | S60 | 厚生労働省 | 利用規約・リンク・著作権等 | <https://www.mhlw.go.jp/chosakuken/index.html> | 不明 | 2026-11-24 | Web | PDL1.0 準拠。出典・加工の表記と適用外の別紙 | R-10 で冒頭と §1.1・§1.4・別紙を確認 |
 | S61 | デジタル庁 | 公共データ利用規約（第1.0版） | <https://www.digital.go.jp/resources/open_data/public_data_license_v1.0> | 第1.0版 | 2026-11-24 | Web | 条件付き二次利用・商用利用 | R-10 で §1、§1.1–1.4 の出典・加工・第三者権利・例外を確認 |
+| S62 | 岐阜県 | 発生動向調査とは・所管市町村表 | <https://www.pref.gifu.lg.jp/page/9576.html> | 2025-05-01 更新 | 2026-11-24 | Web・画像 | S70 | 5圏域・8保健所の所管表を原画像で確認 |
+| S63 | 岐阜県 | 感染症サーベイランスシステムについて | <https://www.pref.gifu.lg.jp/page/246729.html> | 2026-10-15 更新 | 2026-11-24 | Web | 報告用アカウント申請制 | 施設所在地別の保健所を確認 |
+| S64 | 岐阜県 | GIDWR 第46週 情報編 | <https://www.pref.gifu.lg.jp/uploaded/attachment/524049.pdf> | 2026-11-19 発行 | 2026-11-24 | PDF | S70 | p.1 の期間・発行日・保健所別地図を確認 |
+| S65 | 岐阜県 | GIDWR 第46週 データ・グラフ編 | <https://www.pref.gifu.lg.jp/uploaded/attachment/524050.pdf> | 2026-11-19（第46週） | 2026-11-24 | PDF | S70 | pp.1、5、6 で保健所・医療圏・定点数を確認、S66 と照合 |
+| S66 | 岐阜県 | インフルエンザ（ARI定点） | <https://www.pref.gifu.lg.jp/uploaded/attachment/523690.xls> | 2026年第46週まで | 2026-11-24 | XLS | S70 | 第44〜46週で県計・保健所別の列と値を検証 |
+| S67 | 岐阜市 | インフルエンザについて | <https://www.city.gifu.lg.jp/kenko/kansensyou/1004450/1004453.html> | 2026-10-02 更新 | 2026-11-24 | Web | S71 | 県情報とリアルタイムシステムへの案内を確認 |
+| S68 | 岐阜市 | 令和7年版岐阜市統計書 14.保健及び衛生 | <https://www.city.gifu.lg.jp/info/toukei/1008686/1038653/1038669.html> | 2026-04-01 更新 | 2026-11-24 | Web・XLS | S69 | シート「３(2)」の令和6年度届出数と脚注を確認 |
+| S69 | 岐阜市 | 令和7年版岐阜市統計書 利用条件 | <https://www.city.gifu.lg.jp/info/toukei/1008686/1038653/1038654.html> | 2026-04-01 更新 | 2026-11-24 | Web・PDF | PDL1.0 と個別の重要情報 | 出典・加工の明記と第三者権利の条件を確認 |
+| S70 | 岐阜県 | リンク・著作権・免責事項について | <https://www.pref.gifu.lg.jp/page/79328.html> | 2020-11-26 更新 | 2026-11-24 | Web | 原則リンク可。無断複製・転用を制限 | 週報・Excel のオープンライセンス表示は未確認 |
+| S71 | 岐阜市 | リンク・著作権・免責事項 | <https://www.city.gifu.lg.jp/info/kouhou/1008373/site/1011572.html> | 不明 | 2026-11-24 | Web | 無断複製・転用を制限 | 市統計書・衛生年報の個別条件と区別 |
+| S72 | 岐阜県 | オープンデータカタログ 利用方法・利用規約 | <https://www.pref.gifu.lg.jp/page/75247.html> | 2025-10-01 更新 | 2026-11-24 | Web | カタログに適用。原則 CC BY 4.0、個別注記あり | 県・市の共用カタログで配布形式を検索 |
+| S73 | 岐阜県 | 新型コロナウイルス感染症に関する県内の感染動向等 | <https://gifu-opendata.pref.gifu.lg.jp/dataset/c11223-001> | 2023-05-08 更新（UTC） | 2026-11-24 | Web・CSV | データセット表記 cc-by-21-jp | 旧制度の居住地別週間集計の配布案内を確認 |
+| S74 | 岐阜県医師会のドメイン | 岐阜県リアルタイム感染症サーベイランス | <https://infect.gifu.med.or.jp/influ/> | 不明 | 2026-11-24 | Web | データの個別条件未確認 | 市案内から転送、公開一時停止の表示を確認 |
 
 学校情報等検索 API のベース URL 候補は <https://opendata.jssh.site/siss/resources/>。現行仕様で照合する。Tableau の S01 掲載 URL は [R-01 の一覧](findings/R-01-public-views.md#公開ビュー-url-一覧)を参照する。
