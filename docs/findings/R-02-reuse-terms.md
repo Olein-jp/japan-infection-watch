@@ -7,7 +7,7 @@
 
 ## 調査範囲
 
-[R-01](R-01-public-views.md) で確認した公式案内と代表ビューを使用した。GitHub の R-01 は完了承認待ちだが、公開入口と掲載主体の調査結果を前提として利用条件を調べた。代表ビューはインフルエンザの[市区町村別学級閉鎖地図](https://public.tableau.com/app/profile/jssh.absence.information.mapping.service/viz/__16470709141460/1?疾患・症状の区分=3)。データ取得 PoC と問い合わせ送信は対象外。
+[R-01](R-01-public-views.md) で確認した公式案内と代表ビューを使用した。公式の公開入口と掲載主体の調査結果を前提として利用条件を調べた。代表ビューはインフルエンザの[市区町村別学級閉鎖地図](https://public.tableau.com/app/profile/jssh.absence.information.mapping.service/viz/__16470709141460/1?疾患・症状の区分=3)。データ取得 PoC と問い合わせ送信は対象外。
 
 ## 一次情報の適用範囲
 

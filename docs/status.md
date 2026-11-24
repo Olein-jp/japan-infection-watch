@@ -6,16 +6,16 @@
 
 ## 着手候補
 
-R-04 の公式サンプルで確認できた動作は記録済み。日本学校保健会のデータが必要な R-05〜R-07 は、R-02 の条件確認まで公式資料と画面で確認できる範囲に限る。R-02 の完了承認後は学校検索 API の R-08 [#8](https://github.com/Olein-jp/japan-infection-watch/issues/8) も候補。独立して開始できるのは R-09 [#9](https://github.com/Olein-jp/japan-infection-watch/issues/9)、R-10 [#10](https://github.com/Olein-jp/japan-infection-watch/issues/10)、R-11 [#11](https://github.com/Olein-jp/japan-infection-watch/issues/11)。いずれも依頼者の指定を待つ。
+R-04 の公式サンプルで確認できた動作は記録済み。日本学校保健会のデータが必要な R-05〜R-07 は、R-02 の条件確認まで公式資料と画面で確認できる範囲に限る。R-02 の完了承認後は学校検索 API の R-08 [#8](https://github.com/Olein-jp/japan-infection-watch/issues/8) も候補。2026-11-24（JST）に R-01・R-03・R-04・R-09・R-10 を完了として閉じた。独立して開始できる R-11 [#11](https://github.com/Olein-jp/japan-infection-watch/issues/11) は依頼者の指定を待つ。
 
 ## イシュー別の状態
 
 | 調査 ID | GitHub Issue | 状態 | 未確認の主な事項 | 着手前に確認する依存 Issue |
 |---|---|---|---|---|
-| R-01 | [#1](https://github.com/Olein-jp/japan-infection-watch/issues/1) | 検証済み・完了承認待ち | 一部のリンク名と疾患指定の食い違い、個別ビューの初期表示、日・地域別の報告範囲 | なし |
+| R-01 | [#1](https://github.com/Olein-jp/japan-infection-watch/issues/1) | 完了 | 一部のリンク名と疾患指定の食い違い、個別ビューの初期表示、日・地域別の報告範囲 | なし |
 | R-02 | [#2](https://github.com/Olein-jp/japan-infection-watch/issues/2) | 回答待ち | 日本学校保健会側の回答待ち。適用規約、集計の取得・保存・再配布・商用利用の条件 | R-01 [#1](https://github.com/Olein-jp/japan-infection-watch/issues/1) |
-| R-03 | [#3](https://github.com/Olein-jp/japan-infection-watch/issues/3) | 検証済み・完了承認待ち | 別ビューの埋め込み可否、日付コントロールの操作範囲 | R-01 [#1](https://github.com/Olein-jp/japan-infection-watch/issues/1)、R-02 [#2](https://github.com/Olein-jp/japan-infection-watch/issues/2) |
-| R-04 | [#4](https://github.com/Olein-jp/japan-infection-watch/issues/4) | 検証済み・完了承認待ち | 日本学校保健会の集計取得可否 | R-03 [#3](https://github.com/Olein-jp/japan-infection-watch/issues/3) |
+| R-03 | [#3](https://github.com/Olein-jp/japan-infection-watch/issues/3) | 完了 | 別ビューの埋め込み可否、日付コントロールの操作範囲 | R-01 [#1](https://github.com/Olein-jp/japan-infection-watch/issues/1)、R-02 [#2](https://github.com/Olein-jp/japan-infection-watch/issues/2) |
+| R-04 | [#4](https://github.com/Olein-jp/japan-infection-watch/issues/4) | 完了 | 日本学校保健会の集計取得可否 | R-03 [#3](https://github.com/Olein-jp/japan-infection-watch/issues/3) |
 | R-05 | [#5](https://github.com/Olein-jp/japan-infection-watch/issues/5) | 未着手 | 市区町村別のキー・分母・粒度 | R-04 [#4](https://github.com/Olein-jp/japan-infection-watch/issues/4) |
 | R-06 | [#6](https://github.com/Olein-jp/japan-infection-watch/issues/6) | 未着手 | 学校コード・学校種別・閉鎖種別 | R-04 [#4](https://github.com/Olein-jp/japan-infection-watch/issues/4) |
 | R-07 | [#7](https://github.com/Olein-jp/japan-infection-watch/issues/7) | 未着手 | 取得可能な最古・最新と期間 | R-04 [#4](https://github.com/Olein-jp/japan-infection-watch/issues/4) |
