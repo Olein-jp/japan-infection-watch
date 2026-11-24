@@ -1,6 +1,6 @@
 # R-17　GitHub Pages・Actions の構成比較とローカル検証
 
-対象は [Issue #17](https://github.com/Olein-jp/japan-infection-watch/issues/17)。確認日 2026-11-24（JST）。架空データの静的ビルドと復旧のローカル試験まで検証済み・完了承認待ち。実際のデータの定期取得・保存・公開は [R-16](R-16-collection-operations.md) の条件確認と承認を要する。
+対象は [Issue #17](https://github.com/Olein-jp/japan-infection-watch/issues/17)。確認日 2026-11-24（JST）。架空データの静的ビルドと復旧のローカル試験まで検証し、2026-11-24（JST）に調査を完了した。実際のデータの定期取得・保存・公開は [R-16](R-16-collection-operations.md) の条件確認と承認を要する。
 
 **検証結果。** 都道府県の週次集計は、容量に余裕を持つ初期構成の候補。全市区町村の日次履歴1年分は、今回の行形式で約3.65 GBとなり、データだけで Pages の公開サイト上限を超える。日次の公開期間・対象地域を絞るか、履歴の配布先を分ける構成を #18 で比較する。
 

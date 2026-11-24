@@ -1,6 +1,6 @@
 # R-19　初期版の開発仕様案と開発移行の判断
 
-対象は [Issue #19](https://github.com/Olein-jp/japan-infection-watch/issues/19)。確認日 2026-11-24（JST）。[R-18](R-18-feasibility.md) と [初期指示書の付録A](../../CODEX_INITIAL_PROMPT.md#付録a-github-pages-を前提とした設計検証要件r-15r-19に反映)から、開発の Go 判断に使う仕様案を作成した。調査結果は完了承認待ち。
+対象は [Issue #19](https://github.com/Olein-jp/japan-infection-watch/issues/19)。確認日 2026-11-24（JST）。[R-18](R-18-feasibility.md) と [初期指示書の付録A](../../CODEX_INITIAL_PROMPT.md#付録a-github-pages-を前提とした設計検証要件r-15r-19に反映)から、開発の Go 判断に使う仕様案を作成した。2026-11-24（JST）に仕様案の作成を完了した。開発移行の判断は保留。
 
 | 成果物 | 記載範囲 |
 |---|---|
