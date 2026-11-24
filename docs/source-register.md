@@ -80,5 +80,10 @@
 | S72 | 岐阜県 | オープンデータカタログ 利用方法・利用規約 | <https://www.pref.gifu.lg.jp/page/75247.html> | 2025-10-01 更新 | 2026-11-24 | Web | カタログに適用。原則 CC BY 4.0、個別注記あり | 県・市の共用カタログで配布形式を検索 |
 | S73 | 岐阜県 | 新型コロナウイルス感染症に関する県内の感染動向等 | <https://gifu-opendata.pref.gifu.lg.jp/dataset/c11223-001> | 2023-05-08 更新（UTC） | 2026-11-24 | Web・CSV | データセット表記 cc-by-21-jp | 旧制度の居住地別週間集計の配布案内を確認 |
 | S74 | 岐阜県医師会のドメイン | 岐阜県リアルタイム感染症サーベイランス | <https://infect.gifu.med.or.jp/influ/> | 不明 | 2026-11-24 | Web | データの個別条件未確認 | 市案内から転送、公開一時停止の表示を確認 |
+| S75 | 東京都健康安全研究センター | 各地の感染症情報（地方感染症情報センター一覧） | <https://idsc.tmiph.metro.tokyo.lg.jp/klink/> | 2026-11-12 更新 | 2026-11-24 | Web | センターのサイト利用案内を参照。リンク先の条件は各提供元で確認 | 47都道府県の入口の発見に使用。到達性と代替根拠は [R-12 の一覧](findings/R-12-prefecture-inventory.md#都道府県別一覧) |
+| S76 | 総務省（e-Gov データポータル） | 全国地方公共団体コード | <https://data.e-gov.go.jp/data/dataset/soumu_20140909_0395> | データセットの版は配布元に従う | 2026-11-24 | Web | 今回はコード体系の参照 | S20 の補助。都道府県の先頭2桁を一覧に使用 |
+| S77 | 神奈川県衛生研究所 | 2026年第46週 インフルエンザ CSV・週報 | [CSV](https://www.pref.kanagawa.jp/sys/eiken/003_center/0001_weekly/csv/20261119-influenza_2026.csv)・[週報 p.8](https://www.pref.kanagawa.jp/sys/eiken/003_center/0001_weekly/pdf/wrR08_46.pdf#page=8) | 2026-11-19 | 2026-11-24 | CSV・PDF | 県サイトの利用案内あり。資料固有条件は未確認 | 市・保健所等の列を確認。第46週の全県と3市の定点率を照合 |
+| S78 | 島根県・山口県の感染症発生動向データ提供サイト | 感染症発生動向調査のデータ抽出画面 | [島根県](https://pref.shimane.didss.dsvc.jp/nesid/opendata)・[山口県](https://pref.yamaguchi.didss.dsvc.jp/nesid/opendata) | 表示上の改訂日は未確認 | 2026-11-24 | Web・CSV選択画面 | 個別のライセンス本文は未確認 | 週定点・保健所別を選択可能。出力ファイルは未照合 |
+| S79 | 福岡県 | 感染症発生動向調査週報 2026年 | <https://www.pref.fukuoka.lg.jp/contents/idwr2026.html> | 第46週 2026-11-19 | 2026-11-24 | Web・PDF | 県庁サイトに権利帰属の案内。研究所別サイトは適用範囲未確認 | 研究所の入口が HTTP 503 のため代替。県集計を確認 |
 
 学校情報等検索 API のベース URL 候補は <https://opendata.jssh.site/siss/resources/>。現行仕様で照合する。Tableau の S01 掲載 URL は [R-01 の一覧](findings/R-01-public-views.md#公開ビュー-url-一覧)を参照する。
