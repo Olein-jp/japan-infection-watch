@@ -121,6 +121,6 @@ test "$(shasum -a 256 "$archive_dir/site.tar.gz" | awk '{print $1}')" = "$archiv
 
 ## 公式リンク先行版の配布
 
-先行版は JIHS の速報一覧と日本学校保健会の感染症情報マップを案内する。[公開ワークフロー](../../.github/workflows/publish-official-links.yml)は、トップページ・404・CSS の3ファイルを一時ディレクトリに揃え、SHA-256 を記録して配布する。
+先行版は JIHS の速報一覧と厚労省のインフルエンザ様疾患発生報告を案内する。[公開ワークフロー](../../.github/workflows/publish-official-links.yml)は、トップページ・404・CSS の3ファイルを一時ディレクトリに揃え、SHA-256 を記録して配布する。
 
 数値版の初回配布に失敗した場合は、現在の公開版を先に確認する。復旧が必要なら、承認後に既定ブランチから `publish-official-links.yml` を `restore_initial=true` で手動実行する。公開済みの初版 `6f7cd69` から3ファイルを梱包する。完了後は GitHub Actions が返すページ URL でトップページ、CSS、未定義パスでの404と戻り先を確認し、ファイルのハッシュを照合する。[公式リンク初版の公開実行](https://github.com/Olein-jp/japan-infection-watch/actions/runs/45522869066)
