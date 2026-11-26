@@ -13,7 +13,7 @@
 - [F-002 #22](https://github.com/Olein-jp/japan-infection-watch/issues/22) は架空観測の静的ページと分割 JSON を実装・検証し、2026-11-25（JST）に完了。[検証結果と表示手順](findings/F-002-static-preview.md)
 - [I-001 #23](https://github.com/Olein-jp/japan-infection-watch/issues/23) は Actions の検証ワークフローと配布前判定を実装し、ローカル検証を経て2026-11-25（JST）に完了。[検証結果と再現手順](findings/I-001-preview-check.md)
 - [T-001 #24](https://github.com/Olein-jp/japan-infection-watch/issues/24) はローカルでの静的配信・アクセシビリティ・保管版からの復旧を通し検証し、2026-11-25（JST）に完了。[検証結果](findings/T-001-integrated-preview.md)
-- [O-001 #25](https://github.com/Olein-jp/japan-infection-watch/issues/25) は公式リンク先行版を公開済み。2026-11-26（JST）に JIHS 第45・46週の数値版で、出典・加工表示、JSON と原表の3,648セルの一致、破損の拒否、保管版からの復元を確認した。追加週の利用条件・収録、本番用成果物の監査、受け渡し・保管先と公開承認が残る。[2週分の検証結果](findings/O-001-release-readiness.md#第4546週の数値版の検証)・[数値版の検証手順](operations/mvp-release.md#jihs-数値版のローカル検証)
+- [O-001 #25](https://github.com/Olein-jp/japan-infection-watch/issues/25) は公式リンク先行版を公開済み。2026-11-26（JST）に JIHS 第45・46週の数値版で、出典・加工表示、JSON と原表の3,648セルの一致、破損の拒否、保管版からの復元を確認した。初回公開候補を第45・46週に絞り、出典・編集加工表示を持つ表示用 JSON を条件付き配布可と判定した。本番用成果物の監査、受け渡し・保管先と復旧担当、公開承認が残る。[初回の収録範囲と配布条件](findings/O-001-release-readiness.md#初回数値版の収録範囲と-json-の配布条件)[2週分の検証結果](findings/O-001-release-readiness.md#第4546週の数値版の検証)・[数値版の検証手順](operations/mvp-release.md#jihs-数値版のローカル検証)
 
 ## 調査の着手候補
 
