@@ -1,4 +1,4 @@
-name: JIHS 第45・46週の数値版を公開
+name: JIHS 週次定点の数値版を公開
 
 on:
   workflow_dispatch:
@@ -34,12 +34,14 @@ jobs:
           RUN_ID: ${{ inputs.candidate_run_id }}
           APPROVED_RELEASE: ${{ vars.JIHS_APPROVED_RELEASE }}
         run: |
+          reviewed_inputs=$(python3 -B -m scripts.jihs_release_inputs)
+          reviewed_weeks=$(jq -c 'keys' <<< "$reviewed_inputs")
           if [[ ! "$RUN_ID" =~ ^[1-9][0-9]*$ || "$GITHUB_SHA" != "$(git rev-parse HEAD)" ]] ||
-            ! jq -es --arg run_id "$RUN_ID" --arg revision "$GITHUB_SHA" '
+            ! jq -es --arg run_id "$RUN_ID" --arg revision "$GITHUB_SHA" --argjson weeks "$reviewed_weeks" '
               def sha256: type == "string" and length == 64 and test("^[0-9a-f]+$");
               (length == 1) and (.[0] |
                 (.run_id == $run_id) and (.revision == $revision) and
-                (.weeks == ["2026-W45", "2026-W46"]) and
+                (.weeks == $weeks) and
                 (.candidate_sha256 | sha256) and (.pages_sha256 | sha256))
             ' <<< "$APPROVED_RELEASE" >/dev/null 2>&1; then
             echo "::error::実行 ID、コミット、対象週と2つのハッシュを含む配布承認が必要です"

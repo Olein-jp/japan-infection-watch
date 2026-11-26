@@ -32,7 +32,7 @@ jobs:
     name: 候補を再生成して照合
     if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
     runs-on: ubuntu-24.04
-    timeout-minutes: 5
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -85,30 +85,30 @@ jobs:
           if [[ "$SOURCE" == fixture ]]; then
             PYTHONPATH=tests python3 -B -m fixtures.build_web_preview "$work/site" --generated-at "$GENERATED_AT"
           else
-            for week in 45 46; do
-              csv_path="$work/2026-$week-teiten.csv"
+            reviewed_inputs=$(python3 -B -m scripts.jihs_release_inputs)
+            weeks=$(jq -r 'keys[]' <<< "$reviewed_inputs")
+            csv_files=()
+            while IFS= read -r week_id; do
+              year=${week_id%-W*}
+              week=${week_id##*W}
+              csv_file="$year-$week-teiten.csv"
+              csv_path="$work/$csv_file"
               status=$(curl -q --proto '=https' --fail --silent --show-error --connect-timeout 5 --max-time 20 \
                 --max-filesize 100000 --output "$csv_path" --write-out '%{http_code}' \
-                "https://id-info.jihs.go.jp/surveillance/idwr/provisional/2026/$week/2026-$week-teiten.csv")
+                "https://id-info.jihs.go.jp/surveillance/idwr/provisional/$year/$week/$csv_file")
               if [[ "$status" != 200 ]]; then
-                echo "::error::第$week 週の公式 CSV 取得で HTTP $status を受信しました"
+                echo "::error::$week_id の公式 CSV 取得で HTTP $status を受信しました"
                 exit 1
               fi
-              if ! python3 -B - "$csv_path" "$week" <<'PY'
-          import sys
-          from hashlib import sha256
-          from pathlib import Path
-          from scripts.build_release_candidate import REVIEWED_INPUTS
-
-          digest = sha256(Path(sys.argv[1]).read_bytes()).hexdigest()
-          sys.exit(REVIEWED_INPUTS.get(digest) != (2026, int(sys.argv[2])))
-          PY
-              then
-                echo "::error::第$week 週の公式 CSV が照合済みの原本と一致しません"
+              expected_input=$(jq -r --arg week "$week_id" '.[$week]' <<< "$reviewed_inputs")
+              actual_input=$(sha256sum "$csv_path")
+              if [[ "${actual_input%% *}" != "$expected_input" ]]; then
+                echo "::error::$week_id の公式 CSV が照合済みの原本と一致しません"
                 exit 1
               fi
-            done
-            python3 -B -m scripts.build_release_candidate "$work/2026-45-teiten.csv" "$work/2026-46-teiten.csv" \
+              csv_files+=("$csv_path")
+            done <<< "$weeks"
+            python3 -B -m scripts.build_release_candidate "${csv_files[@]}" \
               --generated-at "$GENERATED_AT" --output "$work/site"
             check_mode=(--release-candidate)
           fi

@@ -2,7 +2,7 @@
 
 更新日 2026-11-26（JST）
 
-現在は設計・開発段階。2026-11-24（JST）に R-19 の仕様案での開発を承認された。[初期版の設計・開発（#2）](https://github.com/Olein-jp/japan-infection-watch/milestone/2) に開発 Issue 6件を登録。採用技術は Python による取得・正規化・静的生成と静的 HTML・CSS・JavaScript、GitHub Actions の標準 Linux runner、GitHub Pages。初期開発は架空の JIHS 週次定点集計を対象とし、実データの第一候補は全国・都道府県の JIHS IDWR 週次定点速報 CSV。[開発範囲と入力条件](specifications/mvp-inputs.md)
+JIHS 数値版を初回公開し、今後の更新は手動で行う。2026-11-24（JST）に R-19 の仕様案での開発を承認された。[初期版の設計・開発（#2）](https://github.com/Olein-jp/japan-infection-watch/milestone/2) に開発 Issue 6件を登録。採用技術は Python による取得・正規化・静的生成と静的 HTML・CSS・JavaScript、GitHub Actions の標準 Linux runner、GitHub Pages。初期開発は架空の JIHS 週次定点集計を対象とし、実データの第一候補は全国・都道府県の JIHS IDWR 週次定点速報 CSV。[開発範囲と入力条件](specifications/mvp-inputs.md)
 
 [調査・実現可能性評価（R-01〜R-19）（#1）](https://github.com/Olein-jp/japan-infection-watch/milestone/1) に調査 Issue 19件を登録済み。R-01 で日本学校保健会の公式案内を棚卸しし、[調査結果](findings/R-01-public-views.md)を記録した。R-02 で公開ビューの[利用条件](findings/R-02-reuse-terms.md)を調査し、R-03 で[ローカルの埋め込み表示](findings/R-03-tableau-embedding.md)を確認し、R-04 で[公式サンプルの集計と CSV ファイル](findings/R-04-tableau-summary.md)を検証した。
 
@@ -13,7 +13,8 @@
 - [F-002 #22](https://github.com/Olein-jp/japan-infection-watch/issues/22) は架空観測の静的ページと分割 JSON を実装・検証し、2026-11-25（JST）に完了。[検証結果と表示手順](findings/F-002-static-preview.md)
 - [I-001 #23](https://github.com/Olein-jp/japan-infection-watch/issues/23) は Actions の検証ワークフローと配布前判定を実装し、ローカル検証を経て2026-11-25（JST）に完了。[検証結果と再現手順](findings/I-001-preview-check.md)
 - [T-001 #24](https://github.com/Olein-jp/japan-infection-watch/issues/24) はローカルでの静的配信・アクセシビリティ・保管版からの復旧を通し検証し、2026-11-25（JST）に完了。[検証結果](findings/T-001-integrated-preview.md)
-- [O-001 #25](https://github.com/Olein-jp/japan-infection-watch/issues/25) は公式リンク先行版を公開済み。2026-11-26（JST）に JIHS 第45・46週の数値版で、出典・加工表示、JSON と原表の3,648セルの一致、破損の拒否、保管版からの復元を確認した。初回公開候補を第45・46週に絞り、出典・編集加工表示を持つ表示用 JSON を条件付き配布可と判定した。本番パスで公開候補を生成し、配布範囲・原表・ブラウザ表示・圧縮版からの復元をローカルで確認した。候補の受け渡し用ワークフローを実装し、架空データの受け渡し・不一致時の停止・公式リンク初版の再梱包をローカルで確認した。GitHub 上でも架空成果物のダウンロード・再検証と、ハッシュ不一致時に成果物が0件となることを確認した。数値版の手動配布を実装し、承認・ハッシュ照合で停止することをローカルで確認した。長期保管先と復旧担当、最終監査と公開承認、実際の配布が残る。[数値版の公開試験](findings/O-001-release-readiness.md#数値版の手動公開の実装と試験)・[GitHub 上の試験](findings/O-001-release-readiness.md#github-actions-上の架空データ試験)・[手動ワークフローの検証](findings/O-001-release-readiness.md#手動ワークフローの実装とローカル試験)・[公開候補の検証](findings/O-001-release-readiness.md#初回公開候補の生成監査と復旧試験)・[初回の収録範囲と配布条件](findings/O-001-release-readiness.md#初回数値版の収録範囲と-json-の配布条件)・[2週分の検証結果](findings/O-001-release-readiness.md#第4546週の数値版の検証)・[数値版の検証手順](operations/mvp-release.md#jihs-数値版のローカル検証)
+- [O-001 #25](https://github.com/Olein-jp/japan-infection-watch/issues/25) は2026-11-26 12:18 JST に JIHS 第45・46週の数値版を初回公開した。代表ページ、404、manifest と最新・履歴 JSON が配布版と一致した。Issue は依頼者の完了承認待ち。[初回公開と公開後照合](findings/O-001-release-readiness.md#第4546週の初回公開と公開後照合)・[公開サイト](https://olein-jp.github.io/japan-infection-watch/)
+- 直近6か月への拡張は第20〜46週を対象に、追加25週の CSV を各1回取得して照合済み。全27週のローカル配布候補を生成し、履歴49,248セルが原表と一致した。半年版は公開承認待ち。[半年版の照合](findings/O-001-release-readiness.md#第2044週の取得と半年版の照合)
 
 ## 調査の着手候補
 
