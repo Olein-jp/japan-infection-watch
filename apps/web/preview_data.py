@@ -23,7 +23,6 @@ LOCAL_ATTRIBUTION = "国立健康危機管理研究機構（JIHS）感染症情�
 LOCAL_PROCESSING = "感染症動向ウォッチ（Japan Infection Watch）が速報 CSV の集計値を表示用に整形し、グラフと表を作成"
 OFFICIAL_SOURCE = "https://id-info.jihs.go.jp/surveillance/idwr/"
 OFFICIAL_ARCHIVE = "https://id-info.jihs.go.jp/surveillance/idwr/provisional/sokuhou.html"
-SCHOOL_HEALTH_MAP = "https://www.gakkohoken.jp/system_information/jssh_absence_information_mapping"
 HISTORY_MONTHS = 6
 MUNICIPALITIES = {
     "21201": ("岐阜市", "21", "インフルエンザについて", "https://www.city.gifu.lg.jp/kenko/kansensyou/1004450/1004453.html"),

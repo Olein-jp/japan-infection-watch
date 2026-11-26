@@ -8,7 +8,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 import unittest
 
-from apps.web.build import JIHS_PROVISIONAL, MUNICIPAL_CLOSURES, build
+from apps.web.build import JIHS_PROVISIONAL, MHLW_SCHOOL_REPORTS, build
 from apps.web.preview_data import REGIONS, history_start
 from fixtures.build_web_preview import TIMESTAMP, preview_batches
 from fixtures.jihs_weekly import csv_bytes, fixture_table
@@ -30,21 +30,27 @@ class SiteBuildTest(unittest.TestCase):
         home = (self.output / "index.html").read_text()
         for path in ("prefectures/21/", "diseases/influenza/", "municipalities/21201/", "sources/"):
             self.assertIn(f'href="/japan-infection-watch/{path}"', home)
-        self.assertIn(f'href="{MUNICIPAL_CLOSURES}"', home.split('id="regions"', 1)[1].split("</section>", 1)[0])
+        self.assertIn(f'href="{MHLW_SCHOOL_REPORTS}"', home)
         for code in REGIONS.keys() - {"jp"}:
             with self.subTest(prefecture=code):
                 region = (self.output / f"prefectures/{code}/index.html").read_text()
                 school = region.split('id="school-closures"', 1)[1].split("</section>", 1)[0]
-                self.assertIn(f'href="{MUNICIPAL_CLOSURES}"', school)
+                self.assertIn(f'href="{MHLW_SCHOOL_REPORTS}"', school)
                 self.assertIn("医療機関1か所あたり（件）", region)
                 self.assertNotIn("定点当たり（件／定点）", region)
         municipality = (self.output / "municipalities/21201/index.html").read_text()
         self.assertIn("このページに岐阜市の集計はありません。", municipality)
         self.assertIn("https://www.city.gifu.lg.jp/kenko/kansensyou/1004450/1004453.html", municipality)
-        self.assertIn(f'href="{MUNICIPAL_CLOSURES}"', municipality)
         self.assertNotIn("<table>", municipality)
         self.assertFalse((self.output / "municipalities/99999").exists())
         self.assertIn("全国のページへ戻る", (self.output / "404.html").read_text())
+        fallback = Path(__file__).resolve().parents[1] / "apps/web/official_links/index.html"
+        self.assertIn(f'href="{MHLW_SCHOOL_REPORTS}"', fallback.read_text())
+        for path in [*self.output.rglob("*.html"), fallback]:
+            with self.subTest(page=path):
+                page = path.read_text()
+                self.assertNotIn("gakkohoken.jp", page)
+                self.assertNotIn("jssh.absence.information.mapping.service", page)
 
     def test_all_indexes_and_monthly_files_have_matching_sizes_and_hashes(self):
         build(self.batches[::-1], self.output, base="/", generated_at=TIMESTAMP)

@@ -6,14 +6,14 @@
 
 | ID | 提供主体・運営（候補） | 資料 | URL | 公開・改訂日 | 確認日（JST） | 形式（候補） | 利用条件 | 検証状態 |
 |---|---|---|---|---|---|---|---|---|
-| S01 | 日本学校保健会 | 日本学校保健会 マップビュー・API案内 | <https://www.gakkohoken.jp/system_information/jssh_absence_information_mapping> | 2024-03-25（最新の変更告知） | 2026-11-24 | Web | 通常閲覧可。集計の外部利用は確認待ち | R-01 で掲載表、R-02 で提供経路の区別を確認 |
+| S01 | 日本学校保健会 | 日本学校保健会 マップビュー・API案内 | <https://www.gakkohoken.jp/system_information/jssh_absence_information_mapping> | 2024-03-25（最新の変更告知） | 2026-11-24 | Web | 通常閲覧を確認。公開サイトでの採用は見送り | R-01 で掲載表、R-02 で提供経路の区別を確認 |
 | S02 | 日本学校保健会 | 学校情報等検索API仕様 | <https://www.gakkohoken.jp/files/ccenter/mapview/20220825api_specification.pdf> | — | — | PDF | 未確認 | 未検証 |
 | S03 | 日本学校保健会 | 学校情報等検索API利用規約 | <https://www.gakkohoken.jp/files/ccenter/mapview/terms_of_use.pdf> | 2022年4月（表紙） | 2026-11-24 | PDF | 学校検索 API に適用。制限・更新義務あり | R-02 で第1・2・4・5・7条を確認 |
-| S04 | 日本学校保健会 | システム使用規程 | <https://www.gakkohoken.jp/files/ccenter/system/20230803/202308mapview.pdf> | 2014-01-01 施行、2023年8月改訂（附則） | 2026-11-24 | PDF | 使用資格と統計化情報の公開条件。外部再利用は確認待ち | R-02 で第2・5〜13・18項と附則を確認 |
+| S04 | 日本学校保健会 | システム使用規程 | <https://www.gakkohoken.jp/files/ccenter/system/20230803/202308mapview.pdf> | 2014-01-01 施行、2023年8月改訂（附則） | 2026-11-24 | PDF | 使用資格と統計化情報の公開条件。公開サイトでの採用判断は R-02 を参照 | R-02 で第2・5〜13・18項と附則を確認 |
 | S05 | 日本学校保健会 | マップビューマニュアル | <https://www.gakkohoken.jp/files/ccenter/20220412/mapview-manual.pdf> | 2022-04-12（S01 掲載） | 2026-11-24 | PDF | 未判定 | R-01 で当時の表示仕様を確認 |
 | S06 | 日本学校保健会 | マップビュー研修資料 | <https://www.gakkohoken.jp/files/ivent/20240722/program-02.pdf> | 2024-07-22（研修開催日） | 2026-11-24 | PDF | 未判定 | R-01 で定義・日付操作を確認 |
 | S07 | 日本学校保健会 | 表示変更資料 | <https://www.gakkohoken.jp/files/ccenter/mapview/202303view_change.pdf> | 2023-03-15（S01 告知） | 2026-11-24 | PDF | 未判定 | R-01 で疾患区分・市区町村実績表の追加を確認 |
-| S08 | 日本学校保健会のマップビュー掲載プロフィール（Tableau Public） | Tableau Publicプロフィール | <https://public.tableau.com/app/profile/jssh.absence.information.mapping.service> | 不明 | 2026-11-24 | Web | 通常閲覧可。公開集計の取得・再配布は確認待ち | R-01 で公開入口、R-02 で代表ビューの共有と出力メニューを確認 |
+| S08 | 日本学校保健会のマップビュー掲載プロフィール（Tableau Public） | Tableau Publicプロフィール | <https://public.tableau.com/app/profile/jssh.absence.information.mapping.service> | 不明 | 2026-11-24 | Web | 通常閲覧を確認。公開サイトでの採用は見送り | R-01 で公開入口、R-02 で代表ビューの共有と出力メニューを確認 |
 | S09 | Tableau | Tableau Embedding API データ取得 | <https://help.tableau.com/current/api/embedding_api/en-us/docs/embedding_api_data.html> | 不明 | 2026-11-24 | Web | 一般仕様。対象ビューからの取得許可は未確認 | R-04 で公式サンプルの先頭ページを取得 |
 | S10 | Tableau | Tableau エクスポート | <https://help.tableau.com/current/api/embedding_api/en-us/docs/embedding_api_export.html> | 不明 | 2026-11-24 | Web | 一般仕様。代表ビューのメニューに CSV なし | R-04 で公式サンプルの出力と CSV ファイルの2指標を照合 |
 | S11 | Tableau | Tableau 認証 | <https://help.tableau.com/current/api/embedding_api/en-us/docs/embedding_api_auth.html> | 不明 | 2026-11-24 | Web | Public の埋め込みは通常認証不要 | R-02 で認証要件の一般仕様を確認 |
@@ -111,7 +111,7 @@
 | S103 | GitHub | Actions の手動実行、設定変数、Pages artifact | [手動実行](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/manually-run-a-workflow)・[設定変数](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-variables)・[公式 action の定義](https://github.com/actions/upload-pages-artifact/blob/fc324d3547104276b827a68afc52ff2a11cc49c9/action.yml) | 閲覧時の仕様、action は固定リビジョン | 2026-11-26 | Web・YAML | 既定ブランチへのワークフロー配置、変数の参照、梱包対象・保持期間 | O-001 の候補の受け渡しと復旧。GitHub で架空成果物の保持・取得と不一致時の成果物0件を実行確認 |
 | S104 | GitHub | Actions のワークフロー実行メタデータ | [Get a workflow run](https://docs.github.com/en/rest/actions/workflow-runs#get-a-workflow-run) | 閲覧時の仕様 | 2026-11-26 | Web・API | リポジトリ、ブランチ、実行コミット、起動イベント、結果、ワークフローパスの照合 | O-001 の数値版公開工程。実際の架空実行で API の項目を確認。承認未設定の試験では成果物0件、Pages デプロイ追加0件 |
 | S105 | GitHub | Actions・Packages の共有容量と超過停止 | [Actions 課金](https://docs.github.com/en/billing/concepts/product-billing/github-actions)・[Packages 課金](https://docs.github.com/en/billing/concepts/product-billing/github-packages)・[予算設定](https://docs.github.com/en/billing/how-tos/set-up-budgets) | 閲覧時の仕様 | 2026-11-26 | Web・個人アカウントの設定画面 | 標準 runner、共有容量、使用量と予算超過時の停止 | O-001。必要容量と既存の停止設定を読み取り確認した。アカウント固有の値は公開記録の対象外 |
-| S106 | JIHS | IDWR 2026年速報一覧と第20〜44週の週次定点掲載欄 | [2026年一覧](https://id-info.jihs.go.jp/surveillance/idwr/provisional/2026/index.html)・[第20週](https://id-info.jihs.go.jp/surveillance/idwr/provisional/2026/20/index.html)・[第44週](https://id-info.jihs.go.jp/surveillance/idwr/provisional/2026/44/index.html) | 第20週は2026-05-26、第44週は2026-11-10掲載 | 2026-11-26 | Web・CSV | S53 の利用規約と各週の掲載欄を参照 | O-001 で掲載リンク・注記を確認し、承認を受けて25週の CSV を各1回取得。形式・週・ハッシュ・履歴への変換を照合 |
+| S106 | JIHS | IDWR 2026年速報一覧と第20〜44週の週次定点掲載欄 | [2026年一覧](https://id-info.jihs.go.jp/surveillance/idwr/provisional/2026/index.html)・[第20週](https://id-info.jihs.go.jp/surveillance/idwr/provisional/2026/20/index.html)・[第44週](https://id-info.jihs.go.jp/surveillance/idwr/provisional/2026/44/index.html) | 第20週は2026-05-26、第44週は2026-11-10掲載 | 2026-11-26 | Web・CSV | S53 の利用規約と各週の掲載欄を参照 | O-001 で掲載リンク・注記を確認。25週を手元で各1回取得・照合し、公開時に Actions で第20〜46週を各1回取得して原本ハッシュを再照合 |
 
 学校情報等検索 API のベース URL 候補は <https://opendata.jssh.site/siss/resources/>。現行仕様で照合する。Tableau の S01 掲載 URL は [R-01 の一覧](findings/R-01-public-views.md#公開ビュー-url-一覧)を参照する。
 

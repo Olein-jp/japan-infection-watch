@@ -161,8 +161,7 @@ async function check() {
     assert.match(await nationalLegend.textContent(), /2030-01-13終了/);
     assert.equal(await nationalHistory.locator("tbody tr").count(), 1);
     assert.equal(await page.locator("#regions").evaluate(el => el.compareDocumentPosition(document.querySelector("#diseases")) & Node.DOCUMENT_POSITION_FOLLOWING), 4);
-    assert.match(await page.getByRole("link", { name: "日本学校保健会の感染症情報マップ" }).getAttribute("href"),
-      /^https:\/\/www\.gakkohoken\.jp\//);
+    assert.match(await page.getByRole("link", { name: /厚生労働省/ }).getAttribute("href"), /^https:\/\/www\.mhlw\.go\.jp\//);
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth), 320);
     await page.getByRole("searchbox", { name: "都道府県名で絞り込む" }).fill("北海道");
     assert.equal(await page.locator(".region-status").textContent(), "1件の都道府県");
@@ -180,11 +179,7 @@ async function check() {
     await page.getByRole("link", { name: "学級閉鎖・休校の情報を見る" }).click();
     assert.equal(new URL(page.url()).hash, "#school-closures");
     const school = page.getByRole("region", { name: "学級閉鎖・休校", exact: true });
-    assert.match(await school.getByRole("link", { name: /日本学校保健会/ }).getAttribute("href"), /^https:\/\/www\.gakkohoken\.jp\//);
     assert.match(await school.getByRole("link", { name: /厚生労働省/ }).getAttribute("href"), /^https:\/\/www\.mhlw\.go\.jp\//);
-    const municipalChartName = "市区町村別の学級閉鎖（インフルエンザ）";
-    const municipalChart = await school.getByRole("link", { name: municipalChartName }).getAttribute("href");
-    assert.match(municipalChart, /^https:\/\/public\.tableau\.com\/.*\/____16744492330710\/1\?/);
     await page.emulateMedia({ forcedColors: "active" });
     assert.equal(await page.evaluate(() => window.matchMedia("(forced-colors: active)").matches), true);
     const influenza = page.getByRole("row").filter({ has: page.getByRole("link", { name: "インフルエンザ", exact: true }) });
@@ -269,7 +264,6 @@ async function check() {
     assert.equal((await page.goto(home + "municipalities/21201/")).status(), 200);
     await page.getByText("このページに岐阜市の集計はありません。").waitFor();
     assert.match(await page.getByRole("link", { name: /岐阜市公式サイト/ }).getAttribute("href"), /^https:\/\/www\.city\.gifu\.lg\.jp\//);
-    assert.equal(await page.getByRole("link", { name: municipalChartName }).getAttribute("href"), municipalChart);
     assert.equal(await page.getByRole("table").count(), 0);
     assert.equal((await page.goto(home + "municipalities/99999/")).status(), 404);
     await page.getByRole("link", { name: "全国のページへ戻る" }).click();

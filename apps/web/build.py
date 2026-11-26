@@ -12,7 +12,7 @@ from tempfile import TemporaryDirectory
 
 from apps.web.preview_data import (
     ATTRIBUTION, DISEASES, HISTORY_MONTHS, LOCAL_ATTRIBUTION, LOCAL_PROCESSING, METRIC_IDS, MUNICIPALITIES,
-    OFFICIAL_ARCHIVE, OFFICIAL_SOURCE, REGIONS, SCHOOL_HEALTH_MAP,
+    OFFICIAL_ARCHIVE, OFFICIAL_SOURCE, REGIONS,
     json_bytes, parse_timestamp, prepare, write_distribution,
 )
 from apps.web import school_closures
@@ -25,8 +25,6 @@ STATUS = {
     "not_reported": "未報告", "suppressed": "秘匿", "not_applicable": "対象外",
 }
 METRIC_HEADERS = "<th scope=\"col\">報告件数（件）</th><th scope=\"col\">医療機関1か所あたり（件）</th>"
-MUNICIPAL_CLOSURES = ("https://public.tableau.com/app/profile/jssh.absence.information.mapping.service/"
-                      "viz/____16744492330710/1?%E7%96%BE%E6%82%A3%E3%83%BB%E7%97%87%E7%8A%B6%E3%81%AE%E5%8C%BA%E5%88%86=3")
 MHLW_SCHOOL_REPORTS = "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/kenkou/kekkaku-kansenshou01/houdou.html"
 GAP_NOTE = '<p class="table-note"><span class="missing">-</span> は原表の表記です。報告数の 0 とは区別しています。</p>'
 
@@ -158,23 +156,12 @@ def pages(root, base, release, timestamp, latest, history, version, indexes, *,
     sample_key = ("jp", next(iter(DISEASES)))
     first_row = next(iter(history[sample_key].values()))[0]
     covered_period = (first_row["period_start"], latest[sample_key][METRIC_IDS[0]]["period_end"])
-    school_map = f'<a href="{SCHOOL_HEALTH_MAP}">日本学校保健会の感染症情報マップ</a>'
-    school_municipal = f'<a href="{MUNICIPAL_CLOSURES}">市区町村別の学級閉鎖（インフルエンザ）</a>'
     school_reports = f'<a href="{MHLW_SCHOOL_REPORTS}">厚生労働省のインフルエンザ様疾患発生報告</a>'
     municipal_guides = {
         code: f'<a href="{base}municipalities/{code}/">{escape(name)}の公式案内</a>'
         for code, (name, _, _, _) in MUNICIPALITIES.items()
     }
     all_municipal_guides = "".join(f"<li>{link}</li>" for link in municipal_guides.values())
-    municipal_closure_guide = (
-        f'<p>{school_municipal}。日本学校保健会の公式グラフで自治体を選べます。</p>'
-    )
-    school_links = f"""
-{municipal_closure_guide}
-<ul>
-<li>{school_map}で、ほかの疾患の学級閉鎖なども確認できます。</li>
-<li>{school_reports}で、インフルエンザ様疾患による学級閉鎖・学年閉鎖・休校を実施した施設数を週ごとに確認できます。</li>
-</ul>"""
     entries = []
     for disease, label in DISEASES.items():
         link = f'<a href="{base}diseases/{disease}/">{escape(label)}</a>'
@@ -187,13 +174,12 @@ def pages(root, base, release, timestamp, latest, history, version, indexes, *,
     emit("index.html", "全国の感染症動向", f"""
 {national_history}
 <section id="regions" class="panel"><h2>都道府県を選ぶ</h2>
-{municipal_closure_guide}
 <label class="region-filter" hidden>都道府県名で絞り込む<input type="search" autocomplete="off"></label>
 <p class="region-status" role="status"></p><ul class="region-list">{links}</ul></section>
 {note}
 <section id="diseases" class="panel"><h2>疾患別の最新値</h2>{national}</section>
 <section class="panel"><h2>学校・市区町村の公式案内</h2>
-<ul><li>{school_map}</li>{all_municipal_guides}</ul></section>
+<ul><li>{school_reports}</li>{all_municipal_guides}</ul></section>
 """, hero=True)
 
     for code, name in REGIONS.items():
@@ -215,7 +201,7 @@ def pages(root, base, release, timestamp, latest, history, version, indexes, *,
 <section class="panel" id="school-closures" aria-labelledby="school-closures-heading">
 <h2 id="school-closures-heading">学級閉鎖・休校</h2>
 {school_closures.chart(closure_reports, name)}
-{school_links}
+<p>{school_reports}で、インフルエンザ様疾患による学級閉鎖・学年閉鎖・休校を実施した施設数を週ごとに確認できます。</p>
 </section>"""
         emit(f"prefectures/{code}/index.html", name,
              '<p><a href="#school-closures">学級閉鎖・休校の情報を見る</a></p>'
@@ -239,7 +225,6 @@ def pages(root, base, release, timestamp, latest, history, version, indexes, *,
     for code, (name, pref, label, url) in MUNICIPALITIES.items():
         emit(f"municipalities/{code}/index.html", name, f"""
 <section class="panel"><h2>市の公式案内</h2>
-{municipal_closure_guide}
 <p>このページに{name}の集計はありません。</p>
 <ul><li><a href="{url}">{name}公式サイト「{label}」</a></li>
 <li><a href="{base}prefectures/{pref}/">{REGIONS[pref]}の週次集計（都道府県単位）</a></li></ul></section>
@@ -249,9 +234,7 @@ def pages(root, base, release, timestamp, latest, history, version, indexes, *,
 <section class="panel"><h2>情報源</h2><p>{attribution}。</p>
 {processing}
 <p><a href="{OFFICIAL_SOURCE}">国立健康危機管理研究機構の感染症発生動向調査週報（IDWR）</a></p>
-<p>{school_map}</p>
 <p>{school_reports}</p>
-{municipal_closure_guide}
 <ul>{all_municipal_guides}</ul></section>
 <section class="panel"><h2>指標と欠損</h2><p>報告件数は、週ごとの報告を担当する医療機関からの報告の合計です。
 「医療機関1か所あたり」は、報告を担当する医療機関（定点）1か所あたりの報告数です。出典にある「定点当たり報告数」を同じ精度で掲載しています。</p>

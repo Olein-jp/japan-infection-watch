@@ -214,3 +214,35 @@ O-001 の初回公開に関する技術的な受入確認は完了。Issue は�
 | 表示・試験 | Chrome で岐阜県インフルエンザの27週の履歴・各週の出典、5月の絞り込み、320 CSS px の幅を確認した。外部通信は0件。Python テスト37件が通過した。 |
 
 候補と照合記録は `artifacts/jihs-release-candidate/2026-w20-w46.wre2h_fq/` に保存。GitHub Actions での取得・共有と半年版の公開は承認待ち。[再現手順](../operations/mvp-release.md#直近6か月の配布候補を再現)
+
+### 半年版の公開と公開後照合
+
+2026-11-26（JST）、依頼者が第20〜46週の公式 CSV を GitHub Actions で各1回取得し、検証済みの静的成果物を共有して GitHub Pages に公開することを承認した。対象は全国・47都道府県、19疾患、2指標。公開した期間は2026年5月11日〜11月15日の27週。
+
+| 工程 | 実行結果 |
+|---|---|
+| 公開前監査 | `82e1b7d` を含む Git 履歴37コミット、公開 Issue 25件、コメント36件、既存 Actions ログ7件と最終配布物を Gitleaks 8.30.1 で検査し、検出0件。共有容量と Actions・Packages の超過停止を公開直前に再確認。テスト37件が通過した。 |
+| 候補生成・共有 | 15:17 JST に候補検証を実行し、第20〜46週の公式 CSV を順に各1回取得。全原本と候補の SHA-256 が照合済み版と一致した。候補 artifact は1件、1,101,679バイト。ダウンロードして復元した最終配布版も一致した。[候補検証の実行](https://github.com/Olein-jp/japan-infection-watch/actions/runs/45767164216) |
+| Pages 配布 | 15:19:11 JST にデプロイ `8078040942` が成功。コミット `82e1b7d26ba5f55069ee48019a93c8fab1f5ac22`、版 `candidate-2649cc82aae48a7edc98`。配布版は7,417ファイル、展開後26,823,035バイト、SHA-256 `404dfc7cd2ed5179ebcb67dc0f6e77705b16c67fa0f56dfeed933a298d15ed4c`。Pages artifact は1件、1,102,811バイト。[公開の実行](https://github.com/Olein-jp/japan-infection-watch/actions/runs/45767289863) |
+| 公開後照合 | トップ、岐阜県、インフルエンザ、CSS、JS、manifest、岐阜県索引、同県インフルエンザの最新値と5〜11月の履歴 JSON の計15件が HTTP 200、未定義パスが HTTP 404。16件の本文ハッシュが配布版と一致。最新値は第46週、履歴は第20〜46週で全27週の出典が一致した。[公開サイト](https://olein-jp.github.io/japan-infection-watch/) |
+| 解除・保管 | 今回設定した承認用変数2件を解除。Git 管理外の `artifacts/jihs-release-archive/candidate-2649cc82aae48a7edc98/` に候補の圧縮版、入力一覧、配布前・公開後の照合記録を保管した。 |
+
+以後の更新は手動。別媒体での保管と、提供元が原本を差し替えた場合の数値版の再投入経路は継続運用の課題として扱う。
+
+### 週次推移の表を最新週から表示
+
+2026-11-26 15:31 JST、週次推移の表を最新週から表示する変更を GitHub Pages に配布した。全期間・月指定とも最新週が表の先頭になり、折れ線の横軸は古い週から並ぶことを確認した。収録範囲は第20〜46週。直前の公開版と最新・履歴 JSON 7,296件の観測値が一致した。
+
+コミットは `2fa1f4b`、公開版は `candidate-68266e2b7bc3d1061a0b`。初回の公開実行は承認情報の照合で停止し、設定を修正して同じ候補で再実行した。公開後は JavaScript、代表ページ、manifest、履歴など計16件を配布版と照合した。一時承認用変数2件を解除し、圧縮版と照合記録を `artifacts/jihs-release-archive/candidate-68266e2b7bc3d1061a0b/` に保管した。[候補検証の実行](https://github.com/Olein-jp/japan-infection-watch/actions/runs/45768437925)・[公開の実行](https://github.com/Olein-jp/japan-infection-watch/actions/runs/45768692802)
+
+### 全19疾患の週次比較グラフを公開
+
+2026-11-26 15:42 JST、各都道府県で全19疾患を一枚の週次グラフに表示する版を配布した。第20〜46週の最新・履歴 JSON 7,296件の観測値が直前の公開版と一致した。地域索引に含めた比較用の値と欠損状態は候補検証で詳細履歴に照合した。公開後は代表ページと配布データの計16件が配布版と一致し、岐阜県ページで凡例の19疾患、最新週の値の順序、疾患の強調、月指定、詳細表の最新週順を Chrome で確認した。
+
+コミットは `f5e198a`、公開版は `candidate-c573f3eaaadd77b66ec8`。一時承認用変数2件を解除し、圧縮版と照合記録を `artifacts/jihs-release-archive/candidate-c573f3eaaadd77b66ec8/` に保管した。[候補検証の実行](https://github.com/Olein-jp/japan-infection-watch/actions/runs/45769911683)・[公開の実行](https://github.com/Olein-jp/japan-infection-watch/actions/runs/45770010696)
+
+### トップページの全国週次グラフを公開
+
+2026-11-26 16:09 JST、トップページに全国の全19疾患を比較する週次グラフを公開した。収録期間は第20〜46週。従来の最新・履歴 JSON 7,296件の観測値と47都道府県のグラフデータが直前の公開版と一致した。公開後、全国索引・全国の履歴・代表ページなど計17件を配布版と照合した。トップページの全国グラフで最新週の値の順序、線の強調、月指定、詳細表の最新週順を Chrome で確認した。
+
+コミットは `22da5f2`、公開版は `candidate-0fcbea0fd1260799937e`。一時承認用変数2件を解除し、圧縮版と照合記録を `artifacts/jihs-release-archive/candidate-0fcbea0fd1260799937e/` に保管した。[候補検証の実行](https://github.com/Olein-jp/japan-infection-watch/actions/runs/45773072983)・[公開の実行](https://github.com/Olein-jp/japan-infection-watch/actions/runs/45773157469)
