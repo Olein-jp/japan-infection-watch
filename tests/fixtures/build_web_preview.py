@@ -26,6 +26,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("output", type=Path)
     parser.add_argument("--base", default="/japan-infection-watch/")
+    parser.add_argument("--generated-at", default=TIMESTAMP)
     parser.add_argument("--latest-count", type=int, default=24, help="架空の全国インフルエンザ報告件数")
     args = parser.parse_args()
-    build(preview_batches(args.latest_count), args.output, base=args.base, generated_at=TIMESTAMP)
+    build(preview_batches(args.latest_count), args.output, base=args.base, generated_at=args.generated_at)

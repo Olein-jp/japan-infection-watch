@@ -1,0 +1,131 @@
+name: JIHS 数値版の公開候補を検証
+
+on:
+  workflow_dispatch:
+    inputs:
+      source:
+        description: 入力の種類
+        type: choice
+        options:
+          - fixture
+          - reviewed-jihs
+        default: fixture
+        required: true
+      revision:
+        description: レビュー済みのコミット SHA
+        type: string
+        required: true
+      generated_at:
+        description: 候補の生成日時（タイムゾーン付き ISO 8601）
+        type: string
+        required: true
+      expected_sha256:
+        description: 候補一式の検証 SHA-256
+        type: string
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    name: 候補を再生成して照合
+    if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: 入力・リビジョン・承認済みハッシュを確認
+        shell: bash
+        env:
+          SOURCE: ${{ inputs.source }}
+          REVISION: ${{ inputs.revision }}
+          GENERATED_AT: ${{ inputs.generated_at }}
+          EXPECTED_SHA256: ${{ inputs.expected_sha256 }}
+          APPROVED_SHA256: ${{ vars.JIHS_APPROVED_CANDIDATE_SHA256 }}
+        run: |
+          if [[ ! "$REVISION" =~ ^[0-9a-f]{40}$ || "$REVISION" != "$GITHUB_SHA" || "$REVISION" != "$(git rev-parse HEAD)" ]]; then
+            echo "::error::実行対象と照合済みの Git リビジョンが一致しません"
+            exit 1
+          fi
+          if [[ ! "$EXPECTED_SHA256" =~ ^[0-9a-f]{64}$ ]]; then
+            echo "::error::候補一式の SHA-256 を64桁の小文字の16進数で指定してください"
+            exit 1
+          fi
+          if ! python3 -B -c 'import sys; from apps.web.preview_data import parse_timestamp; parse_timestamp(sys.argv[1])' "$GENERATED_AT" 2>/dev/null; then
+            echo "::error::生成日時をタイムゾーン付き ISO 8601 で指定してください"
+            exit 1
+          fi
+          case "$SOURCE" in
+            fixture) ;;
+            reviewed-jihs)
+              if [[ "$EXPECTED_SHA256" != "$APPROVED_SHA256" ]]; then
+                echo "::error::実データの取得と artifact の共有は承認された候補一式に限ります"
+                exit 1
+              fi
+              ;;
+            *)
+              echo "::error::入力の種類を確認してください"
+              exit 1
+              ;;
+          esac
+      - name: 候補を生成して検証
+        id: candidate
+        shell: bash
+        env:
+          SOURCE: ${{ inputs.source }}
+          REVISION: ${{ inputs.revision }}
+          GENERATED_AT: ${{ inputs.generated_at }}
+          EXPECTED_SHA256: ${{ inputs.expected_sha256 }}
+        run: |
+          work=$(mktemp -d "$RUNNER_TEMP/jihs-candidate.XXXXXX")
+          check_mode=()
+          if [[ "$SOURCE" == fixture ]]; then
+            PYTHONPATH=tests python3 -B -m fixtures.build_web_preview "$work/site" --generated-at "$GENERATED_AT"
+          else
+            for week in 45 46; do
+              csv_path="$work/2026-$week-teiten.csv"
+              status=$(curl -q --proto '=https' --fail --silent --show-error --connect-timeout 5 --max-time 20 \
+                --max-filesize 100000 --output "$csv_path" --write-out '%{http_code}' \
+                "https://id-info.jihs.go.jp/surveillance/idwr/provisional/2026/$week/2026-$week-teiten.csv")
+              if [[ "$status" != 200 ]]; then
+                echo "::error::第$week 週の公式 CSV 取得で HTTP $status を受信しました"
+                exit 1
+              fi
+              if ! python3 -B - "$csv_path" "$week" <<'PY'
+          import sys
+          from hashlib import sha256
+          from pathlib import Path
+          from scripts.build_release_candidate import REVIEWED_INPUTS
+
+          digest = sha256(Path(sys.argv[1]).read_bytes()).hexdigest()
+          sys.exit(REVIEWED_INPUTS.get(digest) != (2026, int(sys.argv[2])))
+          PY
+              then
+                echo "::error::第$week 週の公式 CSV が照合済みの原本と一致しません"
+                exit 1
+              fi
+            done
+            python3 -B -m scripts.build_release_candidate "$work/2026-45-teiten.csv" "$work/2026-46-teiten.csv" \
+              --generated-at "$GENERATED_AT" --output "$work/site"
+            check_mode=(--release-candidate)
+          fi
+
+          python3 -B -m scripts.check_preview "$work/site" "${check_mode[@]}" \
+            --candidate-revision "$(git rev-parse HEAD)" --expected-revision "$REVISION" \
+            --expected-sha256 "$EXPECTED_SHA256" > "$work/report.json"
+          {
+            echo '### 候補一式の検証結果'
+            echo '```json'
+            python3 -m json.tool "$work/report.json"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          echo "path=$work/site" >> "$GITHUB_OUTPUT"
+      - name: 検証済み候補を受け渡す
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          name: jihs-candidate-${{ inputs.source }}
+          path: ${{ steps.candidate.outputs.path }}
+          retention-days: 1

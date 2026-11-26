@@ -13,6 +13,7 @@ import stat
 MAX_BYTES = 500_000_000
 ID = re.compile(r"[a-z0-9][a-z0-9-]*")
 REVISION = re.compile(r"[0-9a-f]{40}")
+SHA256 = re.compile(r"[0-9a-f]{64}")
 MONTH = re.compile(r"[0-9]{4}-(?:0[1-9]|1[0-2])")
 METADATA = re.compile(
     r"(<dt>(?:サイト生成日時|表示版の取得日時（架空）|CSV の読み込み日時)</dt><dd>)[^<]*(</dd>)".encode()
@@ -256,7 +257,7 @@ def verify_bundle(root, limit=MAX_BYTES, *, local_jihs=False, release_candidate=
 
 
 def evaluate(candidate, *, baseline=None, candidate_revision=None, expected_revision=None, limit=MAX_BYTES,
-             local_jihs=False, release_candidate=False):
+             local_jihs=False, release_candidate=False, expected_sha256=None):
     if candidate_revision is not None or expected_revision is not None:
         if not all(isinstance(value, str) and REVISION.fullmatch(value)
                    for value in (candidate_revision, expected_revision)):
@@ -264,6 +265,11 @@ def evaluate(candidate, *, baseline=None, candidate_revision=None, expected_revi
         if candidate_revision != expected_revision:
             raise ValueError("古い候補: 想定する Git リビジョンと一致しません")
     result = verify_bundle(candidate, limit, local_jihs=local_jihs, release_candidate=release_candidate)
+    if expected_sha256 is not None:
+        if not SHA256.fullmatch(expected_sha256):
+            raise ValueError("候補一式の SHA-256 は64桁の小文字の16進数で指定してください")
+        if result["sha256"] != expected_sha256:
+            raise ValueError("候補一式の SHA-256 が照合済みの値と一致しません")
     change = "no_baseline"
     if baseline is not None:
         # 旧版の比較は現在の設定で許容する最大容量を上限に検証する。
@@ -280,6 +286,7 @@ def main():
     parser.add_argument("--baseline", type=Path)
     parser.add_argument("--candidate-revision")
     parser.add_argument("--expected-revision")
+    parser.add_argument("--expected-sha256", help="照合済みの候補一式の SHA-256")
     parser.add_argument("--max-bytes", type=int, default=MAX_BYTES)
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--local-jihs", action="store_true", help="JIHS のローカル確認版を検証（公開不可）")
@@ -292,7 +299,7 @@ def main():
             raise ValueError("容量上限は1〜500,000,000バイトの範囲を指定してください")
         report = evaluate(args.candidate, baseline=args.baseline, candidate_revision=args.candidate_revision,
                           expected_revision=args.expected_revision, limit=args.max_bytes, local_jihs=args.local_jihs,
-                          release_candidate=args.release_candidate)
+                          release_candidate=args.release_candidate, expected_sha256=args.expected_sha256)
     except (OSError, KeyError, TypeError, ValueError, AttributeError) as error:
         parser.exit(2, f"プレビュー検証エラー: {error}\n")
     print(json.dumps(report, ensure_ascii=False))

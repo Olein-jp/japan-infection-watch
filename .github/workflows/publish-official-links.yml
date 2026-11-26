@@ -2,6 +2,11 @@ name: 公式リンク先行版を公開
 
 on:
   workflow_dispatch:
+    inputs:
+      restore_initial:
+        description: 公開済みの公式リンク初版を復元する
+        type: boolean
+        default: false
 
 permissions: {}
 
@@ -20,6 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          ref: ${{ inputs.restore_initial && '6f7cd69ba906f52e27eb6eda719065f96e1324fd' || github.sha }}
           persist-credentials: false
       - name: 公開対象のファイルを配置
         id: site

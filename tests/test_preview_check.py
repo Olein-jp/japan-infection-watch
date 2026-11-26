@@ -90,6 +90,14 @@ class PreviewCheckTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "集計対象週が比較元より前"):
             evaluate(self.candidate, baseline=self.baseline)
 
+    def test_only_accepts_the_expected_bundle_hash(self):
+        expected = evaluate(self.baseline)["sha256"]
+        self.assertEqual(evaluate(self.baseline, expected_sha256=expected)["sha256"], expected)
+        with self.assertRaisesRegex(ValueError, "64桁"):
+            evaluate(self.baseline, expected_sha256="")
+        with self.assertRaisesRegex(ValueError, "照合済みの値"):
+            evaluate(self.baseline, expected_sha256="0" * 64)
+
     def test_refuses_nonpreview_and_internal_fields(self):
         shutil.copytree(self.baseline, self.candidate)
         path = self.candidate / "data/manifest.json"
