@@ -52,6 +52,21 @@ python3 -B -m scripts.check_preview "$work/site" --local-jihs
 
 保管版があれば `--baseline` でそのディレクトリを指定する。失敗、古い候補、変更なしの場合は現行版を維持する。復旧時は保管した一式の別コピーを検証し、正常版の SHA-256 と照合する。この検証は常に `publication_allowed: false` を返す。数値版の本番配布では、承認された入力と検証済み成果物を受け渡す方法を決め、公開後に同じ版の代表ページと JSON を照合する。
 
+## 初回数値版の公開候補
+
+第45・46週の照合済み CSV を使い、本番と同じ `/japan-infection-watch/` 配下のパスで生成する。生成スクリプトは週と原本の SHA-256 が登録済みの2ファイルに一致することを確認する。候補の manifest は `pending_review`、検証結果は `publication_allowed: false`。公開判定には下記の成果物と別途の承認を使う。
+
+```sh
+work=$(mktemp -d)
+python3 -B -m scripts.build_release_candidate \
+  artifacts/jihs-local/2026-45-teiten.csv artifacts/jihs-local/2026-46-teiten.csv \
+  --generated-at 2026-11-26T11:02:41+09:00 --output "$work/site"
+python3 -B -m scripts.check_preview "$work/site" --release-candidate
+```
+
+- **受け渡し案**　手動の GitHub Actions に、レビュー済みのリビジョン、生成日時、候補一式の SHA-256 を指定する。取得と公開の承認後に、runner の一時領域で公式 CSV 2件を各1回取得し、上記の生成・検証を再現する。照合済み原本と異なる場合や候補のハッシュが一致しない場合は、その実行を停止する。配布段階では検証を通った公開用ディレクトリを Pages の artifact として同一ワークフロー内で渡す。公開用 manifest の状態と最終ハッシュを公開承認に結び付ける工程は、ワークフローの実装時に追加する。[手動実行](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/manually-run-a-workflow)・[Pages の artifact と公開ジョブ](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages)
+- **保管と復旧案**　初回の担当候補はリポジトリ管理者。候補のローカル保管先は Git 管理外の `artifacts/jihs-release-candidate/`。圧縮版、候補の検証結果、圧縮版の SHA-256 を一緒に保存し、新規ディレクトリへ展開してから `--release-candidate` で再検証する。初回数値版の公開に失敗した場合は現行の公式リンク先行版の維持を先に確認する。復旧が必要なら既存の先行版ワークフローで再配布する。後続の数値版を扱う前に、担当者、長期保管先、原本が変わった場合の復旧用成果物の受け渡しを確定する。
+
 ## 公式リンク先行版の配布
 
 先行版は JIHS の速報一覧と日本学校保健会の感染症情報マップを案内する。[公開ワークフロー](../../.github/workflows/publish-official-links.yml)は、トップページ・404・CSS の3ファイルを一時ディレクトリに揃え、SHA-256 を記録して配布する。

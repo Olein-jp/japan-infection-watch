@@ -8,7 +8,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 import unittest
 
-from apps.web.build import MUNICIPAL_CLOSURES, build
+from apps.web.build import JIHS_PROVISIONAL, MUNICIPAL_CLOSURES, build
 from apps.web.preview_data import REGIONS, history_start
 from fixtures.build_web_preview import TIMESTAMP, preview_batches
 from fixtures.jihs_weekly import csv_bytes, fixture_table
@@ -82,6 +82,23 @@ class SiteBuildTest(unittest.TestCase):
                     self.assertEqual({row["period_end"][:7] for row in history["observations"]}, {month})
                     self.assertNotIn("source_token", history["observations"][0])
         self.assertEqual(len(paths), 48 + 48 * 19 * 3)
+
+    def test_release_candidate_requires_provenance_and_stays_out_of_preview_modes(self):
+        batch = normalize_local(csv_bytes(fixture_table()), retrieved_at=datetime.fromisoformat(TIMESTAMP))
+        build([batch], self.output, base="/japan-infection-watch/", generated_at=TIMESTAMP,
+              release_candidate=True)
+        self.assertGreater(verify_bundle(self.output, release_candidate=True)["file_count"], 0)
+        for options in ({}, {"local_jihs": True}):
+            with self.assertRaisesRegex(ValueError, "配布版 ID"):
+                verify_bundle(self.output, **options)
+
+        home = self.output / "index.html"
+        html = home.read_text()
+        self.assertNotIn("自分用・ローカル閲覧", html)
+        self.assertIn(JIHS_PROVISIONAL, html)
+        home.write_text(html.replace(JIHS_PROVISIONAL, ""))
+        with self.assertRaisesRegex(ValueError, "訂正される可能性の表示"):
+            verify_bundle(self.output, release_candidate=True)
 
     def test_rolling_six_months_includes_boundary_and_omits_earlier_rows(self):
         self.assertEqual(history_start(date(2028, 8, 31)), date(2028, 2, 29))

@@ -1,4 +1,4 @@
-"""架空プレビューと JIHS ローカル確認版の配布範囲・容量・整合性・差分を検証する。"""
+"""架空プレビューと JIHS 数値版の配布範囲・容量・整合性・差分を検証する。"""
 
 import argparse
 from datetime import date
@@ -75,13 +75,17 @@ def comparable(value, release):
     if value.keys() == REFERENCE_FIELDS:
         return {"path": value["path"].replace(f"releases/{release}/", "releases/current/", 1)}
     result = {key: comparable(item, release) for key, item in value.items()
-              if key not in {"generated_at", "published_version_fetched_at", "local_input_read_at", "retrieved_at"}}
+              if key not in {"generated_at", "published_version_fetched_at", "local_input_read_at",
+                             "input_read_at", "retrieved_at"}}
     if "release_id" in result:
         result["release_id"] = "current"
     return result
 
 
-def verify_bundle(root, limit=MAX_BYTES, *, local_jihs=False):
+def verify_bundle(root, limit=MAX_BYTES, *, local_jihs=False, release_candidate=False):
+    if local_jihs and release_candidate:
+        raise ValueError("検証する成果物の種類を1つ指定してください")
+    real_data = local_jihs or release_candidate
     files, directories, total = inventory(root, limit)
     raw_hashes = {}
     content_hashes = {}
@@ -102,22 +106,27 @@ def verify_bundle(root, limit=MAX_BYTES, *, local_jihs=False):
     release = manifest["release_id"]
     release_prefix = "local-" if local_jihs else "preview-"
     label = "JIHS ローカル確認版" if local_jihs else "架空プレビュー"
+    if release_candidate:
+        release_prefix = "candidate-"
+        label = "JIHS 公開候補"
+    status = "pending_review" if release_candidate else "blocked"
     if not ID.fullmatch(release) or not release.startswith(release_prefix):
         raise ValueError(f"{label}の配布版 ID が必要です")
-    if (manifest["schema_version"] != "0.1-draft" or manifest["fictional"] is not (not local_jihs)
-            or manifest["publication_status"] != "blocked"):
-        raise ValueError(f"公開対象外の{label}だけを検証できます")
+    if (manifest["schema_version"] != "0.1-draft" or manifest["fictional"] is not (not real_data)
+            or manifest["publication_status"] != status):
+        raise ValueError(f"{label}の公開状態またはデータ種別が不正です")
 
     dataset = "sample-jihs-weekly"
     source_fields = SOURCE_FIELDS
     provenance = {}
-    if local_jihs:
+    if real_data:
         from apps.web.preview_data import LOCAL_ATTRIBUTION, LOCAL_PROCESSING
         from packages.data_normalizer.jihs_weekly import LOCAL_DATASET_ID, report_url
 
-        dataset = LOCAL_DATASET_ID
+        dataset = "jihs-weekly" if release_candidate else LOCAL_DATASET_ID
+        timestamp_field = "input_read_at" if release_candidate else "local_input_read_at"
         provenance = {"attribution": LOCAL_ATTRIBUTION, "processing": LOCAL_PROCESSING}
-        source_fields = (SOURCE_FIELDS - {"published_version_fetched_at"}) | {"local_input_read_at", "processing"}
+        source_fields = (SOURCE_FIELDS - {"published_version_fetched_at"}) | {timestamp_field, "processing"}
 
     def check_provenance(payload):
         for key, value in provenance.items():
@@ -128,10 +137,10 @@ def verify_bundle(root, limit=MAX_BYTES, *, local_jihs=False):
         if set(versions) != {row["version_id"] for row in rows}:
             raise ValueError("観測行と根拠資料の版が一致しません")
         for version in versions.values():
-            check_fields(version, VERSION_FIELDS | ({"source_url"} if local_jihs else set()))
-            if local_jihs and version["source_url"] != report_url(version["reporting_year"], version["reporting_week"]):
+            check_fields(version, VERSION_FIELDS | ({"source_url"} if real_data else set()))
+            if real_data and version["source_url"] != report_url(version["reporting_year"], version["reporting_week"]):
                 raise ValueError("根拠資料の URL が対象週と一致しません")
-        if local_jihs:
+        if real_data:
             for row in rows:
                 version = versions[row["version_id"]]
                 if date.fromisoformat(row["period_end"]).isocalendar() != (
@@ -162,7 +171,7 @@ def verify_bundle(root, limit=MAX_BYTES, *, local_jihs=False):
     source = manifest["sources"][dataset]
     check_fields(source, source_fields)
     latest_end = date.fromisoformat(source["latest_period_end"])
-    if local_jihs:
+    if real_data:
         year, week, _ = latest_end.isocalendar()
         if (any(source[key] != value for key, value in provenance.items())
                 or source["official_reference_url"] != report_url(year, week)):
@@ -190,14 +199,14 @@ def verify_bundle(root, limit=MAX_BYTES, *, local_jihs=False):
             prefix = f"releases/{release}"
             latest = reference(shards["latest"], f"{prefix}/latest/{scope}/{disease}.json")
             latest_fields = {"release_id", "observations"}
-            if local_jihs:
+            if real_data:
                 latest_fields |= {"versions", *provenance}
             check_fields(latest, latest_fields)
             if (len(latest["observations"]) != 2
                     or any(row.keys() != DISPLAY_FIELDS or row["period_end"] != latest_end.isoformat()
                            for row in latest["observations"])):
                 raise ValueError("最新値の配布項目または対象週が不正です")
-            if local_jihs:
+            if real_data:
                 check_provenance(latest)
             if latest_end.isoformat()[:7] not in shards["history"]:
                 raise ValueError("最新月の履歴がありません")
@@ -219,17 +228,23 @@ def verify_bundle(root, limit=MAX_BYTES, *, local_jihs=False):
         extra = sorted((set(files) - expected) | (directories - expected_directories))
         missing = sorted(expected - set(files))
         raise ValueError(f"配布範囲が不一致: 範囲外 {extra[:3]} / 不足 {missing[:3]}")
+    notice = "自分用・ローカル閲覧" if local_jihs else "開発プレビュー"
+    if release_candidate:
+        from apps.web.build import JIHS_PROVISIONAL
+
+        notice = "JIHS の週次定点速報"
     for path in sorted(expected - raw_hashes.keys()):
         raw = read(path)
         if path.endswith(".html"):
-            notice = "自分用・ローカル閲覧" if local_jihs else "開発プレビュー"
             if notice.encode() not in raw:
-                raise ValueError(f"プレビューの表示がありません: {path}")
-            if local_jihs and (path == "index.html" or path.startswith(("prefectures/", "diseases/"))):
+                raise ValueError(f"{label}の表示がありません: {path}")
+            if real_data and (path == "index.html" or path.startswith(("prefectures/", "diseases/"))):
                 if any(value.encode() not in raw for value in (
                         "<dt>出典</dt>", "<dt>編集・加工</dt>", source["official_reference_url"], *provenance.values()
                 )):
                     raise ValueError(f"出典または編集・加工の表示がありません: {path}")
+                if release_candidate and JIHS_PROVISIONAL.encode() not in raw:
+                    raise ValueError(f"速報値が訂正される可能性の表示がありません: {path}")
             raw = METADATA.sub(rb"\1\2", raw)
             raw = raw.replace(f'data-release="{release}"'.encode(), b'data-release="current"')
             raw = raw.replace(f"/releases/{release}/".encode(), b"/releases/current/")
@@ -241,18 +256,18 @@ def verify_bundle(root, limit=MAX_BYTES, *, local_jihs=False):
 
 
 def evaluate(candidate, *, baseline=None, candidate_revision=None, expected_revision=None, limit=MAX_BYTES,
-             local_jihs=False):
+             local_jihs=False, release_candidate=False):
     if candidate_revision is not None or expected_revision is not None:
         if not all(isinstance(value, str) and REVISION.fullmatch(value)
                    for value in (candidate_revision, expected_revision)):
             raise ValueError("候補と想定リビジョンには40桁の Git SHA を指定してください")
         if candidate_revision != expected_revision:
             raise ValueError("古い候補: 想定する Git リビジョンと一致しません")
-    result = verify_bundle(candidate, limit, local_jihs=local_jihs)
+    result = verify_bundle(candidate, limit, local_jihs=local_jihs, release_candidate=release_candidate)
     change = "no_baseline"
     if baseline is not None:
         # 旧版の比較は現在の設定で許容する最大容量を上限に検証する。
-        previous = verify_bundle(baseline, MAX_BYTES, local_jihs=local_jihs)
+        previous = verify_bundle(baseline, MAX_BYTES, local_jihs=local_jihs, release_candidate=release_candidate)
         if result["latest_period_end"] < previous["latest_period_end"]:
             raise ValueError("古い候補: 集計対象週が比較元より前です")
         change = "unchanged" if result["content_sha256"] == previous["content_sha256"] else "changed"
@@ -266,15 +281,18 @@ def main():
     parser.add_argument("--candidate-revision")
     parser.add_argument("--expected-revision")
     parser.add_argument("--max-bytes", type=int, default=MAX_BYTES)
-    parser.add_argument("--local-jihs", action="store_true", help="JIHS のローカル確認版を検証（公開不可）")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--local-jihs", action="store_true", help="JIHS のローカル確認版を検証（公開不可）")
+    mode.add_argument("--release-candidate", action="store_true", help="JIHS の公開候補を検証（承認前）")
     args = parser.parse_args()
-    if args.local_jihs and not __package__:
-        parser.error("--local-jihs はリポジトリのルートから python3 -m scripts.check_preview で実行してください")
+    if (args.local_jihs or args.release_candidate) and not __package__:
+        parser.error("JIHS 数値版はリポジトリのルートから python3 -m scripts.check_preview で実行してください")
     try:
         if not 0 < args.max_bytes <= MAX_BYTES:
             raise ValueError("容量上限は1〜500,000,000バイトの範囲を指定してください")
         report = evaluate(args.candidate, baseline=args.baseline, candidate_revision=args.candidate_revision,
-                          expected_revision=args.expected_revision, limit=args.max_bytes, local_jihs=args.local_jihs)
+                          expected_revision=args.expected_revision, limit=args.max_bytes, local_jihs=args.local_jihs,
+                          release_candidate=args.release_candidate)
     except (OSError, KeyError, TypeError, ValueError, AttributeError) as error:
         parser.exit(2, f"プレビュー検証エラー: {error}\n")
     print(json.dumps(report, ensure_ascii=False))

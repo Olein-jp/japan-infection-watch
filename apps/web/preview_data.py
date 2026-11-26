@@ -104,9 +104,10 @@ def prepare(batches, *, fictional=True):
     return latest, history, by_week[newest][0], versions
 
 
-def write_distribution(root, release_id, generated_at, latest, history, version, versions, *, fictional):
+def write_distribution(root, release_id, generated_at, latest, history, version, versions, *,
+                       fictional, release_candidate=False):
     prefix = f"releases/{release_id}"
-    dataset_id = version["dataset_id"]
+    dataset_id = "jihs-weekly" if release_candidate else version["dataset_id"]
     indexes = {}
     provenance = {} if fictional else {"attribution": LOCAL_ATTRIBUTION, "processing": LOCAL_PROCESSING}
 
@@ -139,16 +140,19 @@ def write_distribution(root, release_id, generated_at, latest, history, version,
             }
         indexes[region] = write(f"{prefix}/index/{scope}.json", {"release_id": release_id, "diseases": diseases})
 
+    timestamp_field = "published_version_fetched_at" if fictional else "local_input_read_at"
+    if release_candidate:
+        timestamp_field = "input_read_at"
     write("manifest.json", {
         "schema_version": "0.1-draft", "release_id": release_id, "generated_at": generated_at,
-        "fictional": fictional, "publication_status": "blocked",
+        "fictional": fictional, "publication_status": "pending_review" if release_candidate else "blocked",
         "sources": {dataset_id: {
             "attribution": ATTRIBUTION,
             **provenance,
             "official_reference_url": OFFICIAL_SOURCE if fictional else version["source_url"],
             "latest_period_end": next(iter(latest["jp", next(iter(DISEASES))].values()))["period_end"],
             "source_created_on": version["source_created_on"],
-            ("published_version_fetched_at" if fictional else "local_input_read_at"): version["retrieved_at"],
+            timestamp_field: version["retrieved_at"],
             "delivery_status": "unknown",
             "region_indexes": indexes,
         }},

@@ -19,6 +19,7 @@ from apps.web import school_closures
 
 
 SITE = "感染症動向ウォッチ"
+JIHS_PROVISIONAL = "JIHS の速報値は、後日の週報・年報で訂正されることがあります。"
 STATUS = {
     "blank": "空欄", "dash": "-", "unknown_count": "計数不明",
     "not_reported": "未報告", "suppressed": "秘匿", "not_applicable": "対象外",
@@ -30,8 +31,7 @@ MHLW_SCHOOL_REPORTS = "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_i
 GAP_NOTE = '<p class="table-note"><span class="missing">-</span> は原表の表記です。報告数の 0 とは区別しています。</p>'
 
 
-def layout(base, title, content, *, wide_title=False, local_only=False, trail=None):
-    notice = "自分用・ローカル閲覧 · JIHS の速報値" if local_only else "開発プレビュー · 画面内の数値は架空です"
+def layout(base, title, content, *, notice, wide_title=False, trail=None):
     breadcrumbs = ""
     if trail is not None:
         links = "".join(f'<li><a href="{base}{path}">{escape(label)}</a></li>'
@@ -87,13 +87,14 @@ def values(cells):
     return "".join(result)
 
 
-def data_note(version, latest, timestamp, *, local_only):
+def data_note(version, latest, timestamp, *, real_data, release_candidate):
     sample = latest["jp", next(iter(DISEASES))][METRIC_IDS[0]]
-    attribution = LOCAL_ATTRIBUTION if local_only else ATTRIBUTION
-    source = version["source_url"] if local_only else OFFICIAL_SOURCE
-    date_label = "CSV の読み込み日時" if local_only else "表示版の取得日時（架空）"
-    edition = "週次・速報値" if local_only else "週次・速報形式"
-    processing = f"<div><dt>編集・加工</dt><dd>{LOCAL_PROCESSING}。</dd></div>" if local_only else ""
+    attribution = LOCAL_ATTRIBUTION if real_data else ATTRIBUTION
+    source = version["source_url"] if real_data else OFFICIAL_SOURCE
+    date_label = "CSV の読み込み日時" if real_data else "表示版の取得日時（架空）"
+    edition = "週次・速報値" if real_data else "週次・速報形式"
+    processing = f"<div><dt>編集・加工</dt><dd>{LOCAL_PROCESSING}。</dd></div>" if real_data else ""
+    correction = f'<p class="table-note">{JIHS_PROVISIONAL}</p>' if release_candidate else ""
     return f"""<dl class="provenance">
 <div><dt>対象週</dt><dd>{version["reporting_year"]}年第{version["reporting_week"]}週（{sample["period_start"]}〜{sample["period_end"]}）</dd></div>
 <div><dt>資料区分</dt><dd>{edition}</dd></div>
@@ -102,10 +103,10 @@ def data_note(version, latest, timestamp, *, local_only):
 <div><dt>サイト生成日時</dt><dd>{escape(timestamp)}</dd></div>
 <div><dt>出典</dt><dd>{attribution} · <a href="{source}">公式 IDWR</a></dd></div>
 {processing}
-</dl>"""
+</dl>{correction}"""
 
 
-def history_form(base, index, release, months, covered_period, disease=None, *, local_only):
+def history_form(base, index, release, months, covered_period, disease=None, *, real_data):
     disease_input = ""
     if disease is None:
         options = "".join(
@@ -114,7 +115,7 @@ def history_form(base, index, release, months, covered_period, disease=None, *, 
         )
         disease_input = f'<div class="history-field"><label for="history-disease">疾患</label><select id="history-disease" name="disease">{options}</select></div>'
     month_options = "".join(f'<option>{month}</option>' for month in sorted(months, reverse=True))
-    archive_label = ("JIHS の速報一覧でほかの報告週を見る" if local_only
+    archive_label = ("JIHS の速報一覧でほかの報告週を見る" if real_data
                      else f"{HISTORY_MONTHS}か月より前のデータは JIHS で見る")
     return f"""<section aria-labelledby="history-heading" class="panel history">
 <h2 id="history-heading">週次の推移</h2>
@@ -132,16 +133,24 @@ def history_form(base, index, release, months, covered_period, disease=None, *, 
 </section>"""
 
 
-def pages(root, base, release, timestamp, latest, history, version, indexes, *, local_only, closure_reports):
+def pages(root, base, release, timestamp, latest, history, version, indexes, *,
+          local_only, release_candidate, closure_reports):
+    real_data = local_only or release_candidate
+    notice = "開発プレビュー · 画面内の数値は架空です"
+    if local_only:
+        notice = "自分用・ローカル閲覧 · JIHS の速報値"
+    if release_candidate:
+        notice = "JIHS の週次定点速報"
+
     def emit(target, title, content, *, hero=False, trail=()):
         path = root / target
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(layout(base, title, content, wide_title=hero, local_only=local_only,
+        path.write_text(layout(base, title, content, notice=notice, wide_title=hero,
                                trail=None if target == "index.html" else trail), encoding="utf-8")
 
-    note = data_note(version, latest, timestamp, local_only=local_only)
-    attribution = LOCAL_ATTRIBUTION if local_only else ATTRIBUTION
-    processing = f"<p>編集・加工　{LOCAL_PROCESSING}。</p>" if local_only else ""
+    note = data_note(version, latest, timestamp, real_data=real_data, release_candidate=release_candidate)
+    attribution = LOCAL_ATTRIBUTION if real_data else ATTRIBUTION
+    processing = f"<p>編集・加工　{LOCAL_PROCESSING}。</p>" if real_data else ""
     sample_key = ("jp", next(iter(DISEASES)))
     first_row = next(iter(history[sample_key].values()))[0]
     covered_period = (first_row["period_start"], latest[sample_key][METRIC_IDS[0]]["period_end"])
@@ -202,7 +211,7 @@ def pages(root, base, release, timestamp, latest, history, version, indexes, *, 
 </section>"""
         emit(f"prefectures/{code}/index.html", name,
              '<p><a href="#school-closures">学級閉鎖・休校の情報を見る</a></p>'
-             + history_form(base, indexes[code], release, months, covered_period, local_only=local_only)
+             + history_form(base, indexes[code], release, months, covered_period, real_data=real_data)
              + closures
              + f'{note}<section class="panel"><h2>週次の最新値</h2>{local}{guides}</section>',
              trail=(("#regions", "都道府県"),))
@@ -216,7 +225,7 @@ def pages(root, base, release, timestamp, latest, history, version, indexes, *, 
         emit(f"diseases/{disease}/index.html", label,
              f'{note}<section class="panel"><h2>全国と都道府県の最新値</h2>{comparison}</section>'
              + history_form(base, indexes["jp"], release, history["jp", disease], covered_period, disease,
-                            local_only=local_only),
+                            real_data=real_data),
              trail=(("#diseases", "疾患"),))
 
     for code, (name, pref, label, url) in MUNICIPALITIES.items():
@@ -244,18 +253,22 @@ def pages(root, base, release, timestamp, latest, history, version, indexes, *, 
          f'<section class="panel"><p><a href="{base}">全国のページへ戻る</a></p></section>')
 
 
-def build(inputs, output, *, base, generated_at, local_only=False, closure_reports=()):
+def build(inputs, output, *, base, generated_at, local_only=False, release_candidate=False, closure_reports=()):
     if not re.fullmatch(r"/(?:[a-zA-Z0-9][a-zA-Z0-9_-]*/)*", base):
         raise ValueError("基準パスは / で始まり / で終わるサイト内のパスを指定してください")
     if output.exists() or output.is_symlink():
         raise ValueError("出力先が存在します。新しいディレクトリを指定してください")
+    if local_only and release_candidate:
+        raise ValueError("ローカル閲覧版と公開候補版は同時に指定できません")
     if closure_reports and not local_only:
         raise ValueError("学校休業の実集計はローカル閲覧専用です")
     timestamp = parse_timestamp(generated_at).isoformat()
-    latest, history, version, versions = prepare(inputs, fictional=not local_only)
+    fictional = not (local_only or release_candidate)
+    latest, history, version, versions = prepare(inputs, fictional=fictional)
     school_weeks = school_closures.prepare(closure_reports)
     # 同じ日時で再生成した場合にも、異なるデータを同じ版として扱わない。
-    release = ("local-" if local_only else "preview-") + sha256(
+    prefix = "candidate-" if release_candidate else ("local-" if local_only else "preview-")
+    release = prefix + sha256(
         json_bytes([timestamp, HISTORY_MONTHS, inputs, *closure_reports])
     ).hexdigest()[:20]
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -263,9 +276,9 @@ def build(inputs, output, *, base, generated_at, local_only=False, closure_repor
         candidate = Path(scratch) / "site"
         shutil.copytree(Path(__file__).parent / "assets", candidate / "assets")
         indexes = write_distribution(candidate, release, timestamp, latest, history, version, versions,
-                                     fictional=not local_only)
+                                     fictional=fictional, release_candidate=release_candidate)
         pages(candidate, base, release, timestamp, latest, history, version, indexes, local_only=local_only,
-              closure_reports=school_weeks)
+              release_candidate=release_candidate, closure_reports=school_weeks)
         candidate.rename(output)
 
 
