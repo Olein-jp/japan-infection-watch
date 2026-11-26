@@ -102,13 +102,17 @@
 | S94 | GitHub | プラン価格、Actions 上限・トークン仕様 | [プラン価格](https://github.com/pricing)・[Actions limits](https://docs.github.com/en/actions/reference/limits)・[GITHUB_TOKEN](https://docs.github.com/en/actions/concepts/security/github_token) | 閲覧時の公式文書 | 2026-11-24 | Web | 文書参照 | R-17 で月次費用・ジョブ時間・後続トリガーの条件を確認 |
 | S95 | e-Stat | 2026年1月1日現在の市区町村数 | <https://www.e-stat.go.jp/municipalities/number-of-municipalities?day=1&file_format=csv&form_id=city_count_form&month=1&year=2026> | 2026-01-01基準 | 2026-11-24 | Web | 件数の参照 | R-17 で市町村計・特別区・行政区数を容量試算に使用 |
 | S96 | Astro・Vite・Microsoft（Playwright） | 静的配信・ブラウザの公式仕様 | [Astro](https://docs.astro.build/en/guides/deploy/github/)・[Vite](https://vite.dev/guide/static-deploy.html)・[Playwright](https://playwright.dev/docs/browsers) | 閲覧時の公式文書 | 2026-11-24 | Web | 文書参照 | Pages の base 設定を比較。Chrome でローカル Playwright を実行 |
-| S97 | Cloudflare | Pages の上限と Direct Upload | [上限](https://developers.cloudflare.com/pages/platform/limits/)・[Direct Upload](https://developers.cloudflare.com/pages/get-started/direct-upload/) | 2026-11-19／2026-04-21 更新表示 | 2026-11-24 | Web | Free のファイル数とファイルサイズに上限 | R-18 で静的配信の無料代替として文書確認 |
+| S97 | Cloudflare | Pages の上限と Direct Upload | [上限](https://developers.cloudflare.com/pages/platform/limits/)・[Direct Upload](https://developers.cloudflare.com/pages/get-started/direct-upload/) | 2026-11-19／2026-04-21 更新表示 | 2026-11-24 | Web | Free のファイル数とファイルサイズに上限 | R-18 で静的配信の無料代替として文書確認。2026-11-25 に Wrangler と管理画面のファイル上限を履歴設計比較で再確認 |
 | S98 | W3C | Web Content Accessibility Guidelines (WCAG) 2.2 | <https://www.w3.org/TR/WCAG22/> | 2024-12-12 勧告 | 2026-11-24 | Web | 画面と試験の基準を参照 | R-19 で色・キーボード・リフロー等を仕様案に反映 |
 | S99 | GitHub | 従量課金製品の予算設定 | <https://docs.github.com/en/billing/how-tos/set-up-budgets> | 閲覧時の公式文書 | 2026-11-24 | Web | 適用範囲と停止設定は予算の種別による | R-19 で月0円の公開前確認に反映 |
 | S100 | GitHub | Actions のワークフロー構文・安全な利用 | [構文](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax)・[安全な利用](https://docs.github.com/en/actions/reference/security/secure-use)・[checkout v7.0.1](https://github.com/actions/checkout/releases/tag/v7.0.1) | 閲覧時の公式文書 | 2026-11-25 | Web | PR・手動実行、権限、Action の固定 | I-001 の読み取り専用 CI とフルコミット SHA の固定に反映 |
+| S101 | GitHub・岐阜市・Gitleaks | 公開 Git のコミットメール・公式リンク条件・履歴検査 | [GitHub コミットメール](https://docs.github.com/en/account-and-profile/how-tos/email-preferences/setting-your-commit-email-address)・[岐阜市](https://www.city.gifu.lg.jp/info/kouhou/1008373/site/1011572.html)・[Gitleaks](https://github.com/gitleaks/gitleaks) | 岐阜市は2021-10-01更新、Gitleaks は8.30.1 | 2026-11-25 | Web | 一般リンク条件と監査方法の参照 | O-001 で初回公開と先行リンク版の判断に反映 |
+| S102 | JIHS 国立感染症研究所 | IDWR 速報データの利用に関する担当部署回答 | 個別回答（公開 URL なし）。[照会と回答の要旨](findings/O-001-release-readiness.md#jihs-の回答と数値版への反映) | 回答日時未確認 | 2026-11-26（JST） | 依頼者が共有したメール本文 | 出所明示で引用・転載・複製可。独自グラフは出典と別に加工を明示。加工物の公認は含まない | O-001・R-16。表・JSON の配布条件、定期取得、長期保持への個別の言及なし |
 
 学校情報等検索 API のベース URL 候補は <https://opendata.jssh.site/siss/resources/>。現行仕様で照合する。Tableau の S01 掲載 URL は [R-01 の一覧](findings/R-01-public-views.md#公開ビュー-url-一覧)を参照する。
 
 [R-15 の共通モデル案の根拠](findings/R-15-data-model.md#一次情報から確認した定義)は、定点と訂正の S50・S52・S56、週次・累計と休業指標の S58・S59、地域範囲の S22・S62。資料の適用範囲は各台帳行に従う。
 
 [R-16 の少量再取得](findings/R-16-collection-operations.md#少量の再取得と変更判定)では S51 の CSV と S59 を照合した。利用条件は S52・S53・S60・S61、公表・訂正の根拠は S50・S51・S55〜S59 を参照。
+
+[O-001 の数値版検証](findings/O-001-release-readiness.md#第4546週の数値版の検証)では 2026-11-26（JST）に S50・S51 の週次定点 CSV 掲載欄を S53 の規約・S102 の回答と照合した。CSV は前日に取得した2ファイルを使用した。

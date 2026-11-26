@@ -146,6 +146,9 @@ async function check() {
     assert.match(await page.locator(".provenance").textContent(), /2030年.*第5週/);
     assert.match(await page.locator(".notice").textContent(), /架空/);
     assert.ok(!requests.some(url => new URL(url).pathname.includes("/data/")));
+    assert.equal(await page.locator("#regions").evaluate(el => el.compareDocumentPosition(document.querySelector("#diseases")) & Node.DOCUMENT_POSITION_FOLLOWING), 4);
+    assert.match(await page.getByRole("link", { name: "日本学校保健会の感染症情報マップ" }).getAttribute("href"),
+      /^https:\/\/www\.gakkohoken\.jp\//);
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth), 320);
     await page.getByRole("searchbox", { name: "都道府県名で絞り込む" }).fill("北海道");
     assert.equal(await page.locator(".region-status").textContent(), "1件の都道府県");
@@ -156,13 +159,32 @@ async function check() {
     assert.equal(page.url(), pref);
     assert.equal((await page.reload()).status(), 200);
     await page.getByRole("heading", { name: "北海道", exact: true }).waitFor();
+    const breadcrumbs = page.getByRole("navigation", { name: "パンくずリスト" });
+    assert.equal(await breadcrumbs.getByRole("link", { name: "都道府県", exact: true }).getAttribute("href"), projectBase + "#regions");
+    assert.equal(await breadcrumbs.locator('[aria-current="page"]').textContent(), "北海道");
+    await page.getByRole("link", { name: "学級閉鎖・休校の情報を見る" }).click();
+    assert.equal(new URL(page.url()).hash, "#school-closures");
+    const school = page.getByRole("region", { name: "学級閉鎖・休校", exact: true });
+    assert.match(await school.getByRole("link", { name: /日本学校保健会/ }).getAttribute("href"), /^https:\/\/www\.gakkohoken\.jp\//);
+    assert.match(await school.getByRole("link", { name: /厚生労働省/ }).getAttribute("href"), /^https:\/\/www\.mhlw\.go\.jp\//);
+    const municipalChartName = "市区町村別の学級閉鎖（インフルエンザ）";
+    const municipalChart = await school.getByRole("link", { name: municipalChartName }).getAttribute("href");
+    assert.match(municipalChart, /^https:\/\/public\.tableau\.com\/.*\/____16744492330710\/1\?/);
     await page.emulateMedia({ forcedColors: "active" });
     assert.equal(await page.evaluate(() => window.matchMedia("(forced-colors: active)").matches), true);
     const influenza = page.getByRole("row").filter({ has: page.getByRole("link", { name: "インフルエンザ", exact: true }) });
-    assert.match(await influenza.textContent(), /原表ハイフン.*空欄.*24.*2.40/);
-    assert.ok(!requests.some(url => url.includes("/history/") || url.includes("/index/sample-jihs")));
+    assert.deepEqual(await influenza.getByRole("cell").allTextContents(), ["-", "空欄", "24", "2.40"]);
+    await page.getByText("履歴を表示しました。", { exact: true }).waitFor();
+    await page.locator(".history-output").getByRole("columnheader", { name: "医療機関1か所あたり（件）", exact: true }).waitFor();
+    assert.equal(await page.locator(".history-output tbody tr").count(), 2);
+    await page.getByText("選択した期間に表示できる報告数はありません。").waitFor();
+    assert.equal(await page.locator(".trend-dot").count(), 0);
+    assert.ok(requests.filter(url => url.includes("/history/")).every(url => url.includes("/prefecture/01/") && url.endsWith("/influenza.json")));
+    assert.equal(await page.getByLabel("疾患", { exact: true }).inputValue(), "influenza");
+    assert.equal(await page.locator(".history").evaluate(el => el.compareDocumentPosition(document.querySelector(".provenance")) & Node.DOCUMENT_POSITION_FOLLOWING), 4);
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth), 320);
 
+    const previousRequestCount = requests.filter(url => url.includes("/history/")).length;
     const monthSelect = page.getByLabel("対象月");
     await monthSelect.selectOption("2030-01");
     await monthSelect.focus();
@@ -176,16 +198,18 @@ async function check() {
     assert.match(history.url(), /\/prefecture\/01\/2030-01\/influenza\.json$/);
     assert.equal(history.status(), 200);
     await page.getByText("履歴を表示しました。", { exact: true }).waitFor();
-    assert.match(await page.locator(".history-output").textContent(), /2030-01-07.*原表ハイフン.*空欄/);
-    assert.equal(requests.filter(url => url.includes("/history/")).length, 1);
+    const week = page.locator(".history-output tbody tr");
+    assert.match(await week.getByRole("rowheader").textContent(), /2030-01-07/);
+    assert.deepEqual((await week.getByRole("cell").allTextContents()).slice(0, 2), ["-", "空欄"]);
+    assert.equal(requests.filter(url => url.includes("/history/")).length, previousRequestCount + 1);
 
-    await page.route("**/history/**", route => route.abort());
-    await page.getByLabel("対象月").selectOption("2030-02");
+    await page.route("**/history/**/2030-02/*.json", route => route.abort());
+    await monthSelect.selectOption("");
     await button.click();
     await page.getByText(/履歴を読み込めませんでした/).waitFor();
     assert.match(await page.locator(".history-output").textContent(), /2030-01-07/);
-    assert.match(await influenza.textContent(), /原表ハイフン.*空欄.*24.*2.40/);
-    await page.unroute("**/history/**");
+    assert.deepEqual(await influenza.getByRole("cell").allTextContents(), ["-", "空欄", "24", "2.40"]);
+    await page.unroute("**/history/**/2030-02/*.json");
     await page.emulateMedia({ forcedColors: null });
 
     const disease = root.url + "/diseases/influenza/";
@@ -195,16 +219,19 @@ async function check() {
     await page.getByRole("heading", { name: "インフルエンザ", exact: true }).waitFor();
     assert.equal(await page.locator("tbody tr").count(), 48);
     assert.ok(await page.locator(".table-scroll").evaluate(region => region.scrollWidth <= region.clientWidth));
-    const [nationalHistory] = await Promise.all([
-      page.waitForResponse(response => response.url().includes("/history/")),
-      page.getByRole("button", { name: "週次履歴を表示" }).click(),
-    ]);
-    assert.match(nationalHistory.url(), /\/national\/jp\/2030-02\/influenza\.json$/);
+    await page.getByRole("button", { name: "週次履歴を表示" }).click();
     await page.getByText("履歴を表示しました。", { exact: true }).waitFor();
+    assert.match(await page.locator(".history-output tbody").textContent(), /2030-01-07.*2030-02-03/);
+    assert.equal(await page.locator(".history-output tbody tr").count(), 2);
+    assert.match(await page.locator(".trend-area path").getAttribute("d"), /^M[^M]+ M[^M]+$/);
+    assert.equal(await page.locator(".trend-dot").first().evaluate(el => el.style.top), "100%");
+    assert.match(await page.getByRole("link", { name: "6か月より前のデータは JIHS で見る" }).getAttribute("href"),
+      /\/provisional\/sokuhou\.html$/);
     if (process.env.WEB_PREVIEW_SCREENSHOT) await page.screenshot({ path: process.env.WEB_PREVIEW_SCREENSHOT });
     assert.equal((await page.goto(home + "municipalities/21201/")).status(), 200);
     await page.getByText("このページに岐阜市の集計はありません。").waitFor();
     assert.match(await page.getByRole("link", { name: /岐阜市公式サイト/ }).getAttribute("href"), /^https:\/\/www\.city\.gifu\.lg\.jp\//);
+    assert.equal(await page.getByRole("link", { name: municipalChartName }).getAttribute("href"), municipalChart);
     assert.equal(await page.getByRole("table").count(), 0);
     assert.equal((await page.goto(home + "municipalities/99999/")).status(), 404);
     await page.getByRole("link", { name: "全国のページへ戻る" }).click();

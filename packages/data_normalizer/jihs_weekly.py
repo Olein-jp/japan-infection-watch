@@ -12,6 +12,8 @@ from packages.data_normalizer.jihs_csv import AREAS, parse_weekly_csv
 
 
 DATASET_ID = "sample-jihs-weekly"
+LOCAL_DATASET_ID = "jihs-weekly-local"
+FIXTURE_SOURCE = "https://example.invalid/jihs-weekly"
 REGION_IDS = {name: f"{code:02}" for code, name in enumerate(AREAS)}
 DISEASE_IDS = {
     "インフルエンザ": "influenza",
@@ -42,6 +44,19 @@ METRICS = (
 
 def normalize_fixture(raw: bytes, *, retrieved_at: datetime) -> dict:
     """明示的に架空入力として扱う。実資料の承認状態を引き受けない。"""
+    return _normalize(raw, retrieved_at=retrieved_at, fictional=True)
+
+
+def report_url(year: int, week: int) -> str:
+    return f"https://id-info.jihs.go.jp/surveillance/idwr/provisional/{year}/{week:02d}/index.html"
+
+
+def normalize_local(raw: bytes, *, retrieved_at: datetime) -> dict:
+    """公式速報の CSV を、配布不可のローカル閲覧用観測に変換する。"""
+    return _normalize(raw, retrieved_at=retrieved_at, fictional=False)
+
+
+def _normalize(raw: bytes, *, retrieved_at: datetime, fictional: bool) -> dict:
     if retrieved_at.utcoffset() is None:
         raise ValueError("取得日時にタイムゾーンを指定してください")
     table = parse_weekly_csv(raw)
@@ -50,14 +65,15 @@ def normalize_fixture(raw: bytes, *, retrieved_at: datetime) -> dict:
         raise ValueError("疾患見出しが検証済みの構成と異なります")
 
     year, week = table["reporting_year"], table["reporting_week"]
+    dataset_id = DATASET_ID if fictional else LOCAL_DATASET_ID
     publication_key = f"{year}-W{week:02d}-provisional"
     digest = table["source_sha256"]
     version = {
-        "id": f"{DATASET_ID}-{publication_key.lower()}-{digest}",
-        "dataset_id": DATASET_ID,
+        "id": f"{dataset_id}-{publication_key.lower()}-{digest}",
+        "dataset_id": dataset_id,
         "publication_key": publication_key,
         "edition_kind": "provisional",
-        "source_url": "https://example.invalid/jihs-weekly",
+        "source_url": FIXTURE_SOURCE if fictional else report_url(year, week),
         "source_sha256": digest,
         "source_created_on": table["source_created_on"],
         "retrieved_at": retrieved_at.isoformat(),
@@ -71,11 +87,11 @@ def normalize_fixture(raw: bytes, *, retrieved_at: datetime) -> dict:
     for record in records:
         region_code = REGION_IDS[record["area_label"]]
         common = {
-            "dataset_id": DATASET_ID,
+            "dataset_id": dataset_id,
             "region_id": "jp" if region_code == "00" else region_code,
             "region_kind": record["area_level"],
             "disease_id": DISEASE_IDS[record["disease_label"]],
-            "coverage_id": "sample-jihs-sentinel-sites",
+            "coverage_id": "sample-jihs-sentinel-sites" if fictional else "jihs-sentinel-sites",
             "facility_group": "all_in_scope",
             "period_kind": "weekly",
             "period_start": table["period_start"],
@@ -97,7 +113,7 @@ def normalize_fixture(raw: bytes, *, retrieved_at: datetime) -> dict:
 
     validate_batch(rows, [version])
     # 内部の観測はローカル表示・検証用。本番の候補はこの入口から生成しない。
-    return {"fictional": True, "versions": [version], "observations": rows, "public_candidates": []}
+    return {"fictional": fictional, "versions": [version], "observations": rows, "public_candidates": []}
 
 
 def main():

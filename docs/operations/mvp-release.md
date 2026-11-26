@@ -1,6 +1,8 @@
 # 初期版の更新・復旧・公開判定案
 
-対象は[初期版仕様](../specifications/mvp.md)と[公開アーキテクチャ](../architecture/mvp-publication.md)。取得の詳細は [R-16 の運用案](collection-and-recovery.md)。下記の運用は開発・公開と各操作の承認後に適用する。
+対象は[初期版仕様](../specifications/mvp.md)と[公開アーキテクチャ](../architecture/mvp-publication.md)。取得の詳細は [R-16 の運用案](collection-and-recovery.md)。下記の運用は開発・公開と各操作の承認後に適用する。確認済みの範囲と初回公開までの残件は [O-001 の公開判定](../findings/O-001-release-readiness.md)を参照。
+
+公開先は GitHub Pages。Pages の公開元は GitHub Actions を使い、このリポジトリの既定ブランチから手動で公開ワークフローを起動する。公開前検証を通過した静的成果物一式を `github-pages` 環境に配布する。[GitHub Pages のワークフロー](https://docs.github.com/ja/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages)
 
 ## 手動更新と復旧
 
@@ -30,7 +32,28 @@
 |---|---|
 | データ変換と公開可否 | 架空データでゼロ、ハイフン、欠損、秘匿、重複、同一原本、訂正版、禁止資料を確認する。承認済みの少量データでは原表の地域・期間・指標・値を照合する。 |
 | 配信と画面 | 正常、欠損、更新遅延、未掲載の地域、分割履歴の取得失敗を試す。直接アクセス・再読込、404、基準パス、320 CSS px 相当の幅で主要操作、キーボードと凡例・表で内容が確認できる。地図やグラフに代替テキスト・表がある。 |
+| 出典と加工表示 | JIHS 数値版では、収録した週の公式速報ページへのリンクと、本サイトによる独自の編集・加工の表示を別に確認できる。配布する描画用 JSON の項目、出典と加工の表示方法、各週の掲載注記を確認する。[JIHS の回答と表示例](../findings/O-001-release-readiness.md#jihs-の回答と数値版への反映) |
+| 週次履歴 | 最新週の終了日から6暦月の境界を算出でき、月末・年またぎで境界当日以降の報告週だけが成果物に含まれる。収録期間が短い場合は実際の期間を表示し、6か月より前は JIHS の年別一覧へ案内する。 |
 | 更新・障害時 | 変更なし、容量超過、検証失敗、デプロイ結果不明、競合、明示的なロールバックを試す。検証済みの版だけを配布し、失敗時に旧版の値が維持される。権利撤回されたデータは旧版維持の対象から外す。 |
 | 公開可否と監査 | Git 全履歴、Issue とコメント、Actions ログと artifact、公開成果物を点検する。許可した集計だけが配布対象で、秘密情報・原本・非公開資料・再配布不可データがない。最小権限、対象ブランチ、アカウント課金、復旧担当・復旧入力の取得を確認し、依頼者の公開承認を記録する。 |
 
 テストは架空データを基本とし、開発中の CI で実デプロイや提供元の定期取得を起動しない。ローカル結果と GitHub 上での結果は分けて記録する。架空版の切り替え・復旧を含むローカルの試験は [T-001 の統合検証](../findings/T-001-integrated-preview.md)を参照。
+
+## JIHS 数値版のローカル検証
+
+確認済みの第45・46週の CSV を使い、Git 管理外の一時ディレクトリへ検証用一式を生成する。同じ手順で、対象を確認した更新候補と保管版を比較できる。
+
+```sh
+work=$(mktemp -d)
+python3 -B -m apps.web.local artifacts/jihs-local/2026-45-teiten.csv \
+  artifacts/jihs-local/2026-46-teiten.csv --output "$work/site"
+python3 -B -m scripts.check_preview "$work/site" --local-jihs
+```
+
+保管版があれば `--baseline` でそのディレクトリを指定する。失敗、古い候補、変更なしの場合は現行版を維持する。復旧時は保管した一式の別コピーを検証し、正常版の SHA-256 と照合する。この検証は常に `publication_allowed: false` を返す。数値版の本番配布では、承認された入力と検証済み成果物を受け渡す方法を決め、公開後に同じ版の代表ページと JSON を照合する。
+
+## 公式リンク先行版の配布
+
+先行版は JIHS の速報一覧と日本学校保健会の感染症情報マップを案内する。[公開ワークフロー](../../.github/workflows/publish-official-links.yml)は、トップページ・404・CSS の3ファイルを一時ディレクトリに揃え、SHA-256 を記録して配布する。
+
+初回プッシュと公開の確認が揃ったら、既定ブランチ上で GitHub Pages の公開元を GitHub Actions に設定し、`publish-official-links.yml` を手動実行する。完了後は GitHub Actions が返すページ URL でトップページ、CSS、未定義パスでの404と戻り先を確認し、ファイルのハッシュを照合する。前回版に戻す場合は、同じ公開ファイルを再現できる既知のリビジョンに戻したうえで、既定ブランチから同じワークフローを実行する。[GitHub Pages の公開元の設定](https://docs.github.com/ja/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)

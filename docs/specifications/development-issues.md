@@ -56,8 +56,10 @@
 
 [D-001 #20](https://github.com/Olein-jp/japan-infection-watch/issues/20)・[I-001 #23](https://github.com/Olein-jp/japan-infection-watch/issues/23)・[T-001 #24](https://github.com/Olein-jp/japan-infection-watch/issues/24) に依存。[公開判定案](../operations/mvp-release.md)を確認する。承認前は監査・復旧確認・費用見積もりまで行い、依頼者の公開承認後に対象と設定を確認して初回公開を実施する。
 
-- [ ] データ利用条件と公開対象、月0円のアカウント条件・共有枠、公開前監査を記録する。
-- [ ] 担当者が手動更新・停止・復旧の判断と手順を再現できる。
+- [x] データ利用条件と公開対象、月0円のアカウント条件・共有枠、公開前監査を記録する。
+- [ ] 担当者が手動更新・停止・復旧の判断と手順を再現できる。架空版のローカル再演は完了。実運用の担当・版の保管先は保留。
 - [ ] 承認を得た公開では、公開 URL、版、代表ページと JSON を照合する。
+
+[公開前監査と運用の判定](../findings/O-001-release-readiness.md)
 
 提供元別の定期取得、厚労省や自治体の集計追加、地図のデータ配布は、それぞれの利用条件と受入試験が確定した後に別 Issue とする。
