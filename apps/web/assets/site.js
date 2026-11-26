@@ -115,7 +115,7 @@ function historyTable(data, caption) {
     head.append(cell);
   }
   const tbody = table.createTBody();
-  for (const [end, week] of weeks) {
+  for (const [end, week] of [...weeks].reverse()) {
     const row = tbody.insertRow();
     const provenance = data.versions[week.version];
     const period = element("th");
