@@ -283,6 +283,7 @@ if (form) {
       }
       output.replaceChildren(...historyTable(data, caption, !showComparison));
       if (diseaseSelect) diseaseSelect.parentElement.hidden = false;
+      output.closest(".history-details")?.removeAttribute("hidden");
       status.textContent = "履歴を表示しました。";
     } catch {
       status.textContent = "履歴を読み込めませんでした。再読み込みしてからもう一度お試しください。";
@@ -301,10 +302,12 @@ const filter = document.querySelector(".region-filter");
 if (filter) {
   filter.hidden = false;
   const input = filter.querySelector("input");
+  const picker = document.querySelector(".region-picker");
   const items = document.querySelectorAll(".region-list li");
   const status = document.querySelector(".region-status");
   input.addEventListener("input", () => {
     const query = input.value.trim();
+    if (query && picker) picker.open = true;
     let shown = 0;
     for (const item of items) {
       item.hidden = !item.textContent.includes(query);

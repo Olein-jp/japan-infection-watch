@@ -104,7 +104,8 @@ def data_note(version, latest, timestamp, *, real_data, release_candidate):
 </dl>{correction}"""
 
 
-def history_form(base, index, release, months, covered_period, disease=None, *, real_data, heading="週次の推移"):
+def history_form(base, index, release, months, covered_period, disease=None, *, real_data,
+                 heading="週次の推移", collapse_details=False):
     disease_input = ""
     if disease is None:
         options = "".join(
@@ -114,6 +115,10 @@ def history_form(base, index, release, months, covered_period, disease=None, *, 
         disease_input = (f'<div class="history-field history-detail" hidden><label for="history-disease">詳細表の疾患</label>'
                          f'<select id="history-disease">{options}</select></div>')
     comparison = '<div class="history-comparison"></div>' if disease is None else ""
+    detail = f'{disease_input}<div class="history-output"></div>'
+    if collapse_details:
+        detail = (f'<details class="history-details" hidden><summary>週別の詳細表を見る</summary>'
+                  f'{detail}</details>')
     month_options = "".join(f'<option>{month}</option>' for month in sorted(months, reverse=True))
     archive_label = ("JIHS の速報一覧でほかの報告週を見る" if real_data
                      else f"{HISTORY_MONTHS}か月より前のデータは JIHS で見る")
@@ -127,7 +132,7 @@ def history_form(base, index, release, months, covered_period, disease=None, *, 
 <button type="submit">週次履歴を表示</button>
 </form>
 <p class="history-status" role="status"></p>
-{comparison}{disease_input}<div class="history-output"></div>
+{comparison}{detail}
 <noscript>推移の表示には JavaScript が必要です。このページの表で最新の集計を確認できます。</noscript>
 <p><a href="{OFFICIAL_ARCHIVE}">{archive_label}</a></p>
 </section>"""
@@ -169,13 +174,15 @@ def pages(root, base, release, timestamp, latest, history, version, indexes, *,
     national = table("全国の週次集計", "疾患", entries)
     national_months = {month for disease in DISEASES for month in history["jp", disease]}
     national_history = history_form(base, indexes["jp"], release, national_months, covered_period,
-                                    real_data=real_data, heading="全国の週次推移")
+                                    real_data=real_data, heading="全国の週次推移", collapse_details=True)
     links = "".join(f'<li><a href="{base}prefectures/{code}/">{name}</a></li>' for code, name in REGIONS.items() if code != "jp")
     emit("index.html", "全国の感染症動向", f"""
-{national_history}
 <section id="regions" class="panel"><h2>都道府県を選ぶ</h2>
 <label class="region-filter" hidden>都道府県名で絞り込む<input type="search" autocomplete="off"></label>
-<p class="region-status" role="status"></p><ul class="region-list">{links}</ul></section>
+<p class="region-status" role="status"></p>
+<details class="region-picker"><summary>都道府県の一覧を見る</summary>
+<ul class="region-list">{links}</ul></details></section>
+{national_history}
 {note}
 <section id="diseases" class="panel"><h2>疾患別の最新値</h2>{national}</section>
 <section class="panel"><h2>学校・市区町村の公式案内</h2>
