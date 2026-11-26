@@ -66,11 +66,26 @@ python3 -B -m scripts.check_preview "$work/site" --release-candidate
 
 ### Actions での候補の受け渡し
 
-[公開候補の検証ワークフロー](../../.github/workflows/check-jihs-candidate.yml)は、既定ブランチでの手動実行を受け付ける。入力は `source`、対象コミットの完全な SHA を示す `revision`、候補生成時の `generated_at`、候補一式の `expected_sha256`。値はローカルの候補検証結果に合わせる。チェックアウトしたコミットと候補一式のハッシュが両方一致した場合に、候補専用の artifact として1日間渡す。Pages への配布ジョブと、公開用 manifest の確定は後続の工程。[手動実行](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/manually-run-a-workflow)・[候補の梱包に使う公式 action](https://github.com/actions/upload-pages-artifact/blob/fc324d3547104276b827a68afc52ff2a11cc49c9/action.yml)
+[公開候補の検証ワークフロー](../../.github/workflows/check-jihs-candidate.yml)は、既定ブランチでの手動実行を受け付ける。入力は `source`、対象コミットの完全な SHA を示す `revision`、候補生成時の `generated_at`、候補一式の `expected_sha256`。値はローカルの候補検証結果に合わせる。チェックアウトしたコミットと候補一式のハッシュが両方一致した場合に、候補専用の artifact として1日間渡す。配布は[数値版の手動公開](#数値版の手動公開)で行う。[手動実行](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/manually-run-a-workflow)・[候補の梱包に使う公式 action](https://github.com/actions/upload-pages-artifact/blob/fc324d3547104276b827a68afc52ff2a11cc49c9/action.yml)
 
 1. 初回の Actions 試験は `source=fixture` を選ぶ。ローカルで `PYTHONPATH=tests python3 -B -m fixtures.build_web_preview "$work/fixture" --generated-at 2030-02-05T13:00:00+09:00` と `python3 -B -m scripts.check_preview "$work/fixture"` を実行し、同じ日時とハッシュを指定する。成功版の artifact を展開して再検証し、ハッシュを1桁変えた実行では artifact が作られないことを確認する。
 2. `source=reviewed-jihs` の実行前に、実データの取得と公開リポジトリ上の artifact 共有の承認を記録し、共有枠・保持期間を確認する。リポジトリ変数 `JIHS_APPROVED_CANDIDATE_SHA256` に承認済みの候補ハッシュを設定した後、同じハッシュを実行時に指定する。設定が空、または入力が異なる場合は JIHS への通信前に停止する。照合後は runner の一時領域で公式 CSV 2件を順に各1回取得する。HTTP 200 以外や原本のハッシュ不一致で停止し、正常時は静的成果物のディレクトリだけを梱包する。[設定変数の仕様](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-variables)
 3. 候補は Git 管理外の `artifacts/jihs-release-candidate/` に、圧縮版、候補の検証結果、圧縮版の SHA-256 をまとめて保管する。レポートのハッシュと別ディレクトリに展開した版を `--release-candidate --expected-sha256` で照合する。担当候補はリポジトリ管理者とし、初回の復旧先は Git 上の公開済み公式リンク先行版とする。数値版を継続運用する前に、長期保管先と担当者、原本が変更された場合の復旧用成果物の受け渡し先を確定する。
+
+### 数値版の手動公開
+
+[数値版の公開ワークフロー](../../.github/workflows/publish-jihs.yml)は、候補を作成したのと同じ既定ブランチのコミットで手動実行する。配布承認時に、運用担当と復旧用の保管先、GitHub の共有枠、候補の利用条件と有効期限を確認する。候補の取得・共有の承認は、前節の手順で先に扱う。
+
+1. 承認対象の候補を梱包した `artifact.tar` を用意する。下記のコマンドで最終配布版の SHA-256 を算出する。候補の出典・表示項目・対象週は再照合され、manifest の公開状態だけを `published` に更新したときのハッシュが返る。算出だけの場合は出力ディレクトリは作られない。
+
+   ```sh
+   python3 -B -m scripts.prepare_jihs_pages "$work/artifact.tar" \
+     --output "$work/pages" --candidate-sha256 "$candidate_sha256"
+   ```
+
+2. 公開承認を記録し、リポジトリ変数 `JIHS_APPROVED_RELEASE` に1件の JSON オブジェクトを設定する。必須項目は候補検証の実行 ID を文字列で示す `run_id`、候補を作った完全なコミット SHA の `revision`、`weeks` に `["2026-W45", "2026-W46"]`、`candidate_sha256`、`pages_sha256`。承認した実行とハッシュ以外で起動した場合は配布前に停止する。
+3. `publish-jihs.yml` に `candidate_run_id` を指定して手動実行する。候補検証の同一リポジトリ・既定ブランチ・同一コミットの成功実行を照合し、`jihs-candidate-reviewed-jihs` だけを取得する。候補と Pages 配布版の両方のハッシュ、第45・46週の履歴が一致した場合に、配布ジョブへ進む。先行版の公開と同じ同時実行グループを使う。[実行メタデータの仕様](https://docs.github.com/en/rest/actions/workflow-runs#get-a-workflow-run)・[Pages の公開ジョブ](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages)
+4. 公開結果の URL を開き、トップ、岐阜県、インフルエンザ、404 の画面と `data/manifest.json` を確認する。manifest の版・公開状態・参照ハッシュを承認済み配布版と比較し、岐阜県の索引から参照されるインフルエンザの最新・履歴 JSON を取得してハッシュと対象週を照合する。失敗時は公開中の版を確認し、復元が必要なら次節を使う。
 
 ## 公式リンク先行版の配布
 

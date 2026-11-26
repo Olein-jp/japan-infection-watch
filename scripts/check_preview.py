@@ -83,10 +83,12 @@ def comparable(value, release):
     return result
 
 
-def verify_bundle(root, limit=MAX_BYTES, *, local_jihs=False, release_candidate=False):
-    if local_jihs and release_candidate:
+def verify_bundle(root, limit=MAX_BYTES, *, local_jihs=False, release_candidate=False,
+                  published_jihs=False, expected_period_ends=None):
+    if sum((local_jihs, release_candidate, published_jihs)) > 1:
         raise ValueError("検証する成果物の種類を1つ指定してください")
-    real_data = local_jihs or release_candidate
+    pages_data = release_candidate or published_jihs
+    real_data = local_jihs or pages_data
     files, directories, total = inventory(root, limit)
     raw_hashes = {}
     content_hashes = {}
@@ -107,10 +109,12 @@ def verify_bundle(root, limit=MAX_BYTES, *, local_jihs=False, release_candidate=
     release = manifest["release_id"]
     release_prefix = "local-" if local_jihs else "preview-"
     label = "JIHS ローカル確認版" if local_jihs else "架空プレビュー"
-    if release_candidate:
+    if pages_data:
         release_prefix = "candidate-"
-        label = "JIHS 公開候補"
+        label = "JIHS 公開版" if published_jihs else "JIHS 公開候補"
     status = "pending_review" if release_candidate else "blocked"
+    if published_jihs:
+        status = "published"
     if not ID.fullmatch(release) or not release.startswith(release_prefix):
         raise ValueError(f"{label}の配布版 ID が必要です")
     if (manifest["schema_version"] != "0.1-draft" or manifest["fictional"] is not (not real_data)
@@ -124,8 +128,8 @@ def verify_bundle(root, limit=MAX_BYTES, *, local_jihs=False, release_candidate=
         from apps.web.preview_data import LOCAL_ATTRIBUTION, LOCAL_PROCESSING
         from packages.data_normalizer.jihs_weekly import LOCAL_DATASET_ID, report_url
 
-        dataset = "jihs-weekly" if release_candidate else LOCAL_DATASET_ID
-        timestamp_field = "input_read_at" if release_candidate else "local_input_read_at"
+        dataset = "jihs-weekly" if pages_data else LOCAL_DATASET_ID
+        timestamp_field = "input_read_at" if pages_data else "local_input_read_at"
         provenance = {"attribution": LOCAL_ATTRIBUTION, "processing": LOCAL_PROCESSING}
         source_fields = (SOURCE_FIELDS - {"published_version_fetched_at"}) | {timestamp_field, "processing"}
 
@@ -172,6 +176,8 @@ def verify_bundle(root, limit=MAX_BYTES, *, local_jihs=False, release_candidate=
     source = manifest["sources"][dataset]
     check_fields(source, source_fields)
     latest_end = date.fromisoformat(source["latest_period_end"])
+    if expected_period_ends is not None and latest_end.isoformat() != max(expected_period_ends):
+        raise ValueError("最新の対象週が承認済みの範囲と一致しません")
     if real_data:
         year, week, _ = latest_end.isocalendar()
         if (any(source[key] != value for key, value in provenance.items())
@@ -211,6 +217,7 @@ def verify_bundle(root, limit=MAX_BYTES, *, local_jihs=False, release_candidate=
                 check_provenance(latest)
             if latest_end.isoformat()[:7] not in shards["history"]:
                 raise ValueError("最新月の履歴がありません")
+            history_period_ends = set()
             for month, item in shards["history"].items():
                 if not MONTH.fullmatch(month):
                     raise ValueError("履歴の年月が不正です")
@@ -220,6 +227,9 @@ def verify_bundle(root, limit=MAX_BYTES, *, local_jihs=False, release_candidate=
                 if not rows or any(row.keys() != DISPLAY_FIELDS or row["period_end"][:7] != month for row in rows):
                     raise ValueError("履歴の配布項目または対象月が不正です")
                 check_provenance(history)
+                history_period_ends.update(row["period_end"] for row in rows)
+            if expected_period_ends is not None and history_period_ends != expected_period_ends:
+                raise ValueError("履歴の対象週が承認済みの範囲と一致しません")
 
     # #22 で確認済みの公式案内のみをプレビューの配布対象とする。
     expected.add("municipalities/21201/index.html")
@@ -230,7 +240,7 @@ def verify_bundle(root, limit=MAX_BYTES, *, local_jihs=False, release_candidate=
         missing = sorted(expected - set(files))
         raise ValueError(f"配布範囲が不一致: 範囲外 {extra[:3]} / 不足 {missing[:3]}")
     notice = "自分用・ローカル閲覧" if local_jihs else "開発プレビュー"
-    if release_candidate:
+    if pages_data:
         from apps.web.build import JIHS_PROVISIONAL
 
         notice = "JIHS の週次定点速報"
@@ -244,7 +254,7 @@ def verify_bundle(root, limit=MAX_BYTES, *, local_jihs=False, release_candidate=
                         "<dt>出典</dt>", "<dt>編集・加工</dt>", source["official_reference_url"], *provenance.values()
                 )):
                     raise ValueError(f"出典または編集・加工の表示がありません: {path}")
-                if release_candidate and JIHS_PROVISIONAL.encode() not in raw:
+                if pages_data and JIHS_PROVISIONAL.encode() not in raw:
                     raise ValueError(f"速報値が訂正される可能性の表示がありません: {path}")
             raw = METADATA.sub(rb"\1\2", raw)
             raw = raw.replace(f'data-release="{release}"'.encode(), b'data-release="current"')
