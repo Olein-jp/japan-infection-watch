@@ -193,11 +193,14 @@ def verify_bundle(root, limit=MAX_BYTES, *, local_jihs=False, release_candidate=
         if kind == "prefecture":
             expected.add(f"prefectures/{region}/index.html")
         index = reference(entry, f"releases/{release}/index/{scope}.json")
-        check_fields(index, {"release_id", "diseases"})
+        has_trend = kind == "prefecture" and "trend" in index
+        check_fields(index, {"release_id", "diseases", "trend"} if has_trend else {"release_id", "diseases"})
         codes = set(index["diseases"])
         if len(codes) != 19 or (diseases is not None and codes != diseases):
             raise ValueError("地域ごとの疾患索引が揃っていません")
         diseases = codes
+        if has_trend and (not isinstance(index["trend"], dict) or index["trend"].keys() != codes):
+            raise ValueError("推移グラフの疾患が履歴と一致しません")
         for disease, shards in index["diseases"].items():
             if not ID.fullmatch(disease):
                 raise ValueError("疾患 ID が不正です")
@@ -218,6 +221,7 @@ def verify_bundle(root, limit=MAX_BYTES, *, local_jihs=False, release_candidate=
             if latest_end.isoformat()[:7] not in shards["history"]:
                 raise ValueError("最新月の履歴がありません")
             history_period_ends = set()
+            trend_rows = []
             for month, item in shards["history"].items():
                 if not MONTH.fullmatch(month):
                     raise ValueError("履歴の年月が不正です")
@@ -228,6 +232,11 @@ def verify_bundle(root, limit=MAX_BYTES, *, local_jihs=False, release_candidate=
                     raise ValueError("履歴の配布項目または対象月が不正です")
                 check_provenance(history)
                 history_period_ends.update(row["period_end"] for row in rows)
+                if has_trend:
+                    trend_rows.extend([row["period_end"], row["value_status"], row["value"]]
+                                      for row in rows if row["metric_id"] == "sentinel_reports_per_site")
+            if has_trend and index["trend"][disease] != sorted(trend_rows, key=lambda row: row[0]):
+                raise ValueError("推移グラフの数値・欠損状態が週次履歴と一致しません")
             if expected_period_ends is not None and history_period_ends != expected_period_ends:
                 raise ValueError("履歴の対象週が承認済みの範囲と一致しません")
 

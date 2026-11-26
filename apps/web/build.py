@@ -31,7 +31,7 @@ MHLW_SCHOOL_REPORTS = "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_i
 GAP_NOTE = '<p class="table-note"><span class="missing">-</span> は原表の表記です。報告数の 0 とは区別しています。</p>'
 
 
-def layout(base, title, content, *, notice, wide_title=False, trail=None):
+def layout(base, title, content, *, notice, asset_versions, wide_title=False, trail=None):
     breadcrumbs = ""
     if trail is not None:
         links = "".join(f'<li><a href="{base}{path}">{escape(label)}</a></li>'
@@ -44,8 +44,8 @@ def layout(base, title, content, *, notice, wide_title=False, trail=None):
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{escape(title)} | {SITE}</title>
-<link rel="stylesheet" href="{base}assets/site.css">
-<script type="module" src="{base}assets/site.js"></script>
+<link rel="stylesheet" href="{base}assets/site.css?v={asset_versions["site.css"]}">
+<script type="module" src="{base}assets/site.js?v={asset_versions["site.js"]}"></script>
 </head>
 <body>
 <a href="#main" class="skip">本文へ移動</a>
@@ -113,7 +113,9 @@ def history_form(base, index, release, months, covered_period, disease=None, *, 
             f'<option value="{code}"{" selected" if code == "influenza" else ""}>{escape(name)}</option>'
             for code, name in DISEASES.items()
         )
-        disease_input = f'<div class="history-field"><label for="history-disease">疾患</label><select id="history-disease" name="disease">{options}</select></div>'
+        disease_input = (f'<div class="history-field history-detail" hidden><label for="history-disease">詳細表の疾患</label>'
+                         f'<select id="history-disease">{options}</select></div>')
+    comparison = '<div class="history-comparison"></div>' if disease is None else ""
     month_options = "".join(f'<option>{month}</option>' for month in sorted(months, reverse=True))
     archive_label = ("JIHS の速報一覧でほかの報告週を見る" if real_data
                      else f"{HISTORY_MONTHS}か月より前のデータは JIHS で見る")
@@ -122,12 +124,12 @@ def history_form(base, index, release, months, covered_period, disease=None, *, 
 <p>収録期間 <time>{covered_period[0]}</time>〜<time>{covered_period[1]}</time></p>
 <form class="history-form" data-index="{base}data/{index["path"]}" data-release="{release}"
       data-base="{base}data/" data-disease="{disease or ''}" hidden>
-{disease_input}
 <div class="history-field"><label for="history-month">対象月</label>
 <select id="history-month" name="month"><option value="">収録期間すべて（最長{HISTORY_MONTHS}か月）</option>{month_options}</select></div>
 <button type="submit">週次履歴を表示</button>
 </form>
-<p class="history-status" role="status"></p><div class="history-output"></div>
+<p class="history-status" role="status"></p>
+{comparison}{disease_input}<div class="history-output"></div>
 <noscript>推移の表示には JavaScript が必要です。このページの表で最新の集計を確認できます。</noscript>
 <p><a href="{OFFICIAL_ARCHIVE}">{archive_label}</a></p>
 </section>"""
@@ -136,6 +138,8 @@ def history_form(base, index, release, months, covered_period, disease=None, *, 
 def pages(root, base, release, timestamp, latest, history, version, indexes, *,
           local_only, release_candidate, closure_reports):
     real_data = local_only or release_candidate
+    asset_versions = {name: sha256((root / "assets" / name).read_bytes()).hexdigest()[:12]
+                      for name in ("site.css", "site.js")}
     notice = "開発プレビュー · 画面内の数値は架空です"
     if local_only:
         notice = "自分用・ローカル閲覧 · JIHS の速報値"
@@ -145,7 +149,7 @@ def pages(root, base, release, timestamp, latest, history, version, indexes, *,
     def emit(target, title, content, *, hero=False, trail=()):
         path = root / target
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(layout(base, title, content, notice=notice, wide_title=hero,
+        path.write_text(layout(base, title, content, notice=notice, asset_versions=asset_versions, wide_title=hero,
                                trail=None if target == "index.html" else trail), encoding="utf-8")
 
     note = data_note(version, latest, timestamp, real_data=real_data, release_candidate=release_candidate)

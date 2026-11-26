@@ -122,6 +122,7 @@ def write_distribution(root, release_id, generated_at, latest, history, version,
         kind = "national" if region == "jp" else "prefecture"
         scope = f"{dataset_id}/{kind}/{region}"
         diseases = {}
+        trend = {}
         for disease in DISEASES:
             current = list(latest[region, disease].values())
             months = {}
@@ -138,7 +139,16 @@ def write_distribution(root, release_id, generated_at, latest, history, version,
                 }),
                 "history": months,
             }
-        indexes[region] = write(f"{prefix}/index/{scope}.json", {"release_id": release_id, "diseases": diseases})
+            if kind == "prefecture":
+                trend[disease] = [
+                    [row["period_end"], row["value_status"], row["value"]]
+                    for rows in history[region, disease].values() for row in rows
+                    if row["metric_id"] == "sentinel_reports_per_site"
+                ]
+        index = {"release_id": release_id, "diseases": diseases}
+        if trend:
+            index["trend"] = trend
+        indexes[region] = write(f"{prefix}/index/{scope}.json", index)
 
     timestamp_field = "published_version_fetched_at" if fictional else "local_input_read_at"
     if release_candidate:

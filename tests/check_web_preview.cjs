@@ -177,10 +177,29 @@ async function check() {
     await page.getByText("履歴を表示しました。", { exact: true }).waitFor();
     await page.locator(".history-output").getByRole("columnheader", { name: "医療機関1か所あたり（件）", exact: true }).waitFor();
     assert.equal(await page.locator(".history-output tbody tr").count(), 2);
-    await page.getByText("選択した期間に表示できる報告数はありません。").waitFor();
-    assert.equal(await page.locator(".trend-dot").count(), 0);
+    const comparison = page.locator(".history-comparison");
+    const legend = comparison.locator(".trend-legend");
+    assert.equal(await comparison.locator(".trend").count(), 1);
+    assert.equal(await legend.getByRole("button").count(), 19);
+    assert.equal(await comparison.locator(".trend-area path").count(), 18);
+    assert.match(await legend.getByRole("button", { name: /インフルエンザ/ }).textContent(), /空欄$/);
+    assert.match(await page.locator(".history-output tbody tr").first().textContent(), /2030-02-03/);
+    const series = legend.getByRole("button", { name: /ＲＳウイルス感染症/ });
+    await series.focus();
+    await page.keyboard.press("Enter");
+    assert.equal(await series.getAttribute("aria-pressed"), "true");
+    assert.equal(await comparison.locator(".trend-area path.trend-muted").count(), 17);
+    await page.keyboard.press("Enter");
+    assert.equal(await series.getAttribute("aria-pressed"), "false");
+    assert.equal(await comparison.locator(".trend-area path.trend-muted").count(), 0);
     assert.ok(requests.filter(url => url.includes("/history/")).every(url => url.includes("/prefecture/01/") && url.endsWith("/influenza.json")));
-    assert.equal(await page.getByLabel("疾患", { exact: true }).inputValue(), "influenza");
+    const detailDisease = page.getByLabel("詳細表の疾患");
+    assert.equal(await detailDisease.inputValue(), "influenza");
+    await detailDisease.selectOption("rs-virus");
+    await page.locator(".history-output").getByRole("heading", { name: /ＲＳウイルス感染症/ }).waitFor();
+    assert.equal(await comparison.locator(".trend-area path").count(), 18);
+    await detailDisease.selectOption("influenza");
+    await page.locator(".history-output").getByRole("heading", { name: /インフルエンザ/ }).waitFor();
     assert.equal(await page.locator(".history").evaluate(el => el.compareDocumentPosition(document.querySelector(".provenance")) & Node.DOCUMENT_POSITION_FOLLOWING), 4);
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth), 320);
 
@@ -201,6 +220,8 @@ async function check() {
     const week = page.locator(".history-output tbody tr");
     assert.match(await week.getByRole("rowheader").textContent(), /2030-01-07/);
     assert.deepEqual((await week.getByRole("cell").allTextContents()).slice(0, 2), ["-", "空欄"]);
+    assert.match(await legend.textContent(), /2030-01-13終了/);
+    assert.equal(await comparison.locator(".trend-area .trend-dot").count(), 18);
     assert.equal(requests.filter(url => url.includes("/history/")).length, previousRequestCount + 1);
 
     await page.route("**/history/**/2030-02/*.json", route => route.abort());
@@ -208,6 +229,7 @@ async function check() {
     await button.click();
     await page.getByText(/履歴を読み込めませんでした/).waitFor();
     assert.match(await page.locator(".history-output").textContent(), /2030-01-07/);
+    assert.match(await legend.textContent(), /2030-01-13終了/);
     assert.deepEqual(await influenza.getByRole("cell").allTextContents(), ["-", "空欄", "24", "2.40"]);
     await page.unroute("**/history/**/2030-02/*.json");
     await page.emulateMedia({ forcedColors: null });
@@ -221,7 +243,7 @@ async function check() {
     assert.ok(await page.locator(".table-scroll").evaluate(region => region.scrollWidth <= region.clientWidth));
     await page.getByRole("button", { name: "週次履歴を表示" }).click();
     await page.getByText("履歴を表示しました。", { exact: true }).waitFor();
-    assert.match(await page.locator(".history-output tbody").textContent(), /2030-01-07.*2030-02-03/);
+    assert.match(await page.locator(".history-output tbody").textContent(), /2030-02-03.*2030-01-07/);
     assert.equal(await page.locator(".history-output tbody tr").count(), 2);
     assert.match(await page.locator(".trend-area path").getAttribute("d"), /^M[^M]+ M[^M]+$/);
     assert.equal(await page.locator(".trend-dot").first().evaluate(el => el.style.top), "100%");

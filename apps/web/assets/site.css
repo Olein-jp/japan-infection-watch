@@ -65,9 +65,19 @@ button:disabled { opacity: .7; cursor: wait; }
 .trend-area { position: relative; height: clamp(9rem, 28vw, 15rem); margin-inline: .2rem; border-block: 1px solid #a9c5c0; }
 .trend-area::before { content: ""; position: absolute; inset: 50% 0 auto; border-top: 1px solid #a9c5c0; }
 .trend-area svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; fill: none; stroke: var(--teal); stroke-width: 2px; }
-.trend-dot { position: absolute; width: .32rem; height: .32rem; border: .16rem solid var(--teal); border-radius: 50%; transform: translate(-50%, -50%); }
+.trend-points { position: absolute; inset: 0; pointer-events: none; }
+.trend-dot { position: absolute; width: .32rem; height: .32rem; border: .16rem solid var(--series-color, var(--teal)); border-radius: 50%; transform: translate(-50%, -50%); }
+.trend-muted { opacity: .16; }
 .trend-dates { grid-column: 2; display: flex; justify-content: space-between; gap: .4rem; }
 .trend-dates span:only-child { margin-inline: auto; }
+.trend-legend { margin-top: .9rem; }
+.trend-legend ul { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); gap: .35rem; padding: 0; margin: 0 0 .75rem; list-style: none; }
+.trend-legend button { display: grid; grid-template-columns: .95rem minmax(0, 1fr) auto; align-items: center; gap: .4rem; width: 100%; height: 100%; text-align: start; font-size: .8rem; font-weight: 500; color: inherit; background: #fff; border-color: var(--line); }
+.trend-legend button[aria-pressed="true"] { border-color: currentColor; box-shadow: inset 0 0 0 1px currentColor; }
+.trend-legend button:disabled { opacity: 1; cursor: default; }
+.trend-legend strong { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.trend-swatch { border-block-start: 3px solid; }
+.history-detail { width: fit-content; }
 .history-table tbody th, .history-table tbody td:nth-child(n+4) { white-space: nowrap; }
 .closure-chart { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); gap: .75rem; margin-block: .8rem; }
 .closure-week { padding: .8rem; background: #eff6f4; border-radius: .45rem; }
