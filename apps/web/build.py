@@ -106,7 +106,7 @@ def data_note(version, latest, timestamp, *, real_data, release_candidate):
 </dl>{correction}"""
 
 
-def history_form(base, index, release, months, covered_period, disease=None, *, real_data):
+def history_form(base, index, release, months, covered_period, disease=None, *, real_data, heading="週次の推移"):
     disease_input = ""
     if disease is None:
         options = "".join(
@@ -120,7 +120,7 @@ def history_form(base, index, release, months, covered_period, disease=None, *, 
     archive_label = ("JIHS の速報一覧でほかの報告週を見る" if real_data
                      else f"{HISTORY_MONTHS}か月より前のデータは JIHS で見る")
     return f"""<section aria-labelledby="history-heading" class="panel history">
-<h2 id="history-heading">週次の推移</h2>
+<h2 id="history-heading">{escape(heading)}</h2>
 <p>収録期間 <time>{covered_period[0]}</time>〜<time>{covered_period[1]}</time></p>
 <form class="history-form" data-index="{base}data/{index["path"]}" data-release="{release}"
       data-base="{base}data/" data-disease="{disease or ''}" hidden>
@@ -180,8 +180,12 @@ def pages(root, base, release, timestamp, latest, history, version, indexes, *,
         link = f'<a href="{base}diseases/{disease}/">{escape(label)}</a>'
         entries.append(f'<tr><th scope="row">{link}</th>{values(latest["jp", disease])}</tr>')
     national = table("全国の週次集計", "疾患", entries)
+    national_months = {month for disease in DISEASES for month in history["jp", disease]}
+    national_history = history_form(base, indexes["jp"], release, national_months, covered_period,
+                                    real_data=real_data, heading="全国の週次推移")
     links = "".join(f'<li><a href="{base}prefectures/{code}/">{name}</a></li>' for code, name in REGIONS.items() if code != "jp")
     emit("index.html", "全国の感染症動向", f"""
+{national_history}
 <section id="regions" class="panel"><h2>都道府県を選ぶ</h2>
 {municipal_closure_guide}
 <label class="region-filter" hidden>都道府県名で絞り込む<input type="search" autocomplete="off"></label>

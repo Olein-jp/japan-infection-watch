@@ -193,7 +193,7 @@ def verify_bundle(root, limit=MAX_BYTES, *, local_jihs=False, release_candidate=
         if kind == "prefecture":
             expected.add(f"prefectures/{region}/index.html")
         index = reference(entry, f"releases/{release}/index/{scope}.json")
-        has_trend = kind == "prefecture" and "trend" in index
+        has_trend = "trend" in index
         check_fields(index, {"release_id", "diseases", "trend"} if has_trend else {"release_id", "diseases"})
         codes = set(index["diseases"])
         if len(codes) != 19 or (diseases is not None and codes != diseases):

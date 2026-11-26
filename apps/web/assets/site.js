@@ -267,7 +267,8 @@ if (form) {
         observations: shards.flatMap(shard => shard.observations),
         versions: Object.assign({}, ...shards.map(shard => shard.versions)),
       };
-      if (comparison && index.trend && shownMonth !== month) {
+      const showComparison = comparison && index.trend;
+      if (showComparison && shownMonth !== month) {
         const series = Array.from(diseaseSelect.options, (option, i) => ({
           code: option.value,
           name: option.textContent,
@@ -280,7 +281,7 @@ if (form) {
         comparison.replaceChildren(historyChart(series, true));
         shownMonth = month;
       }
-      output.replaceChildren(...historyTable(data, caption, !index.trend));
+      output.replaceChildren(...historyTable(data, caption, !showComparison));
       if (diseaseSelect) diseaseSelect.parentElement.hidden = false;
       status.textContent = "履歴を表示しました。";
     } catch {

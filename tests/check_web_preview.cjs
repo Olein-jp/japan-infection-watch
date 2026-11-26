@@ -145,13 +145,28 @@ async function check() {
     assert.equal(new URL(page.url()).hash, "#main");
     assert.match(await page.locator(".provenance").textContent(), /2030年.*第5週/);
     assert.match(await page.locator(".notice").textContent(), /架空/);
-    assert.ok(!requests.some(url => new URL(url).pathname.includes("/data/")));
+    const nationalHistory = page.getByRole("region", { name: "全国の週次推移" });
+    await nationalHistory.getByText("履歴を表示しました。", { exact: true }).waitFor();
+    const nationalLegend = nationalHistory.locator(".trend-legend");
+    assert.equal(await nationalLegend.getByRole("button").count(), 19);
+    assert.match(await nationalLegend.getByRole("button", { name: /インフルエンザ/ }).textContent(), /2\.40$/);
+    assert.match(await nationalHistory.locator("tbody tr").first().textContent(), /2030-02-03.*24.*2\.40/);
+    assert.equal(await nationalHistory.locator(".trend-area path").count(), 19);
+    const nationalDataRequests = requests.filter(url => new URL(url).pathname.includes("/data/"));
+    assert.equal(nationalDataRequests.length, 3);
+    assert.ok(nationalDataRequests.every(url => url.includes("/national/jp")));
+    await nationalHistory.getByLabel("対象月").selectOption("2030-01");
+    await nationalHistory.getByRole("button", { name: "週次履歴を表示" }).click();
+    await nationalHistory.getByText("履歴を表示しました。", { exact: true }).waitFor();
+    assert.match(await nationalLegend.textContent(), /2030-01-13終了/);
+    assert.equal(await nationalHistory.locator("tbody tr").count(), 1);
     assert.equal(await page.locator("#regions").evaluate(el => el.compareDocumentPosition(document.querySelector("#diseases")) & Node.DOCUMENT_POSITION_FOLLOWING), 4);
     assert.match(await page.getByRole("link", { name: "日本学校保健会の感染症情報マップ" }).getAttribute("href"),
       /^https:\/\/www\.gakkohoken\.jp\//);
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth), 320);
     await page.getByRole("searchbox", { name: "都道府県名で絞り込む" }).fill("北海道");
     assert.equal(await page.locator(".region-status").textContent(), "1件の都道府県");
+    const beforePrefecture = requests.length;
     await page.getByRole("link", { name: "北海道", exact: true }).click();
     const pref = home + "prefectures/01/";
     assert.equal(page.url(), pref);
@@ -192,7 +207,8 @@ async function check() {
     await page.keyboard.press("Enter");
     assert.equal(await series.getAttribute("aria-pressed"), "false");
     assert.equal(await comparison.locator(".trend-area path.trend-muted").count(), 0);
-    assert.ok(requests.filter(url => url.includes("/history/")).every(url => url.includes("/prefecture/01/") && url.endsWith("/influenza.json")));
+    assert.ok(requests.slice(beforePrefecture).filter(url => url.includes("/history/"))
+      .every(url => url.includes("/prefecture/01/") && url.endsWith("/influenza.json")));
     const detailDisease = page.getByLabel("詳細表の疾患");
     assert.equal(await detailDisease.inputValue(), "influenza");
     await detailDisease.selectOption("rs-virus");
